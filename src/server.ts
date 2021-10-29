@@ -13,7 +13,8 @@ async function startServer() {
   // Get environments variables from .env file
   dotenv.config();
   // Initialize server port
-  const PORT = process.env.PORT || 4000;
+  const PORT = process.env.PORT || 8080;
+  const HOST = process.env.HOST || '0.0.0.0';
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const schema = await buildSchema({
@@ -56,10 +57,10 @@ async function startServer() {
     });
 
     app.listen(
-      { port: PORT },
+      { port: PORT, host: HOST },
       () => {
         // TODO: replace with custom winston logger
-        console.log('Server ready', { port: PORT });
+        console.log('Server ready', { host: HOST, port: PORT });
       },
     );
   } catch (error) {
