@@ -2,6 +2,7 @@ import 'reflect-metadata';
 import { Resolver, Query } from 'type-graphql';
 import { dummies } from '../../constants/dummies';
 import IUser from './types/user.type';
+import UserService from './user.service';
 
 @Resolver(() => IUser)
 export default class UserResolver {
@@ -9,4 +10,15 @@ export default class UserResolver {
   async dummies(): Promise<IUser[]> {
     return dummies;
   }
+  // CREATE method is handled in the Auth Models
+
+  // * READ
+  @Query(() => [IUser])
+  async getAllUsers(): Promise<IUser[]> {
+    return UserService().allUsers();
+  }
+
+  // * UPDATE
+
+  // * DELETE
 }
