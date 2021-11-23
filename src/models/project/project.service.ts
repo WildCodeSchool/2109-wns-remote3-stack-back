@@ -18,6 +18,7 @@ export default function ProjectService() {
     }
     return project;
   }
+  // * UPDATE
 
   // ** DELETE
   async function deleteById(id: string): Promise<IProject> {

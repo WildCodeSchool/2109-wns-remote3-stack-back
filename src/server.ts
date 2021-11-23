@@ -8,17 +8,18 @@ import dotenv from 'dotenv';
 import { buildSchema } from 'type-graphql';
 import rateLimit from 'express-rate-limit';
 import UserResolver from './models/user/user.resolver';
+import ProjectResolver from './models/project/project.resolver';
 
 async function startServer() {
   // Get environments variables from .env file
   dotenv.config();
   // Initialize server port
   const PORT = process.env.PORT || 4000;
-  const HOST = process.env.HOST || '0.0.0.0';
+  const HOST = process.env.HOST || 'localhost';
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const schema = await buildSchema({
-    resolvers: [UserResolver],
+    resolvers: [UserResolver, ProjectResolver],
   });
 
   // Initialize the Apollo Server with the generated GraphQL schema

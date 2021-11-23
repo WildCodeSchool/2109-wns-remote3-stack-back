@@ -1,17 +1,28 @@
-import { Prisma, Project } from '@prisma/client';
+import { Prisma, Project, UserProject } from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
+
+interface ProjectWithMembers extends Project {
+  members: UserProject[],
+}
 
 export default function ProjectPrismaDto() {
   // ** READ
-  async function all(): Promise<Project[]> {
-    return prisma.project.findMany();
+  async function all(): Promise<ProjectWithMembers[]> {
+    return prisma.project.findMany({
+      include: {
+        members: true,
+      },
+    });
   }
 
   async function oneById(
     id: Prisma.ProjectWhereUniqueInput,
-  ): Promise<Project | null> {
+  ): Promise<ProjectWithMembers | null> {
     return prisma.project.findUnique({
       where: id,
+      include: {
+        members: true,
+      },
     });
   }
 

@@ -6,7 +6,7 @@ import IProject from './types/project.type';
 import ProjectService from './project.service';
 
 @Resolver(() => IProject)
-export default class UserResolver {
+export default class ProjectResolver {
   // CREATE method is handled in the Auth Models
 
   // * READ
@@ -21,6 +21,8 @@ export default class UserResolver {
   ): Promise<IProject> {
     return ProjectService().findById(id);
   }
+
+  // * CREATE
 
   // * UPDATE
 
