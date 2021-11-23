@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import { buildSchema } from 'type-graphql';
 import rateLimit from 'express-rate-limit';
 import UserResolver from './models/user/user.resolver';
+import TaskResolver from './models/task/task.resolver';
 
 async function startServer() {
   // Get environments variables from .env file
@@ -18,7 +19,7 @@ async function startServer() {
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const schema = await buildSchema({
-    resolvers: [UserResolver],
+    resolvers: [UserResolver, TaskResolver],
   });
 
   // Initialize the Apollo Server with the generated GraphQL schema
@@ -50,19 +51,14 @@ async function startServer() {
       app,
       cors: {
         credentials: true,
-        origin: [
-          process.env.FRONTEND_URL || 'http://localhost:3000',
-          'https://studio.apollographql.com'],
+        origin: [process.env.FRONTEND_URL || 'http://localhost:3000', 'https://studio.apollographql.com'],
       },
     });
 
-    app.listen(
-      { port: PORT, host: HOST },
-      () => {
-        // TODO: replace with custom winston logger
-        console.log('Server ready', { host: HOST, port: PORT });
-      },
-    );
+    app.listen({ port: PORT, host: HOST }, () => {
+      // TODO: replace with custom winston logger
+      console.log('Server ready', { host: HOST, port: PORT });
+    });
   } catch (error) {
     throw new ApolloError('An error happened', undefined, { error });
   }
