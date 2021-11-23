@@ -13,7 +13,7 @@ async function startServer() {
   // Get environments variables from .env file
   dotenv.config();
   // Initialize server port
-  const PORT = process.env.PORT || 8080;
+  const PORT = process.env.PORT || 4000;
   const HOST = process.env.HOST || '0.0.0.0';
 
   // Using TypeGraphQL, build GraphQL schema automatically
