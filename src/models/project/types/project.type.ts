@@ -1,25 +1,25 @@
 import { ObjectType, Field, ID } from 'type-graphql';
 import 'reflect-metadata';
 import IUserProject from '../../userProject/interface/userProject.type';
-import ITask from '../../../models/task/types/task.type';
+import ITask from '../../task/types/task.type';
 
 @ObjectType()
 export default abstract class IProject {
   @Field(() => ID)
-  id: string;
+    id: string;
 
   @Field(() => [IUserProject])
-  members: IUserProject[];
+    members: IUserProject[];
 
   @Field(() => [ITask])
-  tasks: ITask[];
+    tasks: ITask[];
 
   @Field(() => String)
-  startDate: Date;
+    startDate: Date;
 
   @Field(() => String)
-  endDate: Date;
+    endDate: Date;
 
   @Field(() => Number)
-  estimeeSpentTime: number;
+    estimeeSpentTime: number;
 }

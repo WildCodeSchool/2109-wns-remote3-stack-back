@@ -1,4 +1,9 @@
-import { Prisma, Project, Task, UserProject } from '@prisma/client';
+import {
+  Prisma,
+  Project,
+  Task,
+  UserProject,
+} from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import IProjectPayload from '../types/payload.type';
 
@@ -28,8 +33,10 @@ export default function ProjectPrismaDto() {
     });
   }
 
-  // ** READ
-  async function deleteOneById(id: Prisma.ProjectWhereUniqueInput): Promise<ProjectWithDetails | null> {
+  // ** DELETE
+  async function deleteOneById(
+    id: Prisma.ProjectWhereUniqueInput,
+  ): Promise<ProjectWithDetails | null> {
     return prisma.project.delete({
       where: id,
       include: {
@@ -55,10 +62,31 @@ export default function ProjectPrismaDto() {
     });
   }
 
+  // ** UPDATE
+  async function updateProject(
+    payload: IProjectPayload,
+    id: Prisma.ProjectWhereUniqueInput,
+  ): Promise<ProjectWithDetails | null> {
+    return prisma.project.update({
+      where: id,
+      data: {
+        status: payload.status,
+        startDate: payload.startDate,
+        endDate: payload.endDate,
+        estimeeSpentTime: payload.estimeeSpentTime,
+      },
+      include: {
+        members: true,
+        tasks: true,
+      },
+    });
+  }
+
   return {
     all,
     oneById,
     deleteOneById,
     createProject,
+    updateProject,
   };
 }

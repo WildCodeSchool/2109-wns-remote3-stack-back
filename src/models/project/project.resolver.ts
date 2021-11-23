@@ -28,7 +28,12 @@ export default class ProjectResolver {
   async createProject(@Args()payload: IProjectPayload):Promise<IProject> {
     return ProjectService().createNewProject(payload);
   }
+
   // * UPDATE
+  @Mutation(() => IProject)
+  async updateProject(@Args()payload: IProjectPayload, @Arg('id') id: string):Promise<IProject> {
+    return ProjectService().updateProjectById(payload, id);
+  }
 
   // * DELETE
   @Mutation(() => IProject)
