@@ -1,10 +1,11 @@
 import { Prisma, Project, Task, UserProject } from '@prisma/client';
+import { TaskWithDetails } from 'src/models/task/dto/taskDto.prisma';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import IProjectPayload from '../types/payload.type';
 
 interface ProjectWithDetails extends Project {
   members: UserProject[];
-  tasks: Task[];
+  tasks: TaskWithDetails[];
 }
 
 export default function ProjectPrismaDto() {
@@ -13,7 +14,13 @@ export default function ProjectPrismaDto() {
     return prisma.project.findMany({
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }
@@ -23,7 +30,13 @@ export default function ProjectPrismaDto() {
       where: id,
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }
@@ -34,7 +47,13 @@ export default function ProjectPrismaDto() {
       where: id,
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }
@@ -50,7 +69,13 @@ export default function ProjectPrismaDto() {
       },
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }

@@ -1,7 +1,7 @@
 import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
 import TaskService from './task.service';
 import ITask from './types/task.type';
-import ITaskPayload from './types/updateTask.types';
+import ITaskPayload from './types/PayloadTask.types';
 
 @Resolver(() => ITask)
 export default class TaskResolver {
