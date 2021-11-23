@@ -1,5 +1,6 @@
 import ProjectPrismaDto from './dto/projectDto.prisma';
 import IProject from './types/project.type';
+import IProjectPayload from './types/payload.type';
 
 export default function ProjectService() {
   // ** READ
@@ -18,7 +19,14 @@ export default function ProjectService() {
     }
     return project;
   }
-  // * UPDATE
+  // * CREATE
+  async function createNewProject(payload: IProjectPayload): Promise<IProject> {
+    const project = await ProjectPrismaDto().createProject(payload);
+    if (!project) {
+      throw new Error('Project not found');
+    }
+    return project;
+  }
 
   // ** DELETE
   async function deleteById(id: string): Promise<IProject> {
@@ -33,5 +41,6 @@ export default function ProjectService() {
     allProjects,
     findById,
     deleteById,
+    createNewProject,
   };
 }

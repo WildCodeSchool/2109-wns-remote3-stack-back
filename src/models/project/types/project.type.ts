@@ -1,19 +1,19 @@
-import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
-// import IUserProject from '../../userProject/interface/UserProject';
+import 'reflect-metadata';
+import IUserProject from '../../userProject/interface/userProject.type';
 
 @ObjectType()
 export default abstract class IProject {
   @Field(() => ID)
     id: string;
 
-  // @Field()
-  //   members: IUserProject[];
+  @Field(() => [String])
+    members: IUserProject[];
 
-  @Field()
+  @Field(() => String)
     startDate: Date;
 
-  @Field()
+  @Field(() => String)
     endDate: Date;
 
   @Field(() => Number)

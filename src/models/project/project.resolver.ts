@@ -1,9 +1,10 @@
 import 'reflect-metadata';
 import {
-  Resolver, Query, Arg, Mutation,
+  Resolver, Query, Arg, Mutation, Args,
 } from 'type-graphql';
 import IProject from './types/project.type';
 import ProjectService from './project.service';
+import IProjectPayload from './types/payload.type';
 
 @Resolver(() => IProject)
 export default class ProjectResolver {
@@ -23,7 +24,10 @@ export default class ProjectResolver {
   }
 
   // * CREATE
-
+  @Mutation(() => IProject)
+  async createProject(@Args()payload: IProjectPayload):Promise<IProject> {
+    return ProjectService().createNewProject(payload);
+  }
   // * UPDATE
 
   // * DELETE
