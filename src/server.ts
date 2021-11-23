@@ -8,6 +8,9 @@ import dotenv from 'dotenv';
 import { buildSchema } from 'type-graphql';
 import rateLimit from 'express-rate-limit';
 import UserResolver from './models/user/user.resolver';
+import AuthResolver from './auth/auth.resolver';
+import appContext from './utils/context/context';
+import { log } from './utils/logger/logger';
 import TagResolver from './models/tag/tag.resolver';
 
 async function startServer() {
@@ -19,13 +22,18 @@ async function startServer() {
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const schema = await buildSchema({
-    resolvers: [UserResolver, TagResolver],
+    resolvers: [
+      UserResolver,
+      AuthResolver,
+      TagResolver,
+    ],
   });
 
   // Initialize the Apollo Server with the generated GraphQL schema
   const server = new ApolloServer({
     validationRules: [depthLimit(10)],
     schema,
+    context: appContext,
   });
 
   // Initialize Express and middlewares
@@ -61,7 +69,7 @@ async function startServer() {
       { port: PORT, host: HOST },
       () => {
         // TODO: replace with custom winston logger
-        console.log('Server ready', { host: HOST, port: PORT });
+        log.info('Server ready', { host: HOST, port: PORT });
       },
     );
   } catch (error) {

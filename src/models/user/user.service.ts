@@ -1,7 +1,14 @@
+import SignupArgs from '../../auth/args/signup.args';
 import UserPrismaDto from './dto/userDto.prisma';
 import IUser from './types/user.type';
 
 export default function UserService() {
+  // ** CREATE
+  async function createOneUser(args: SignupArgs): Promise<IUser> {
+    const user = await UserPrismaDto().createOne(args);
+    return user;
+  }
+
   // ** READ
   async function allUsers(): Promise<IUser[]> {
     const users = await UserPrismaDto().all();
@@ -37,6 +44,7 @@ export default function UserService() {
   }
 
   return {
+    createOneUser,
     allUsers,
     findById,
     findByEmail,
