@@ -11,6 +11,7 @@ import UserResolver from './models/user/user.resolver';
 import AuthResolver from './auth/auth.resolver';
 import appContext from './utils/context/context';
 import { log } from './utils/logger/logger';
+import TagResolver from './models/tag/tag.resolver';
 
 async function startServer() {
   // Get environments variables from .env file
@@ -24,6 +25,7 @@ async function startServer() {
     resolvers: [
       UserResolver,
       AuthResolver,
+      TagResolver,
     ],
   });
 
