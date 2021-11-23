@@ -1,46 +1,46 @@
-import { Prisma, Project, UserProject } from '@prisma/client';
+import { Prisma, Project, Task, UserProject } from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import IProjectPayload from '../types/payload.type';
 
-interface ProjectWithMembers extends Project {
-  members: UserProject[],
+interface ProjectWithDetails extends Project {
+  members: UserProject[];
+  tasks: Task[];
 }
 
 export default function ProjectPrismaDto() {
   // ** READ
-  async function all(): Promise<ProjectWithMembers[]> {
+  async function all(): Promise<ProjectWithDetails[]> {
     return prisma.project.findMany({
       include: {
         members: true,
+        tasks: true,
       },
     });
   }
 
-  async function oneById(
-    id: Prisma.ProjectWhereUniqueInput,
-  ): Promise<ProjectWithMembers | null> {
+  async function oneById(id: Prisma.ProjectWhereUniqueInput): Promise<ProjectWithDetails | null> {
     return prisma.project.findUnique({
       where: id,
       include: {
         members: true,
+        tasks: true,
       },
     });
   }
 
   // ** READ
-  async function deleteOneById(
-    id: Prisma.ProjectWhereUniqueInput,
-  ): Promise<ProjectWithMembers | null> {
+  async function deleteOneById(id: Prisma.ProjectWhereUniqueInput): Promise<ProjectWithDetails | null> {
     return prisma.project.delete({
       where: id,
       include: {
         members: true,
+        tasks: true,
       },
     });
   }
 
   // ** CREATE
-  async function createProject(payload: IProjectPayload):Promise<ProjectWithMembers | null> {
+  async function createProject(payload: IProjectPayload): Promise<ProjectWithDetails | null> {
     return prisma.project.create({
       data: {
         status: payload.status,
@@ -50,6 +50,7 @@ export default function ProjectPrismaDto() {
       },
       include: {
         members: true,
+        tasks: true,
       },
     });
   }
