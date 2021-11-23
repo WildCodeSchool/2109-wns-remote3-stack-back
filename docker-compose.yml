@@ -1,6 +1,6 @@
 version: '3.9'
 services:
-  database:
+  stack_database:
     image: postgres
     restart: always
     environment:
@@ -8,7 +8,7 @@ services:
       - POSTGRES_USER
       - POSTGRES_DB
     ports:
-      - 5432:5432
+      - 5433:5433
   backend:
     build: .
     command: yarn start:dev
@@ -21,9 +21,9 @@ services:
       - .:/app/
       - nodemodules:/app/node_modules
     links:
-      - database
+      - stack_database
     depends_on:
-      - database
+      - stack_database
 
 volumes:
   nodemodules: {}
