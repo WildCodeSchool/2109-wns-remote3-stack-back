@@ -1,5 +1,6 @@
 import { Comment, Status } from '@prisma/client';
-import { Field, ID, ObjectType } from 'type-graphql';
+import { FloatValueNode } from 'graphql';
+import { Field, Float, ID, ObjectType } from 'type-graphql';
 
 @ObjectType()
 export default abstract class ITask {
@@ -10,7 +11,7 @@ export default abstract class ITask {
   subject: string;
 
   @Field(() => String)
-  projectId: string;
+  projectId?: string;
 
   @Field(() => String)
   startDate: Date;
@@ -18,7 +19,7 @@ export default abstract class ITask {
   @Field(() => String)
   endDate: Date;
 
-  @Field(() => String)
+  @Field(() => Float)
   estimeeSpentTime: number;
 
   @Field(() => String)

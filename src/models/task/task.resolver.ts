@@ -24,9 +24,9 @@ export default class TaskResolver {
   }
 
   //* CREATE
-
   @Mutation(() => ITask)
-  async createTaskById(@Args() payload: ITaskPayload): Promise<ITask> {
+  async createTask(@Args() payload: ITaskPayload): Promise<ITask> {
+    payload.startDate = new Date(payload.startDate);
     return TaskService().createTask(payload);
   }
 

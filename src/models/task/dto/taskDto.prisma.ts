@@ -1,4 +1,4 @@
-import { Prisma, Task } from '@prisma/client';
+import { Prisma, Status, Task } from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import ITaskPayload from '../types/updateTask.types';
 
@@ -28,7 +28,7 @@ export default function TaskPrismaDto() {
         projectId: payload.projectId,
         startDate: payload.startDate,
         endDate: payload.endDate,
-        advancement: payload.advencement,
+        advancement: payload.advancement,
         estimeeSpentTime: payload.estimeeSpentTime,
       },
     });
@@ -38,10 +38,10 @@ export default function TaskPrismaDto() {
     return prisma.task.create({
       data: {
         subject: payload.subject,
-        projectId: payload.projectId,
+        projectId: payload.id,
         startDate: payload.startDate,
         endDate: payload.endDate,
-        advancement: payload.advencement,
+        advancement: payload.advancement,
         estimeeSpentTime: payload.estimeeSpentTime,
       },
     });
