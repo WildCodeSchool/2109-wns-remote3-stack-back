@@ -7,7 +7,7 @@ export default abstract class ITag {
     id: string;
 
   @Field(() => String)
-    name: string;
+    label: string;
 
   @Field(() => String)
     color: string;

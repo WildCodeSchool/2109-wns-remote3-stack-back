@@ -6,7 +6,7 @@ import ITag from './types/tag.type';
 import TagService from './tag.service';
 
 @Resolver(() => ITag)
-export default class UserResolver {
+export default class TagResolver {
   // * Get all tags
   @Query(() => [ITag])
   async getAllTags(): Promise<ITag[]> {
