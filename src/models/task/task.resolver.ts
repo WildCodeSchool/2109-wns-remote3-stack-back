@@ -1,5 +1,9 @@
 import {
-  Arg, Args, Mutation, Query, Resolver,
+  Arg,
+  Args,
+  Mutation,
+  Query,
+  Resolver,
 } from 'type-graphql';
 import TaskService from './task.service';
 import ITask from './types/task.type';

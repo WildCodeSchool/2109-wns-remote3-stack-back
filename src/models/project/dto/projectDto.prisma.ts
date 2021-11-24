@@ -1,11 +1,19 @@
-import { Prisma, Project, UserProject } from '@prisma/client';
-import { TaskWithDetails } from 'src/models/task/dto/taskDto.prisma';
+import {
+  Prisma,
+  Project,
+  Task,
+  UserProject,
+  ProjectRole,
+} from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import IProjectPayload from '../types/payload.type';
 
+interface UserProjectWithRole extends UserProject {
+    projectRole: ProjectRole;
+}
 interface ProjectWithDetails extends Project {
-  members: UserProject[];
-  tasks: TaskWithDetails[];
+  members: UserProjectWithRole[];
+  tasks: Task[];
 }
 
 export default function ProjectPrismaDto() {
@@ -41,9 +49,10 @@ export default function ProjectPrismaDto() {
     });
   }
 
-  // ** READ
-  async function deleteOneById(id: Prisma.ProjectWhereUniqueInput):
-  Promise<ProjectWithDetails | null> {
+  // ** DELETE
+  async function deleteOneById(
+    id: Prisma.ProjectWhereUniqueInput,
+  ): Promise<ProjectWithDetails | null> {
     return prisma.project.delete({
       where: id,
       include: {
@@ -63,10 +72,24 @@ export default function ProjectPrismaDto() {
   async function createProject(payload: IProjectPayload): Promise<ProjectWithDetails | null> {
     return prisma.project.create({
       data: {
-        status: payload.status,
-        startDate: payload.startDate,
-        endDate: payload.endDate,
-        estimeeSpentTime: payload.estimeeSpentTime,
+        ...payload,
+      },
+      include: {
+        members: true,
+        tasks: true,
+      },
+    });
+  }
+
+  // ** UPDATE
+  async function updateProject(
+    payload: IProjectPayload,
+    id: Prisma.ProjectWhereUniqueInput,
+  ): Promise<ProjectWithDetails | null> {
+    return prisma.project.update({
+      where: id,
+      data: {
+        ...payload,
       },
       include: {
         members: true,
@@ -86,5 +109,6 @@ export default function ProjectPrismaDto() {
     oneById,
     deleteOneById,
     createProject,
+    updateProject,
   };
 }

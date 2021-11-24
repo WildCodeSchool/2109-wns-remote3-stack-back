@@ -8,12 +8,12 @@ import dotenv from 'dotenv';
 import { buildSchema } from 'type-graphql';
 import rateLimit from 'express-rate-limit';
 import UserResolver from './models/user/user.resolver';
-import TaskResolver from './models/task/task.resolver';
-import ProjectResolver from './models/project/project.resolver';
 import AuthResolver from './auth/auth.resolver';
 import appContext from './utils/context/context';
 import { log } from './utils/logger/logger';
 import TagResolver from './models/tag/tag.resolver';
+import TaskResolver from './models/task/task.resolver';
+import ProjectResolver from './models/project/project.resolver';
 
 async function startServer() {
   // Get environments variables from .env file
@@ -24,7 +24,13 @@ async function startServer() {
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const schema = await buildSchema({
-    resolvers: [UserResolver, TaskResolver, ProjectResolver, TagResolver, AuthResolver],
+    resolvers: [
+      UserResolver,
+      AuthResolver,
+      TagResolver,
+      TaskResolver,
+      ProjectResolver,
+    ],
   });
 
   // Initialize the Apollo Server with the generated GraphQL schema
