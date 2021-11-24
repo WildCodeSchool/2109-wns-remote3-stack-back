@@ -8,8 +8,6 @@ import IProjectPayload from './types/payload.type';
 
 @Resolver(() => IProject)
 export default class ProjectResolver {
-  // CREATE method is handled in the Auth Models
-
   // * READ
   @Query(() => [IProject])
   async getAllProjects(): Promise<IProject[]> {

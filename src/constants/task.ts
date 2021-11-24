@@ -1,4 +1,4 @@
-import ITask from 'src/models/task/types/task.type';
+import ITask from '../models/task/types/task.type';
 
 const task: ITask[] = [
   {
@@ -7,6 +7,8 @@ const task: ITask[] = [
     projectId: '1',
     startDate: new Date(),
     endDate: new Date(),
+    estimeeSpentTime: 5,
+    advancement: 'DONE',
   },
 ];
 

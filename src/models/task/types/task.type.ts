@@ -1,27 +1,30 @@
-import { Comment, Status } from '@prisma/client';
-import { FloatValueNode } from 'graphql';
-import { Field, Float, ID, ObjectType } from 'type-graphql';
+import {
+  Field,
+  Float,
+  ID,
+  ObjectType,
+} from 'type-graphql';
 
 @ObjectType()
 export default abstract class ITask {
   @Field(() => ID)
-  id: string;
+    id: string;
 
   @Field(() => String)
-  subject: string;
+    subject: string;
 
   @Field(() => String)
-  projectId?: string;
+    projectId?: string;
 
   @Field(() => String)
-  startDate: Date;
+    startDate: Date;
 
   @Field(() => String)
-  endDate: Date;
+    endDate: Date;
 
   @Field(() => Float)
-  estimeeSpentTime: number;
+    estimeeSpentTime: number;
 
   @Field(() => String)
-  advancement: Status;
+    advancement: string;
 }

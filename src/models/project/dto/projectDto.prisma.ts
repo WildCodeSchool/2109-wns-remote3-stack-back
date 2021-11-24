@@ -3,12 +3,16 @@ import {
   Project,
   Task,
   UserProject,
+  ProjectRole,
 } from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import IProjectPayload from '../types/payload.type';
 
+interface UserProjectWithRole extends UserProject {
+    projectRole: ProjectRole;
+}
 interface ProjectWithDetails extends Project {
-  members: UserProject[];
+  members: UserProjectWithRole[];
   tasks: Task[];
 }
 
@@ -50,10 +54,7 @@ export default function ProjectPrismaDto() {
   async function createProject(payload: IProjectPayload): Promise<ProjectWithDetails | null> {
     return prisma.project.create({
       data: {
-        status: payload.status,
-        startDate: payload.startDate,
-        endDate: payload.endDate,
-        estimeeSpentTime: payload.estimeeSpentTime,
+        ...payload,
       },
       include: {
         members: true,
@@ -70,10 +71,7 @@ export default function ProjectPrismaDto() {
     return prisma.project.update({
       where: id,
       data: {
-        status: payload.status,
-        startDate: payload.startDate,
-        endDate: payload.endDate,
-        estimeeSpentTime: payload.estimeeSpentTime,
+        ...payload,
       },
       include: {
         members: true,
