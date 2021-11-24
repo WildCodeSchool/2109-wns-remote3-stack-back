@@ -1,6 +1,5 @@
 import ITask from './types/task.type';
 import TaskPrismaDto from './dto/taskDto.prisma';
-import IUpdateTask from './types/updateTask.types';
 import ITaskPayload from './types/updateTask.types';
 
 export default function TaskService() {

@@ -1,26 +1,31 @@
 import { Status } from '@prisma/client';
-import { ArgsType, Field, Float, ID } from 'type-graphql';
+import {
+  ArgsType,
+  Field,
+  Float,
+  ID,
+} from 'type-graphql';
 
 @ArgsType()
 export default abstract class ITaskPayload {
   @Field(() => ID)
-  id: string;
+    id: string;
 
   @Field(() => String)
-  subject: string;
+    subject: string;
 
   @Field(() => String)
-  projectId: string;
+    projectId: string;
 
   @Field(() => String)
-  startDate: Date;
+    startDate: Date;
 
   @Field(() => String)
-  endDate: Date;
+    endDate: Date;
 
   @Field(() => String)
-  advancement: Status;
+    advancement: Status;
 
   @Field(() => Float)
-  estimeeSpentTime: number;
+    estimeeSpentTime: number;
 }
