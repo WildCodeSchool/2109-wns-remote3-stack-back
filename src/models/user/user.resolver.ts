@@ -1,7 +1,8 @@
 import 'reflect-metadata';
 import {
-  Resolver, Query, Arg, Mutation,
+  Resolver, Query, Arg, Mutation, UseMiddleware,
 } from 'type-graphql';
+import authGuard from '../../auth/guards/auth.guard';
 import IUser from './types/user.type';
 import UserService from './user.service';
 
@@ -11,6 +12,7 @@ export default class UserResolver {
 
   // * READ
   @Query(() => [IUser])
+  @UseMiddleware(authGuard)
   async getAllUsers(): Promise<IUser[]> {
     return UserService().allUsers();
   }
