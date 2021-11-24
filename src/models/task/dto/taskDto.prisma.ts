@@ -1,4 +1,6 @@
-import { Comment, Prisma, Status, Tag, Task, User } from '@prisma/client';
+import {
+  Comment, Prisma, Tag, Task, User,
+} from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import ITaskPayload from '../types/PayloadTask.types';
 
@@ -42,13 +44,13 @@ export default function TaskPrismaDto() {
     });
   }
 
-  async function updateOneById(payload: ITaskPayload, id: Prisma.TaskWhereUniqueInput): Promise<TaskWithDetails | null> {
+  async function updateOneById(payload: ITaskPayload, id: Prisma.TaskWhereUniqueInput):
+   Promise<TaskWithDetails | null> {
     return prisma.task.update({
       where: id,
       data: {
         subject: payload.subject,
         projectId: payload.projectId,
-        startDate: payload.startDate,
         endDate: payload.endDate,
         advancement: payload.advancement,
         estimeeSpentTime: payload.estimeeSpentTime,
@@ -66,7 +68,6 @@ export default function TaskPrismaDto() {
       data: {
         subject: payload.subject,
         projectId: payload.projectId,
-        startDate: payload.startDate,
         endDate: payload.endDate,
         advancement: payload.advancement,
         estimeeSpentTime: payload.estimeeSpentTime,

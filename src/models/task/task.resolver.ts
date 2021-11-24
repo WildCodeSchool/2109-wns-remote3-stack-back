@@ -1,4 +1,6 @@
-import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
+import {
+  Arg, Args, Mutation, Query, Resolver,
+} from 'type-graphql';
 import TaskService from './task.service';
 import ITask from './types/task.type';
 import ITaskPayload from './types/PayloadTask.types';
@@ -26,7 +28,6 @@ export default class TaskResolver {
   //* CREATE
   @Mutation(() => ITask)
   async createTask(@Args() payload: ITaskPayload): Promise<ITask> {
-    payload.startDate = new Date(payload.startDate);
     return TaskService().createTask(payload);
   }
 

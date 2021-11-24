@@ -1,18 +1,18 @@
-import { ArgsType, Field, ID, Float } from 'type-graphql';
+import { ArgsType, Field, Float } from 'type-graphql';
 import 'reflect-metadata';
 import { Status } from '@prisma/client';
 
 @ArgsType()
 export default abstract class IProjectPayload {
   @Field(() => String)
-  status: Status;
+    status: Status;
 
   @Field(() => String)
-  startDate: Date;
+    startDate: Date;
 
   @Field(() => String)
-  endDate: Date;
+    endDate: Date;
 
   @Field(() => Float)
-  estimeeSpentTime: number;
+    estimeeSpentTime: number;
 }

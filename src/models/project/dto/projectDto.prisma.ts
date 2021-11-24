@@ -1,4 +1,4 @@
-import { Prisma, Project, Task, UserProject } from '@prisma/client';
+import { Prisma, Project, UserProject } from '@prisma/client';
 import { TaskWithDetails } from 'src/models/task/dto/taskDto.prisma';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import IProjectPayload from '../types/payload.type';
@@ -42,7 +42,8 @@ export default function ProjectPrismaDto() {
   }
 
   // ** READ
-  async function deleteOneById(id: Prisma.ProjectWhereUniqueInput): Promise<ProjectWithDetails | null> {
+  async function deleteOneById(id: Prisma.ProjectWhereUniqueInput):
+  Promise<ProjectWithDetails | null> {
     return prisma.project.delete({
       where: id,
       include: {

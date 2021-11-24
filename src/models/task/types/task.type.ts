@@ -1,38 +1,40 @@
 import { Status } from '@prisma/client';
-import IComment from '../../../models/comment/types/comment.types';
-import ITag from '../../../models/tag/types/tag.type';
-import IUser from '../../../models/user/types/user.type';
-import { Field, Float, ID, ObjectType } from 'type-graphql';
+import {
+  Field, Float, ID, ObjectType,
+} from 'type-graphql';
+import IComment from '../../comment/types/comment.types';
+import ITag from '../../tag/types/tag.type';
+import IUser from '../../user/types/user.type';
 
 @ObjectType()
 export default abstract class ITask {
   @Field(() => ID)
-  id: string;
+    id: string;
 
   @Field(() => String)
-  subject: string;
+    subject: string;
 
   @Field(() => String)
-  projectId?: string;
+    projectId?: string;
 
   @Field(() => [IUser])
-  users: IUser[];
+    users: IUser[];
 
   @Field(() => String)
-  startDate: Date;
+    startDate: Date;
 
   @Field(() => String)
-  endDate: Date;
+    endDate: Date;
 
   @Field(() => Float)
-  estimeeSpentTime: number;
+    estimeeSpentTime: number;
 
   @Field(() => String)
-  advancement: Status;
+    advancement: Status;
 
   @Field(() => [IComment])
-  comments: IComment[];
+    comments: IComment[];
 
   @Field(() => [ITag])
-  tags: ITag[];
+    tags: ITag[];
 }
