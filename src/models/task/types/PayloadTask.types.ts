@@ -3,9 +3,6 @@ import { ArgsType, Field, Float, ID } from 'type-graphql';
 
 @ArgsType()
 export default abstract class ITaskPayload {
-  @Field(() => ID)
-  id: string;
-
   @Field(() => String)
   subject: string;
 

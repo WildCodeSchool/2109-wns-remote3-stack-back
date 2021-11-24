@@ -19,8 +19,8 @@ export default class TaskResolver {
 
   //* UPDATE
   @Mutation(() => ITask)
-  async updateTaskById(@Args() payload: ITaskPayload): Promise<ITask> {
-    return TaskService().updateById(payload);
+  async updateTaskById(@Args() payload: ITaskPayload, @Arg('id') id: string): Promise<ITask> {
+    return TaskService().updateById(payload, id);
   }
 
   //* CREATE

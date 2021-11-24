@@ -42,9 +42,9 @@ export default function TaskPrismaDto() {
     });
   }
 
-  async function updateOneById(payload: ITaskPayload): Promise<TaskWithDetails | null> {
+  async function updateOneById(payload: ITaskPayload, id: Prisma.TaskWhereUniqueInput): Promise<TaskWithDetails | null> {
     return prisma.task.update({
-      where: { id: payload.id },
+      where: id,
       data: {
         subject: payload.subject,
         projectId: payload.projectId,
@@ -65,7 +65,7 @@ export default function TaskPrismaDto() {
     return prisma.task.create({
       data: {
         subject: payload.subject,
-        projectId: payload.id,
+        projectId: payload.projectId,
         startDate: payload.startDate,
         endDate: payload.endDate,
         advancement: payload.advancement,
