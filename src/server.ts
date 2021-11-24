@@ -12,13 +12,15 @@ import AuthResolver from './auth/auth.resolver';
 import appContext from './utils/context/context';
 import { log } from './utils/logger/logger';
 import TagResolver from './models/tag/tag.resolver';
+import TaskResolver from './models/task/task.resolver';
+import ProjectResolver from './models/project/project.resolver';
 
 async function startServer() {
   // Get environments variables from .env file
   dotenv.config();
   // Initialize server port
   const PORT = process.env.PORT || 4000;
-  const HOST = process.env.HOST || '0.0.0.0';
+  const HOST = process.env.HOST || 'localhost';
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const schema = await buildSchema({
@@ -26,6 +28,8 @@ async function startServer() {
       UserResolver,
       AuthResolver,
       TagResolver,
+      TaskResolver,
+      ProjectResolver,
     ],
   });
 
@@ -59,9 +63,7 @@ async function startServer() {
       app,
       cors: {
         credentials: true,
-        origin: [
-          process.env.FRONTEND_URL || 'http://localhost:3000',
-          'https://studio.apollographql.com'],
+        origin: [process.env.FRONTEND_URL || 'http://localhost:3000', 'https://studio.apollographql.com'],
       },
     });
 

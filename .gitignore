@@ -13,6 +13,7 @@ node_modules
 .env.test.local
 .env.production
 .env.production.local
+docker-compose.yml
 
 # misc
 .DS_Store
