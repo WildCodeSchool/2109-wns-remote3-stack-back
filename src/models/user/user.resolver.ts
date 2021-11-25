@@ -1,8 +1,8 @@
 import 'reflect-metadata';
-import authGuard from '../../auth/guards/auth.guard';
 import {
   Resolver, Query, Arg, Mutation, UseMiddleware,
 } from 'type-graphql';
+import authGuard from '../../auth/guards/auth.guard';
 import IUser from './types/user.type';
 import UserService from './user.service';
 
