@@ -10,7 +10,8 @@
     "build": "rm -rf ./dist/ && tsc -p tsconfig.json",
     "test": "jest",
     "prisma:generate": "prisma generate",
-    "prisma:sandbox": "ts-node-dev -r dotenv/config --transpile-only sandbox.ts"
+    "prisma:sandbox": "ts-node-dev -r dotenv/config --transpile-only sandbox.ts",
+    "prisma:deploy": "prisma migrate deploy"
   },
   "license": "MIT",
   "dependencies": {
