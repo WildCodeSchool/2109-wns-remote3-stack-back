@@ -28,7 +28,7 @@ export default class CommentResolver {
     return CommentService().createNewComment(payload);
   }
 
-  //* Update one comment (TODO)
+  //* Update one comment
   @Mutation(() => IComment)
   async updateComment(@Args()payload: ICommentPayload, @Arg('id') id: string):Promise<IComment> {
     return CommentService().updateCommentById(payload, id);
