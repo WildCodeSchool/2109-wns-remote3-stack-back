@@ -7,7 +7,7 @@ import {
 } from 'type-graphql';
 import TaskService from './task.service';
 import ITask from './types/task.type';
-import ITaskPayload from './types/updateTask.types';
+import ITaskPayload from './types/PayloadTask.types';
 
 @Resolver(() => ITask)
 export default class TaskResolver {
@@ -25,8 +25,8 @@ export default class TaskResolver {
 
   //* UPDATE
   @Mutation(() => ITask)
-  async updateTaskById(@Args() payload: ITaskPayload): Promise<ITask> {
-    return TaskService().updateById(payload);
+  async updateTaskById(@Args() payload: ITaskPayload, @Arg('id') id: string): Promise<ITask> {
+    return TaskService().updateById(payload, id);
   }
 
   //* CREATE

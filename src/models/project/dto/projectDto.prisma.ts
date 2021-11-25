@@ -22,7 +22,13 @@ export default function ProjectPrismaDto() {
     return prisma.project.findMany({
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }
@@ -32,7 +38,13 @@ export default function ProjectPrismaDto() {
       where: id,
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }
@@ -45,7 +57,13 @@ export default function ProjectPrismaDto() {
       where: id,
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }
@@ -75,7 +93,13 @@ export default function ProjectPrismaDto() {
       },
       include: {
         members: true,
-        tasks: true,
+        tasks: {
+          include: {
+            users: true,
+            comments: true,
+            tags: true,
+          },
+        },
       },
     });
   }
