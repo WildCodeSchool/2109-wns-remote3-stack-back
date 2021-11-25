@@ -1,8 +1,7 @@
 {
   "settings": {
     "import/resolver": {
-      "typescript": {
-      }
+      "typescript": {}
     }
   },
   "env": {
@@ -25,6 +24,7 @@
       {
         "ts": "never"
       }
-    ]
+    ],
+    "object-curly-newline": "off"
   }
 }
