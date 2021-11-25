@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import authGuard from 'src/auth/guards/auth.guard';
+import authGuard from '../../auth/guards/auth.guard';
 import {
   Resolver, Query, Arg, Mutation, UseMiddleware,
 } from 'type-graphql';
