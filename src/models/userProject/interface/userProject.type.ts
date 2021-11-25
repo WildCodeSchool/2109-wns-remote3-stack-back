@@ -1,6 +1,5 @@
 import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
-import { ProjectRole } from '.prisma/client';
 
 @ObjectType()
 export default abstract class IUserProject {
@@ -11,5 +10,5 @@ export default abstract class IUserProject {
     projectId: string;
 
   @Field(() => String)
-    projectRole: ProjectRole;
+    projectRole: string;
 }

@@ -1,4 +1,8 @@
-import { ArgsType, Field, Float } from 'type-graphql';
+import {
+  ArgsType,
+  Field,
+  Float,
+} from 'type-graphql';
 import 'reflect-metadata';
 import { Status } from '@prisma/client';
 

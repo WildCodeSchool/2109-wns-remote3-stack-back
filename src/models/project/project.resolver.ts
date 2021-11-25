@@ -8,8 +8,6 @@ import IProjectPayload from './types/payload.type';
 
 @Resolver(() => IProject)
 export default class ProjectResolver {
-  // CREATE method is handled in the Auth Models
-
   // * READ
   @Query(() => [IProject])
   async getAllProjects(): Promise<IProject[]> {
@@ -28,7 +26,12 @@ export default class ProjectResolver {
   async createProject(@Args()payload: IProjectPayload):Promise<IProject> {
     return ProjectService().createNewProject(payload);
   }
+
   // * UPDATE
+  @Mutation(() => IProject)
+  async updateProject(@Args()payload: IProjectPayload, @Arg('id') id: string):Promise<IProject> {
+    return ProjectService().updateProjectById(payload, id);
+  }
 
   // * DELETE
   @Mutation(() => IProject)

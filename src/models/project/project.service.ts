@@ -28,6 +28,15 @@ export default function ProjectService() {
     return project;
   }
 
+  // * UPDATE
+  async function updateProjectById(payload: IProjectPayload, id: string): Promise<IProject> {
+    const project = await ProjectPrismaDto().updateProject(payload, { id });
+    if (!project) {
+      throw new Error('Project not found');
+    }
+    return project;
+  }
+
   // ** DELETE
   async function deleteById(id: string): Promise<IProject> {
     const project = await ProjectPrismaDto().deleteOneById({ id });
@@ -42,5 +51,6 @@ export default function ProjectService() {
     findById,
     deleteById,
     createNewProject,
+    updateProjectById,
   };
 }
