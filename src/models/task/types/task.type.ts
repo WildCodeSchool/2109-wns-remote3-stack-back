@@ -1,9 +1,10 @@
+import { Status } from '@prisma/client';
 import {
-  Field,
-  Float,
-  ID,
-  ObjectType,
+  Field, Float, ID, ObjectType,
 } from 'type-graphql';
+import IComment from '../../comment/types/comment.types';
+import ITag from '../../tag/types/tag.type';
+import IUser from '../../user/types/user.type';
 
 @ObjectType()
 export default abstract class ITask {
@@ -16,6 +17,9 @@ export default abstract class ITask {
   @Field(() => String)
     projectId?: string;
 
+  @Field(() => [IUser])
+    users: IUser[];
+
   @Field(() => String)
     startDate: Date;
 
@@ -26,5 +30,11 @@ export default abstract class ITask {
     estimeeSpentTime: number;
 
   @Field(() => String)
-    advancement: string;
+    advancement: Status;
+
+  @Field(() => [IComment])
+    comments: IComment[];
+
+  @Field(() => [ITag])
+    tags: ITag[];
 }

@@ -1,6 +1,6 @@
 import ITask from './types/task.type';
 import TaskPrismaDto from './dto/taskDto.prisma';
-import ITaskPayload from './types/updateTask.types';
+import ITaskPayload from './types/PayloadTask.types';
 
 export default function TaskService() {
   async function allTasks(): Promise<ITask[]> {
@@ -35,8 +35,8 @@ export default function TaskService() {
     return task;
   }
 
-  async function updateById(payload: ITaskPayload): Promise<ITask> {
-    const task = await TaskPrismaDto().updateOneById(payload);
+  async function updateById(payload: ITaskPayload, id: string): Promise<ITask> {
+    const task = await TaskPrismaDto().updateOneById(payload, { id });
     if (!task) {
       throw new Error('Task not found');
     }

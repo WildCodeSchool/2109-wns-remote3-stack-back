@@ -69,13 +69,9 @@ async function startServer() {
       },
     });
 
-    app.listen(
-      { port: PORT, host: HOST },
-      () => {
-        // TODO: replace with custom winston logger
-        log.info('Server ready', { host: HOST, port: PORT });
-      },
-    );
+    app.listen({ port: PORT, host: HOST }, () => {
+      log.info('Server ready', { host: HOST, port: PORT });
+    });
   } catch (error) {
     throw new ApolloError('An error happened', undefined, { error });
   }
