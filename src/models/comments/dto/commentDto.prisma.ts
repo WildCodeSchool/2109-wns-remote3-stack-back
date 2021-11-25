@@ -4,7 +4,6 @@ import {
 } from '@prisma/client';
 import { prisma } from '../../../utils/prisma/prisma-client';
 import ICommentPayload from '../types/createComment.type';
-// import ICommentPayload from '../types/createComment.type';
 
 export default function CommentPrismaDto() {
   //* Get all comments
