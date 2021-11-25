@@ -5,7 +5,7 @@ import compression from 'compression';
 import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
 import { log } from './utils/logger/logger';
-import create from './apolloServer';
+import createApolloServer from './apolloServer';
 
 // Initialize Express and middlewares
 export const app = express();
@@ -35,7 +35,7 @@ async function startServer() {
   // Setup the server endpoint to ${serverAdress}/graphql with the rate limiter
   app.use('/graphql', rateLimiter);
   app.use(express.json()); // Body parser
-  const server = await create();
+  const server = await createApolloServer();
   // * Startup server
   try {
     await server.start();

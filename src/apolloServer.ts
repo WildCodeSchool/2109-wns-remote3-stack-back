@@ -8,7 +8,7 @@ import TagResolver from './models/tag/tag.resolver';
 import TaskResolver from './models/task/task.resolver';
 import UserResolver from './models/user/user.resolver';
 
-async function create() {
+async function createApolloServer() {
   // Using TypeGraphQL, build GraphQL schema automatically
   const schema = await buildSchema({
     resolvers: [
@@ -21,12 +21,11 @@ async function create() {
   });
 
   // Initialize the Apollo Server with the generated GraphQL schema
-  const server = new ApolloServer({
+  return new ApolloServer({
     validationRules: [depthLimit(10)],
     schema,
     context: appContext,
   });
-  return server;
 }
 
-export default create;
+export default createApolloServer;

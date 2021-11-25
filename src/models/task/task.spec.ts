@@ -1,20 +1,16 @@
-// import { ApolloServer, gql } from 'apollo-server-express';
 import { create } from 'domain';
 import { request, gql } from 'graphql-request';
 import { app } from '../../server';
 import appContext from '../../utils/context/context';
 import TaskResolver from './task.resolver';
+import createApolloServer from "../../apolloServer";
+import {ApolloServer} from "apollo-server-express";
 
-// let server: any;
+let server: ApolloServer;
 
-// beforeAll(async () => {
-//   server = await create();
-// });
-
-// const server = new ApolloServer({
-//   resolvers: { TaskResolver },
-//   context: appContext,
-// });
+beforeAll(async () => {
+  server = await createApolloServer();
+});
 
 describe('Task Resolver', () => {
   it('should get all task', async () => {
@@ -33,10 +29,13 @@ describe('Task Resolver', () => {
         }
       }
     `;
-    // const response = await server.executeOperation({ query: data.query });
+    const response = await server.executeOperation({ query: query });
 
-    const response = await request('http://localhost:4000/graphql', query);
+    console.log(response);
 
-    expect(Array.isArray(response.getAllTasks)).toBe(true);
+    // const response = await request('http://localhost:4000/graphql', query);
+
+
+    // expect(Array.isArray(response.getAllTasks)).toBe(true);
   });
 });
