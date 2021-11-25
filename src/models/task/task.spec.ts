@@ -1,9 +1,11 @@
-import { PrismaClient } from '@prisma/client';
 import { ApolloServer, gql } from 'apollo-server-express';
-import { exec } from 'child_process';
+import { prisma } from '../../utils/prisma/prisma-client';
 import createApolloServer from '../../apolloServer';
 
 let server: ApolloServer;
+
+let id: string;
+let isDeleted: boolean;
 
 beforeAll(async () => {
   server = await createApolloServer();
@@ -45,7 +47,7 @@ describe('Task Resolver', () => {
       variables,
     });
 
-    console.log(response.data?.createTask);
+    id = response.data?.createTask.id;
   });
 
   it('should get all task', async () => {
@@ -66,10 +68,123 @@ describe('Task Resolver', () => {
     `;
     const response = await server.executeOperation({ query });
 
-    console.log(response.data?.getAllTasks);
+    expect(Array.isArray(response.data?.getAllTasks)).toBe(true);
+  });
 
-    // const response = await request('http://localhost:4000/graphql', query);
+  it('should get one', async () => {
+    const oneTaskQuery = gql`
+    query Query($getTaskByIdId: String!) {
+      getTaskByID(id: $getTaskByIdId) {
+        id
+        subject
+        projectId
+        startDate
+        endDate
+        estimeeSpentTime
+        advancement
+      }
+    }
+    `;
 
-    // expect(Array.isArray(response.getAllTasks)).toBe(true);
+    const variables = {
+      getTaskByIdId: id,
+    };
+    const response = await server.executeOperation({
+      query: oneTaskQuery,
+      variables,
+    });
+
+    const taskResponse = {
+      updateTaskByIdId: id,
+      subject: 'TaskTest',
+      projectId: 'b45645d3-1410-4d11-b36c-e115db41b4ce',
+      endDate: '1612731879573',
+      advancement: 'DONE',
+      estimeeSpentTime: 5.0,
+    };
+
+    expect(response.data?.getTaskByID).toHaveProperty('id', id);
+    expect(response.data?.getTaskByID).toHaveProperty('subject', taskResponse.subject);
+    expect(response.data?.getTaskByID).toHaveProperty('projectId', taskResponse.projectId);
+    expect(response.data?.getTaskByID).toHaveProperty('endDate', taskResponse.endDate);
+    expect(response.data?.getTaskByID).toHaveProperty('advancement', taskResponse.advancement);
+    expect(response.data?.getTaskByID).toHaveProperty('estimeeSpentTime', taskResponse.estimeeSpentTime);
+  });
+
+  it('should update the created task', async () => {
+    const updateTaskMutation = gql`
+    mutation UpdateProject($updateTaskByIdId: String!, $subject: String!, $projectId: String!, $endDate: String!, $advancement: String!, $estimeeSpentTime: Float!) {
+      updateTaskById(id: $updateTaskByIdId, subject: $subject, projectId: $projectId, endDate: $endDate, advancement: $advancement, estimeeSpentTime: $estimeeSpentTime) {
+        id
+        subject
+        projectId
+        users {
+          id
+          email
+        }
+        startDate
+        endDate
+        estimeeSpentTime
+        advancement
+        comments {
+          id
+          text
+        }
+        tags {
+          id
+          label
+        }
+      }
+    }
+      `;
+    const variables = {
+      updateTaskByIdId: id,
+      subject: 'TaskTestUpdated',
+      projectId: 'b45645d3-1410-4d11-b36c-e115db41b4ce',
+      endDate: '2021-02-07T21:04:39.573Z',
+      advancement: 'TO_DO',
+      estimeeSpentTime: 6.3,
+    };
+
+    const response = await server.executeOperation({
+      query: updateTaskMutation,
+      variables,
+    });
+
+    expect(response.data?.updateTaskById).toHaveProperty('subject', variables.subject);
+    expect(response.data?.updateTaskById).toHaveProperty('advancement', variables.advancement);
+    expect(response.data?.updateTaskById).toHaveProperty('estimeeSpentTime', variables.estimeeSpentTime);
+  });
+
+  it('should delete the created task', async () => {
+    const deleteTaskById = gql`
+    mutation Mutation($deleteTaskByIdId: String!) {
+      deleteTaskById(id: $deleteTaskByIdId) {
+        id
+      }
+    }
+    `;
+
+    const variables = {
+      deleteTaskByIdId: id,
+    };
+
+    const response = await server.executeOperation({
+      query: deleteTaskById,
+      variables,
+    });
+
+    if (response.data?.deleteTaskById.id) {
+      isDeleted = false;
+    }
+  });
+  afterAll(async () => {
+    if (isDeleted) {
+      await prisma.task.delete({
+        where: { id },
+      });
+
+      await prisma.$disconnect();
+    }
   });
 });
