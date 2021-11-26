@@ -21,8 +21,8 @@ beforeAll(async () => {
   });
   user = await prisma.user.create({
     data: {
-      email: 'usertest@gmail.com',
-      password: 'testpassword',
+      email: process.env.EMAIL_USER_TEST || '',
+      password: process.env.PASSORD_USER_TEST || '',
       firstName: 'usertest',
       lastName: 'usertest',
     },
