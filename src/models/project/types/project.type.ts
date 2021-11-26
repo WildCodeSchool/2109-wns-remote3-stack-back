@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from 'type-graphql';
 import 'reflect-metadata';
+import { Task } from '@prisma/client';
 import IUserProject from '../../userProject/interface/userProject.type';
 import ITask from '../../task/types/task.type';
 
@@ -12,7 +13,7 @@ export default abstract class IProject {
     members: IUserProject[];
 
   @Field(() => [ITask])
-    tasks: ITask[];
+    tasks: Task[];
 
   @Field(() => String)
     startDate: Date;
