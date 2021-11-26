@@ -15,6 +15,7 @@ import TagResolver from './models/tag/tag.resolver';
 import TaskResolver from './models/task/task.resolver';
 import ProjectResolver from './models/project/project.resolver';
 import CommentResolver from './models/comments/comment.resolver';
+import NotificationResolver from './models/notification/notification.resolver';
 
 async function startServer() {
   // Get environments variables from .env file
@@ -32,6 +33,7 @@ async function startServer() {
       TaskResolver,
       ProjectResolver,
       CommentResolver,
+      NotificationResolver,
     ],
   });
 
