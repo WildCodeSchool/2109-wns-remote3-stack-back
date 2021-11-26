@@ -60,91 +60,14 @@ describe('Project Resolver', () => {
   it('should get all projects', async () => {
     const query = gql`
     query Query {
-        getAllProjects {
-          id
-          status
-          members {
-            userId
-            projectId
-            projectRole
-          }
-          tasks {
-            id
-            subject
-            projectId
-            users {
-              lastName
-              id
-              email
-              password
-              firstName
-              avatar
-              createdAt
-              updatedAt
-            }
-            startDate
-            endDate
-            estimeeSpentTime
-            advancement
-            comments {
-              id
-              text
-              userId
-              taskId
-            }
-            tags {
-              id
-              label
-              color
-              tasks {
-                id
-                subject
-                projectId
-                users {
-                  id
-                  email
-                  password
-                  firstName
-                  lastName
-                  avatar
-                  createdAt
-                  updatedAt
-                }
-                startDate
-                endDate
-                estimeeSpentTime
-                advancement
-                comments {
-                  id
-                  text
-                  userId
-                  taskId
-                }
-                tags {
-                  id
-                  label
-                  color
-                  tasks {
-                    id
-                    subject
-                    projectId
-                    users {
-                      id
-                      email
-                      password
-                      firstName
-                      lastName
-                      avatar
-                      createdAt
-                      updatedAt
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
+      getAllProjects {
+        id
+        status
+        startDate
+        endDate
+        estimeeSpentTime
       }
+    }
     `;
     const response = await server.executeOperation({ query });
 
@@ -158,20 +81,6 @@ describe('Project Resolver', () => {
         getProjectByID(id: $getProjectByIdId) {
           id
           status
-          members {
-            userId
-            projectId
-            projectRole
-          }
-          tasks {
-            id
-            subject
-            projectId
-            startDate
-            endDate
-            estimeeSpentTime
-            advancement
-          }
           startDate
           endDate
           estimeeSpentTime
@@ -240,24 +149,6 @@ describe('Project Resolver', () => {
     mutation Mutation($deleteProjectByIdId: String!) {
         deleteProjectById(id: $deleteProjectByIdId) {
           id
-          status
-          members {
-            userId
-            projectId
-            projectRole
-          }
-          tasks {
-            id
-            subject
-            projectId
-            startDate
-            endDate
-            estimeeSpentTime
-            advancement
-          }
-          startDate
-          endDate
-          estimeeSpentTime
         }
       }
     `;
