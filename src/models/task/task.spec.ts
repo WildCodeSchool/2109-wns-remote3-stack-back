@@ -1,17 +1,24 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { prisma } from '../../utils/prisma/prisma-client';
 import createApolloServer from '../../apolloServer';
+import { Project } from '.prisma/client';
 
 let server: ApolloServer;
 
 let id: string;
 let isDeleted: boolean;
+let project: Project;
 
 beforeAll(async () => {
   server = await createApolloServer();
-  process.env.IS_TEST = 'true';
+  project = await prisma.project.create({
+    data: {
+      status: 'DONE',
+      endDate: '2021-02-07T21:04:39.573Z',
+      estimeeSpentTime: 5.2,
+    },
+  });
 });
-
 describe('Task Resolver', () => {
   it('should create a new task', async () => {
     const addTaskMutation = gql`
@@ -34,9 +41,10 @@ describe('Task Resolver', () => {
         }
       }
     `;
+
     const variables = {
       subject: 'TaskTest',
-      projectId: 'b45645d3-1410-4d11-b36c-e115db41b4ce',
+      projectId: project.id,
       endDate: '2021-02-07T21:04:39.573Z',
       advancement: 'DONE',
       estimeeSpentTime: 5.0,
@@ -97,7 +105,7 @@ describe('Task Resolver', () => {
     const taskResponse = {
       updateTaskByIdId: id,
       subject: 'TaskTest',
-      projectId: 'b45645d3-1410-4d11-b36c-e115db41b4ce',
+      projectId: project.id,
       endDate: '1612731879573',
       advancement: 'DONE',
       estimeeSpentTime: 5.0,
@@ -140,7 +148,7 @@ describe('Task Resolver', () => {
     const variables = {
       updateTaskByIdId: id,
       subject: 'TaskTestUpdated',
-      projectId: 'b45645d3-1410-4d11-b36c-e115db41b4ce',
+      projectId: project.id,
       endDate: '2021-02-07T21:04:39.573Z',
       advancement: 'TO_DO',
       estimeeSpentTime: 6.3,
@@ -178,13 +186,17 @@ describe('Task Resolver', () => {
       isDeleted = false;
     }
   });
+
   afterAll(async () => {
     if (isDeleted) {
       await prisma.task.delete({
         where: { id },
       });
-
-      await prisma.$disconnect();
     }
+    await prisma.project.delete({
+      where: { id: project.id },
+
+    });
+    await prisma.$disconnect();
   });
 });
