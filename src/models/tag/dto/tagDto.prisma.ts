@@ -11,7 +11,7 @@ export default function TagPrismaDto() {
   async function createTag(payload: ITagPayload): Promise<TagDetails | null > {
     return prisma.tag.create({
       data: {
-        ...payload
+        ...payload,
       },
       include: {
         tasks: true,
@@ -24,7 +24,7 @@ export default function TagPrismaDto() {
     return prisma.tag.update({
       where: id,
       data: {
-        ...payload
+        ...payload,
       },
       include: {
         tasks: true,
