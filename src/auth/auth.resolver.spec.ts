@@ -34,7 +34,7 @@ describe('AuthResolver', () => {
         await resolver.signup({
           ...mockUser,
         }, mockCtx),
-      ).toEqual({
+      ).toMatchObject({
         ...mockUser,
         id: '10',
         createdAt: 1 as unknown as Date,
@@ -58,7 +58,7 @@ describe('AuthResolver', () => {
           email: 'testmail@jest.com',
           password: 'testjest',
         }, mockCtx),
-      ).toEqual({
+      ).toMatchObject({
         ...mockUser,
         id: '1',
         createdAt: 2 as unknown as Date,
