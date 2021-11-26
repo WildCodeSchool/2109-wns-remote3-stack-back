@@ -12,7 +12,7 @@ export default abstract class ITaskPrisma {
     subject: string;
 
   @Field(() => String)
-    projectId?: string;
+    projectId: string;
 
   @Field(() => String)
     startDate: Date;
