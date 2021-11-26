@@ -1,4 +1,4 @@
-import { Status } from '@prisma/client';
+import { Status, Tag } from '@prisma/client';
 import {
   Field, Float, ID, ObjectType,
 } from 'type-graphql';
@@ -36,5 +36,5 @@ export default abstract class ITask {
     comments: IComment[];
 
   @Field(() => [ITag])
-    tags: ITag[];
+    tags: Tag[];
 }
