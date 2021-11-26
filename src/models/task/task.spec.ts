@@ -1,7 +1,7 @@
 import { ApolloServer, gql } from 'apollo-server-express';
+import { Project } from '@prisma/client';
 import { prisma } from '../../utils/prisma/prisma-client';
 import createApolloServer from '../../apolloServer';
-import { Project } from '.prisma/client';
 
 let server: ApolloServer;
 
@@ -38,6 +38,10 @@ describe('Task Resolver', () => {
         ) {
           id
           subject
+          projectId
+          endDate
+          advancement
+          estimeeSpentTime
         }
       }
     `;
@@ -56,6 +60,13 @@ describe('Task Resolver', () => {
     });
 
     id = response.data?.createTask.id;
+
+    expect(response.data?.createTask.id).toEqual(id);
+    expect(response.data?.createTask).toHaveProperty('subject', variables.subject);
+    expect(response.data?.createTask).toHaveProperty('projectId', variables.projectId);
+    expect(response.data?.createTask).toHaveProperty('endDate', '1612731879573');
+    expect(response.data?.createTask).toHaveProperty('advancement', variables.advancement);
+    expect(response.data?.createTask).toHaveProperty('estimeeSpentTime', variables.estimeeSpentTime);
   });
 
   it('should get all task', async () => {
@@ -185,6 +196,7 @@ describe('Task Resolver', () => {
     if (response.data?.deleteTaskById.id) {
       isDeleted = false;
     }
+    expect(isDeleted).toEqual(false);
   });
 
   afterAll(async () => {

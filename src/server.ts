@@ -18,6 +18,7 @@ async function startServer() {
   const HOST = process.env.HOST || 'localhost';
 
   // Using TypeGraphQL, build GraphQL schema automatically
+  const server = await createApolloServer();
 
   app.use(cookieParser()); // Cookie Parser middleware to read cookies from the navigator
   app.use(compression()); // Compress all responses for better performance
@@ -35,7 +36,6 @@ async function startServer() {
   // Setup the server endpoint to ${serverAdress}/graphql with the rate limiter
   app.use('/graphql', rateLimiter);
   app.use(express.json()); // Body parser
-  const server = await createApolloServer();
   // * Startup server
   try {
     await server.start();
@@ -58,4 +58,4 @@ async function startServer() {
   }
 }
 
-export default startServer();
+startServer();
