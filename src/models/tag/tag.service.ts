@@ -1,14 +1,31 @@
 import TagPrismaDto from './dto/tagDto.prisma';
 import ITag from './types/tag.type';
+import ITagPayload from './types/TagPayload.args';
 
 export default function TagService() {
+  //* Create Tag
+  async function createTag(payload: ITagPayload): Promise<ITag> {
+    const tag = await TagPrismaDto().createTag(payload);
+    if (!tag) {
+      throw new Error('Tag not found');
+    }
+    return tag;
+  }
+  //* Update Tag
+  async function updateTag(payload: ITagPayload, id: string): Promise<ITag> {
+    const tag = await TagPrismaDto().updateTag(payload, { id });
+    if (!tag) {
+      throw new Error('Tag not found');
+    }
+    return tag;
+  }
   // all tags
   async function allTags(): Promise<ITag[]> {
-    const tags = await TagPrismaDto().all();
-    if (!tags) {
+    const tag = await TagPrismaDto().all();
+    if (!tag) {
       throw new Error('No tags found');
     }
-    return tags;
+    return tag;
   }
 
   async function findById(id: string): Promise<ITag> {
@@ -32,5 +49,7 @@ export default function TagService() {
     allTags,
     findById,
     deleteById,
+    createTag,
+    updateTag,
   };
 }
