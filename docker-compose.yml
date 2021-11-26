@@ -1,29 +1,39 @@
 version: '3.9'
 services:
-  database:
+  stack_database:
     image: postgres
     restart: always
     environment:
-      - POSTGRES_PASSWORD
-      - POSTGRES_USER
-      - POSTGRES_DB
+      POSTGRES_USER: Stack
+      POSTGRES_PASSWORD: stack
+      POSTGRES_DB: stack
     ports:
       - 5432:5432
-  backend:
-    build: .
-    command: yarn start:dev
-    ports:
-      - 4000:4000
-    environment:
-      - DATABASE_URL
-      - PORT
-    volumes:
-      - .:/app/
-      - nodemodules:/app/node_modules
-    links:
-      - database
-    depends_on:
-      - database
 
-volumes:
-  nodemodules: {}
+  test_database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    ports:
+      - 3308:3308
+#   backend:
+#     build: .
+#     command: yarn start:dev
+#     ports:
+#       - 4000:4000
+#     environment:
+#       - DATABASE_URL
+#       - PORT
+#     volumes:
+#       - .:/app/
+#       - nodemodules:/app/node_modules
+#     links:
+#       - database
+#     depends_on:
+#       - database
+
+# volumes:
+#   nodemodules: {}

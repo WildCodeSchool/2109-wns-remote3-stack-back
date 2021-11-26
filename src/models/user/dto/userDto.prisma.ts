@@ -1,7 +1,17 @@
 import { Prisma, User } from '@prisma/client';
+import SignupArgs from '../../../auth/args/signup.args';
 import { prisma } from '../../../utils/prisma/prisma-client';
 
 export default function UserPrismaDto() {
+  // ** CREATE
+  async function createOne(args: SignupArgs) {
+    return prisma.user.create({
+      data: {
+        ...args,
+      },
+    });
+  }
+
   // ** READ
   async function all(): Promise<User[]> {
     return prisma.user.findMany();
@@ -33,6 +43,7 @@ export default function UserPrismaDto() {
   }
 
   return {
+    createOne,
     all,
     oneById,
     oneByEmail,
