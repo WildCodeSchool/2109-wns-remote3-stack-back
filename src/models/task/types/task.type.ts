@@ -2,7 +2,8 @@ import { Status } from '@prisma/client';
 import {
   Field, Float, ID, ObjectType,
 } from 'type-graphql';
-import IComment from '../../comment/types/comment.types';
+import IComment from '../../comments/types/comment.type';
+
 import ITag from '../../tag/types/tag.type';
 import IUser from '../../user/types/user.type';
 

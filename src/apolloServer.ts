@@ -7,6 +7,7 @@ import ProjectResolver from './models/project/project.resolver';
 import TagResolver from './models/tag/tag.resolver';
 import TaskResolver from './models/task/task.resolver';
 import UserResolver from './models/user/user.resolver';
+import CommentResolver from './models/comments/comment.resolver';
 
 async function createApolloServer() {
   // Using TypeGraphQL, build GraphQL schema automatically
@@ -17,6 +18,7 @@ async function createApolloServer() {
       TagResolver,
       TaskResolver,
       ProjectResolver,
+      CommentResolver,
     ],
   });
 
