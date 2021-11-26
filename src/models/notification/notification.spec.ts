@@ -21,6 +21,7 @@ beforeAll(async () => {
     },
   });
 });
+
 describe('Notification Resolver', () => {
   it.only('should create a new notification', async () => {
     const addNotificationMutation = gql`
