@@ -1,8 +1,8 @@
 import { ObjectType, Field, ID } from 'type-graphql';
 import 'reflect-metadata';
+import { Task } from '@prisma/client';
 import IUserProject from '../../userProject/interface/userProject.type';
 import ITask from '../../task/types/task.type';
-import { Task } from '.prisma/client';
 
 @ObjectType()
 export default abstract class IProject {
