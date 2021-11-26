@@ -9,12 +9,6 @@ export default abstract class ICommentPayload {
     text: string;
 
   @Field(() => String)
-    createdAt: Date;
-
-  @Field(() => String)
-    updatedAt: Date;
-
-  @Field(() => String)
     userId: string;
 
   @Field(() => String)
