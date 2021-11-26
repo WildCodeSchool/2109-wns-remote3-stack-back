@@ -8,7 +8,6 @@ import { log } from './utils/logger/logger';
 import createApolloServer from './apolloServer';
 
 // Initialize Express and middlewares
-export const app = express();
 
 async function startServer() {
   // Get environments variables from .env file
@@ -19,6 +18,7 @@ async function startServer() {
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const server = await createApolloServer();
+  const app = express();
 
   app.use(cookieParser()); // Cookie Parser middleware to read cookies from the navigator
   app.use(compression()); // Compress all responses for better performance
