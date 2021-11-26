@@ -22,7 +22,7 @@ beforeAll(async () => {
   user = await prisma.user.create({
     data: {
       email: process.env.EMAIL_USER_TEST || '',
-      password: process.env.PASSORD_USER_TEST || '',
+      password: process.env.PASSWORD_USER_TEST || '',
       firstName: 'usertest',
       lastName: 'usertest',
     },
@@ -39,7 +39,7 @@ beforeAll(async () => {
 });
 
 describe('Comments Resolver', () => {
-  it('should create a nes Comment', async () => {
+  it('should create a new Comment', async () => {
     const taskAddMutation = gql`mutation CreateComment($text: String!, $userId: String!, $taskId: String!) {
             createComment(text: $text, userId: $userId, taskId: $taskId) {
               id
@@ -50,7 +50,7 @@ describe('Comments Resolver', () => {
           }`;
 
     const variables = {
-      text: 'Ceci est un commentaire text',
+      text: 'Ceci est un commentaire test',
       userId: user.id,
       taskId: task.id,
     };
@@ -71,9 +71,6 @@ describe('Comments Resolver', () => {
     const query = gql`query Query {
         getAllComments {
           id
-          text
-          userId
-          taskId
         }
       }`;
 
@@ -100,7 +97,7 @@ describe('Comments Resolver', () => {
     });
 
     const commentResponse = {
-      text: 'Ceci est un commentaire text',
+      text: 'Ceci est un commentaire test',
       userId: user.id,
       taskId: task.id,
     };
