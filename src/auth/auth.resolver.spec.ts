@@ -1,5 +1,5 @@
 import { MockProxy } from 'jest-mock-extended';
-import { IContext } from 'src/utils/context/interface/context.interface';
+import { IContext } from '../utils/context/interface/context.interface';
 import AuthResolver from './auth.resolver';
 
 describe('AuthResolver', () => {
@@ -44,18 +44,37 @@ describe('AuthResolver', () => {
   });
 
   describe('login', () => {
-    it('should log my user in', () => {
+    it('should log my user in', async () => {
       jest.spyOn(resolver, 'login')
         .mockImplementation(() => Promise.resolve({
           ...mockUser,
-          id: '10',
-          createdAt: 1 as unknown as Date,
-          updatedAt: 1 as unknown as Date,
+          id: '1',
+          createdAt: 2 as unknown as Date,
+          updatedAt: 2 as unknown as Date,
         }));
+
+      expect(
+        await resolver.login({
+          email: 'testmail@jest.com',
+          password: 'testjest',
+        }, mockCtx),
+      ).toEqual({
+        ...mockUser,
+        id: '1',
+        createdAt: 2 as unknown as Date,
+        updatedAt: 2 as unknown as Date,
+      });
     });
 
-    it('should throw an error', () => {
-
+    it('should throw an error', async () => {
+      try {
+        await resolver.login({
+          email: 'testmail@jest.com',
+          password: 'testjest2',
+        }, mockCtx);
+      } catch (e: any) {
+        expect(e.message).toMatch('Session expired');
+      }
     });
   });
 });
