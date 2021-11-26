@@ -24,8 +24,7 @@ export default function TagPrismaDto() {
     return prisma.tag.update({
       where: id,
       data: {
-        label: payload.label,
-        color: payload.color,
+        ...payload
       },
       include: {
         tasks: true,
