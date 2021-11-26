@@ -11,8 +11,7 @@ export default function TagPrismaDto() {
   async function createTag(payload: ITagPayload): Promise<TagDetails | null > {
     return prisma.tag.create({
       data: {
-        label: payload.label,
-        color: payload.color,
+        ...payload
       },
       include: {
         tasks: true,
