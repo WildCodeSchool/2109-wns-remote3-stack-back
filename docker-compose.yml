@@ -9,6 +9,16 @@ services:
       POSTGRES_DB: stack
     ports:
       - 5432:5432
+
+  test_database:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+      POSTGRES_DB: test
+    ports:
+      - 3308:3308
 #   backend:
 #     build: .
 #     command: yarn start:dev

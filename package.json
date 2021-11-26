@@ -10,11 +10,14 @@
     "build": "rm -rf ./dist/ && tsc -p tsconfig.json",
     "test": "jest",
     "prisma:generate": "prisma generate",
-    "prisma:sandbox": "ts-node-dev -r dotenv/config --transpile-only sandbox.ts"
+    "prisma:sandbox": "ts-node-dev -r dotenv/config --transpile-only sandbox.ts",
+    "prisma:deploy": "prisma migrate deploy"
   },
   "license": "MIT",
   "dependencies": {
+    "@babel/plugin-proposal-decorators": "^7.16.4",
     "@prisma/client": "^3.3.0",
+    "@types/supertest": "^2.0.11",
     "apollo-server": "^3.4.0",
     "apollo-server-errors": "^3.2.0",
     "apollo-server-express": "^3.4.0",
@@ -30,6 +33,7 @@
     "graphql-depth-limit": "^1.1.0",
     "jsonwebtoken": "^8.5.1",
     "reflect-metadata": "^0.1.13",
+    "ts-jest": "^27.0.7",
     "type-graphql": "^1.1.1",
     "uuid": "^8.3.2",
     "winston": "^3.3.3"
@@ -47,6 +51,7 @@
     "@types/node": "^16.11.6",
     "@typescript-eslint/eslint-plugin": "^5.2.0",
     "@typescript-eslint/parser": "^5.2.0",
+    "babel-jest": "^27.3.1",
     "class-validator": "^0.13.1",
     "eslint": "^8.1.0",
     "eslint-config-airbnb-base": "^14.2.1",
