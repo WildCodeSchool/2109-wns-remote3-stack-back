@@ -9,6 +9,9 @@ export default abstract class IProject {
   @Field(() => ID)
     id: string;
 
+  @Field(() => String)
+    status: string;
+
   @Field(() => [IUserProject])
     members: IUserProject[];
 
