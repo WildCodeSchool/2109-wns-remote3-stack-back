@@ -14,6 +14,7 @@ beforeAll(async () => {
   project = await prisma.project.create({
     data: {
       name: 'Test',
+      description: 'This is my project description',
       status: 'DONE',
       endDate: '2021-02-07T21:04:39.573Z',
       estimeeSpentTime: 5.2,

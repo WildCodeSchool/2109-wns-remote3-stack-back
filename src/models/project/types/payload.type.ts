@@ -11,6 +11,9 @@ export default abstract class IProjectPayload {
     name: string;
 
   @Field(() => String)
+    description: string;
+
+  @Field(() => String)
     status: IStatus;
 
   @Field(() => Date)
