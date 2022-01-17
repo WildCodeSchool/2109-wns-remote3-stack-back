@@ -7,4 +7,7 @@ module.exports = {
 
   // Module file extensions for importing
   moduleFileExtensions: ['ts', 'js', 'json', 'node'],
+  moduleNameMapper: {
+    '@utils': '<rootDir>/src/utils',
+  },
 };

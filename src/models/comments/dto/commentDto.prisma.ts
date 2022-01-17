@@ -2,7 +2,7 @@ import {
   Comment,
   Prisma,
 } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
+import { prisma } from '@utils/prisma';
 import ICommentPayload from '../types/createComment.type';
 
 export default function CommentPrismaDto() {
