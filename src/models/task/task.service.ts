@@ -1,6 +1,6 @@
-import ITask from './types/task.type';
-import TaskPrismaDto from './dto/taskDto.prisma';
-import ITaskPayload from './types/PayloadTask.types';
+import ITask from '@task/types/task.type';
+import TaskPrismaDto from '@task/dto/taskDto.prisma';
+import ITaskPayload from '@task/types/PayloadTask.types';
 
 export default function TaskService() {
   async function allTasks(): Promise<ITask[]> {

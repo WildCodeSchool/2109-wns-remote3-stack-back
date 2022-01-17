@@ -1,4 +1,4 @@
-import { Status } from '@prisma/client';
+import { IStatus } from '@project/types/status.enum';
 import {
   ArgsType, Field, Float,
 } from 'type-graphql';
@@ -15,7 +15,7 @@ export default abstract class ITaskPayload {
     endDate: Date;
 
   @Field(() => String)
-    advancement: Status;
+    advancement: IStatus;
 
   @Field(() => Float)
     estimeeSpentTime: number;

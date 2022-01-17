@@ -32,7 +32,13 @@
     "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
       "@utils/*": ["src/utils/*"],
-      "@models/*": ["src/models/*"]
+      "@comment/*": ["src/models/comment/*"],
+      "@notification/*": ["src/models/notification/*"],
+      "@project/*": ["src/models/project/*"],
+      "@tag/*": ["src/models/tag/*"],
+      "@task/*": ["src/models/task/*"],
+      "@user/*": ["src/models/user/*"],
+      "@userProject/*": ["src/models/userProject/*"]
     },
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like `./node_modules/@types`. */

@@ -1,9 +1,9 @@
 import {
   Resolver, Query, Arg, Mutation, Args,
 } from 'type-graphql';
-import IComment from './types/comment.type';
-import CommentService from './comment.service';
-import ICommentPayload from './types/createComment.type';
+import IComment from '@comment/types/comment.type';
+import CommentService from '@comment/comment.service';
+import ICommentPayload from '@comment/types/createCommentPayload.type';
 
 @Resolver(() => IComment)
 export default class CommentResolver {

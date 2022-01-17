@@ -1,6 +1,6 @@
-import IComment from './types/comment.type';
-import CommentPrismaDto from './dto/commentDto.prisma';
-import ICommentPayload from './types/createComment.type';
+import IComment from '@comment/types/comment.type';
+import CommentPrismaDto from '@comment/dto/commentDto.prisma';
+import ICommentPayload from '@comment/types/createCommentPayload.type';
 
 export default function TaskService() {
   //* Get all comments

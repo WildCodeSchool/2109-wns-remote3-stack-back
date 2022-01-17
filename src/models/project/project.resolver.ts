@@ -1,10 +1,9 @@
-import 'reflect-metadata';
 import {
   Resolver, Query, Arg, Mutation, Args,
 } from 'type-graphql';
-import IProject from './types/project.type';
-import ProjectService from './project.service';
-import IProjectPayload from './types/payload.type';
+import IProject from '@project/types/project.type';
+import IProjectPayload from '@project/types/payload.type';
+import ProjectService from '@project/project.service';
 
 @Resolver(() => IProject)
 export default class ProjectResolver {

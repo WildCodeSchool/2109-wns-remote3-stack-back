@@ -1,7 +1,7 @@
 import { ApolloServer, gql } from 'apollo-server-express';
-import { Project, Task, User } from '.prisma/client';
+import { Project, Task, User } from '@prisma/client';
+import { prisma } from '@utils/prisma';
 import createApolloServer from '../../apolloServer';
-import { prisma } from '../../utils/prisma/prisma-client';
 
 let server: ApolloServer;
 let user: User;
@@ -14,6 +14,7 @@ beforeAll(async () => {
   server = await createApolloServer();
   project = await prisma.project.create({
     data: {
+      name: 'Test',
       status: 'DONE',
       endDate: '2021-02-07T21:04:39.573Z',
       estimeeSpentTime: 5.2,

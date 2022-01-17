@@ -1,5 +1,4 @@
 import { Field, ArgsType } from 'type-graphql';
-import 'reflect-metadata';
 
 @ArgsType()
 export default abstract class IPayloadNotification {

@@ -1,6 +1,6 @@
-import ProjectPrismaDto from './dto/projectDto.prisma';
-import IProject from './types/project.type';
-import IProjectPayload from './types/payload.type';
+import ProjectPrismaDto from '@project/dto/projectDto.prisma';
+import IProject from '@project/types/project.type';
+import IProjectPayload from '@project/types/payload.type';
 
 export default function ProjectService() {
   // ** READ

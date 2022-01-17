@@ -1,6 +1,6 @@
 import { Prisma, Tag, Task } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
-import ITagPayload from '../types/TagPayload.args';
+import { prisma } from '@utils/prisma/prisma-client';
+import ITagPayload from '@tag/types/tagPayload.args';
 
 export interface TagDetails extends Tag {
 tasks: Task[],

@@ -7,7 +7,7 @@ import ProjectResolver from './models/project/project.resolver';
 import TagResolver from './models/tag/tag.resolver';
 import TaskResolver from './models/task/task.resolver';
 import UserResolver from './models/user/user.resolver';
-import CommentResolver from './models/comments/comment.resolver';
+import CommentResolver from './models/comment/comment.resolver';
 import NotificationResolver from './models/notification/notification.resolver';
 
 async function createApolloServer() {
