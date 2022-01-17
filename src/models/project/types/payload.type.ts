@@ -9,6 +9,9 @@ import { Status } from '@prisma/client';
 @ArgsType()
 export default abstract class IProjectPayload {
   @Field(() => String)
+    name: string;
+
+  @Field(() => String)
     status: Status;
 
   @Field(() => String)

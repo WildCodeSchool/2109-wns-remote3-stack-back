@@ -1,3 +1,6 @@
+import {
+  Project,
+} from '@prisma/client';
 import ProjectPrismaDto from './dto/projectDto.prisma';
 import IProject from './types/project.type';
 import IProjectPayload from './types/payload.type';
@@ -20,7 +23,7 @@ export default function ProjectService() {
     return project;
   }
   // * CREATE
-  async function createNewProject(payload: IProjectPayload): Promise<IProject> {
+  async function createNewProject(payload: IProjectPayload): Promise<Project> {
     const project = await ProjectPrismaDto().createProject(payload);
     if (!project) {
       throw new Error('Project not found');
@@ -29,7 +32,7 @@ export default function ProjectService() {
   }
 
   // * UPDATE
-  async function updateProjectById(payload: IProjectPayload, id: string): Promise<IProject> {
+  async function updateProjectById(payload: IProjectPayload, id: string): Promise<Project> {
     const project = await ProjectPrismaDto().updateProject(payload, { id });
     if (!project) {
       throw new Error('Project not found');

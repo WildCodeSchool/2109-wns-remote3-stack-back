@@ -2,6 +2,9 @@ import 'reflect-metadata';
 import {
   Resolver, Query, Arg, Mutation, Args,
 } from 'type-graphql';
+import {
+  Project,
+} from '@prisma/client';
 import IProject from './types/project.type';
 import ProjectService from './project.service';
 import IProjectPayload from './types/payload.type';
@@ -23,13 +26,13 @@ export default class ProjectResolver {
 
   // * CREATE
   @Mutation(() => IProject)
-  async createProject(@Args()payload: IProjectPayload):Promise<IProject> {
+  async createProject(@Args()payload: IProjectPayload):Promise<Project> {
     return ProjectService().createNewProject(payload);
   }
 
   // * UPDATE
   @Mutation(() => IProject)
-  async updateProject(@Args()payload: IProjectPayload, @Arg('id') id: string):Promise<IProject> {
+  async updateProject(@Args()payload: IProjectPayload, @Arg('id') id: string):Promise<Project> {
     return ProjectService().updateProjectById(payload, id);
   }
 

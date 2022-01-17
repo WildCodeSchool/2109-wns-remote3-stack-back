@@ -9,7 +9,7 @@ import { prisma } from '../../../utils/prisma/prisma-client';
 import IProjectPayload from '../types/payload.type';
 
 interface UserProjectWithRole extends UserProject {
-    projectRole: ProjectRole;
+  projectRole: ProjectRole;
 }
 interface ProjectWithDetails extends Project {
   members: UserProjectWithRole[];
@@ -33,7 +33,9 @@ export default function ProjectPrismaDto() {
     });
   }
 
-  async function oneById(id: Prisma.ProjectWhereUniqueInput): Promise<ProjectWithDetails | null> {
+  async function oneById(
+    id: Prisma.ProjectWhereUniqueInput,
+  ): Promise<ProjectWithDetails | null> {
     return prisma.project.findUnique({
       where: id,
       include: {
@@ -69,15 +71,14 @@ export default function ProjectPrismaDto() {
   }
 
   // ** CREATE
-  async function createProject(payload: IProjectPayload): Promise<ProjectWithDetails | null> {
+  async function createProject(
+    payload: IProjectPayload,
+  ): Promise<Project> {
     return prisma.project.create({
       data: {
         ...payload,
       },
-      include: {
-        members: true,
-        tasks: true,
-      },
+
     });
   }
 
@@ -85,21 +86,11 @@ export default function ProjectPrismaDto() {
   async function updateProject(
     payload: IProjectPayload,
     id: Prisma.ProjectWhereUniqueInput,
-  ): Promise<ProjectWithDetails | null> {
+  ): Promise<Project> {
     return prisma.project.update({
       where: id,
       data: {
         ...payload,
-      },
-      include: {
-        members: true,
-        tasks: {
-          include: {
-            users: true,
-            comments: true,
-            tags: true,
-          },
-        },
       },
     });
   }

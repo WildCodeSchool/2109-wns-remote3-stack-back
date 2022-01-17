@@ -29,6 +29,7 @@ async function createApolloServer() {
     validationRules: [depthLimit(10)],
     schema,
     context: appContext,
+    mocks: true,
   });
 }
 
