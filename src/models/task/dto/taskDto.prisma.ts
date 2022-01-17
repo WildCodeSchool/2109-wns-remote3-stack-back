@@ -1,8 +1,8 @@
 import {
   Comment, Prisma, Tag, Task, User,
 } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
-import ITaskPayload from '../types/PayloadTask.types';
+import { prisma } from '@utils/prisma/prisma-client';
+import ITaskPayload from '@task/types/PayloadTask.types';
 
 export interface TaskWithDetails extends Task {
   users: User[];

@@ -1,6 +1,6 @@
-import SignupArgs from '../../auth/args/signup.args';
-import UserPrismaDto from './dto/userDto.prisma';
-import IUser from './types/user.type';
+import SignupArgs from '@auth/args/signup.args';
+import UserPrismaDto from '@user/dto/userDto.prisma';
+import IUser from '@user/types/user.type';
 
 export default function UserService() {
   // ** CREATE

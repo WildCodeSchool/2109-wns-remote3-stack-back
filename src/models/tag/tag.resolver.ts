@@ -1,10 +1,9 @@
-import 'reflect-metadata';
 import {
   Resolver, Query, Arg, Mutation, Args,
 } from 'type-graphql';
-import ITag from './types/tag.type';
-import TagService from './tag.service';
-import ITagPayload from './types/TagPayload.args';
+import ITag from '@tag/types/tag.type';
+import TagService from '@tag/tag.service';
+import ITagPayload from '@tag/types/TagPayload.args';
 
 @Resolver(() => ITag)
 export default class TagResolver {

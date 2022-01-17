@@ -1,10 +1,9 @@
-import 'reflect-metadata';
 import {
   Resolver, Query, Arg, Mutation, UseMiddleware,
 } from 'type-graphql';
-import authGuard from '../../auth/guards/auth.guard';
-import IUser from './types/user.type';
-import UserService from './user.service';
+import authGuard from '@auth/guards/auth.guard';
+import IUser from '@user/types/user.type';
+import UserService from '@user/user.service';
 
 @Resolver(() => IUser)
 export default class UserResolver {

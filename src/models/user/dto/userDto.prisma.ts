@@ -1,6 +1,6 @@
 import { Prisma, User } from '@prisma/client';
-import SignupArgs from '../../../auth/args/signup.args';
-import { prisma } from '../../../utils/prisma/prisma-client';
+import SignupArgs from '@auth/args/signup.args';
+import { prisma } from '@utils/prisma';
 
 export default function UserPrismaDto() {
   // ** CREATE

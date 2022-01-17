@@ -3,15 +3,20 @@ import {
   Field,
   Float,
 } from 'type-graphql';
-import 'reflect-metadata';
-import { Status } from '@prisma/client';
+import { IStatus } from './status.enum';
 
 @ArgsType()
 export default abstract class IProjectPayload {
   @Field(() => String)
-    status: Status;
+    name: string;
 
   @Field(() => String)
+    description: string;
+
+  @Field(() => String)
+    status: IStatus;
+
+  @Field(() => Date)
     startDate: Date;
 
   @Field(() => String)

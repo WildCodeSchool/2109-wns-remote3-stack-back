@@ -2,12 +2,12 @@ import {
   Notification,
   Prisma,
 } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
-import IPayloadNotification from '../types/payloadNotification.types';
+import { prisma } from '@utils/prisma';
+import IPayloadNotification from '@notification/types/payloadNotification.type';
 
 export default function NotificationPrismaDto() {
   //* Get all notifications
-  async function getallNotifications(): Promise<Notification[]> {
+  async function getAllNotifications(): Promise<Notification[]> {
     return prisma.notification.findMany({
 
     });
@@ -51,7 +51,7 @@ export default function NotificationPrismaDto() {
   }
 
   return {
-    getallNotifications,
+    getAllNotifications,
     getOneNotificationById,
     createNotification,
     updateNotification,

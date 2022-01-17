@@ -1,8 +1,8 @@
 /* eslint-disable comma-dangle */
 import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
-import TaskService from './task.service';
-import ITask from './types/task.type';
-import ITaskPayload from './types/PayloadTask.types';
+import TaskService from '@task/task.service';
+import ITask from '@task/types/task.type';
+import ITaskPayload from '@task/types/PayloadTask.types';
 
 @Resolver(() => ITask)
 export default class TaskResolver {

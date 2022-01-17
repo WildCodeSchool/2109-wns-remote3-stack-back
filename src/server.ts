@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { ApolloError } from 'apollo-server-errors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
