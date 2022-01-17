@@ -3,7 +3,7 @@ import {
 } from 'type-graphql';
 import ITag from '@tag/types/tag.type';
 import TagService from '@tag/tag.service';
-import ITagPayload from '@tag/types/tagPayload.args';
+import ITagPayload from '@tag/types/TagPayload.args';
 
 @Resolver(() => ITag)
 export default class TagResolver {

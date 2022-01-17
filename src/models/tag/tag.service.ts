@@ -1,6 +1,6 @@
 import TagPrismaDto from '@tag/dto/tagDto.prisma';
 import ITag from '@tag/types/tag.type';
-import ITagPayload from '@tag/types/tagPayload.args';
+import ITagPayload from '@tag/types/TagPayload.args';
 
 export default function TagService() {
   //* Create Tag
