@@ -12,6 +12,9 @@ export default abstract class IProject {
     name: string;
 
   @Field(() => String)
+    description: string;
+
+  @Field(() => String)
     status: string;
 
   @Field(() => [IUserProject])
