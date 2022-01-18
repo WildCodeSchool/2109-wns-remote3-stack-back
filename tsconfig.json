@@ -34,7 +34,7 @@
       "@auth/*": ["src/auth/*"],
       "@constants/*": ["src/constants/*"],
       "@environments/*": ["src/environments/*"],
-      "@test/*": ["src/tests/*"],
+      "@tests/*": ["src/tests/*"],
       "@utils/*": ["src/utils/*"],
       "@comment/*": ["src/models/comment/*"],
       "@mail/*": ["src/models/mail/*"],
