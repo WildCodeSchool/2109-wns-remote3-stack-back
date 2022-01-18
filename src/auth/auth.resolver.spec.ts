@@ -34,7 +34,7 @@ describe('AuthResolver', () => {
       expect(
         await resolver.signup({
           ...mockUser,
-        }, mockCtx),
+        }),
       ).toMatchObject({
         ...mockUser,
         id: '10',
