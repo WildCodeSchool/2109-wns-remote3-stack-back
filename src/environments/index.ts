@@ -8,3 +8,4 @@ export const NODE_ENV = process.env.NODE_ENV || 'development';
 
 // Specific exports
 export * from './application';
+export * from './mail/transporter';

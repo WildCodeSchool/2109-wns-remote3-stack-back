@@ -1,12 +1,12 @@
 import {
   Args, Mutation, Resolver, Ctx,
 } from 'type-graphql';
-import { IContext } from '../utils/context/interface/context.interface';
-import IUser from '../models/user/types/user.type';
+import { log } from '@utils/logger/logger';
+import { IContext } from '@utils/context/interface/context.interface';
+import IUser from '@user/types/user.type';
 import LoginArgs from './args/login.args';
 import AuthService from './auth.service';
 import SignupArgs from './args/signup.args';
-import { log } from '../utils/logger/logger';
 
 @Resolver(() => IUser)
 export default class AuthResolver {
@@ -31,14 +31,13 @@ export default class AuthResolver {
   @Mutation(() => IUser)
   async signup(
     @Args() signupArgs: SignupArgs,
-    @Ctx() context: IContext,
   ): Promise<IUser> {
     log.verbose('Trying to signup user', signupArgs.email);
     const email = signupArgs.email.toLowerCase().trim();
     const user = await AuthService().signupUser({
       ...signupArgs,
       email,
-    }, context);
+    });
     log.info('User successfully created, ', signupArgs.email);
     return user;
   }

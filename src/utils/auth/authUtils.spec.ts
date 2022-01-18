@@ -1,4 +1,4 @@
-import { ONE_DAY } from '../../constants';
+import { ONE_DAY } from '@constants/time';
 import { isTokenExpired } from './authUtils';
 
 // Setup Date.now() with a fixed value to test token expiration
