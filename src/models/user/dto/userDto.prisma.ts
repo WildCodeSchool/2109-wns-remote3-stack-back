@@ -1,6 +1,7 @@
 import { Prisma, User } from '@prisma/client';
 import SignupArgs from '@auth/args/signup.args';
 import { prisma } from '@utils/prisma';
+import IUserPayload from '@user/types/userPayload.args';
 
 export default function UserPrismaDto() {
   // ** CREATE
@@ -33,7 +34,18 @@ export default function UserPrismaDto() {
     });
   }
 
-  // ** READ
+  // ** UPDATE
+  async function updateOneById(
+    id: Prisma.UserWhereUniqueInput,
+    data: IUserPayload,
+  ): Promise<User | null> {
+    return prisma.user.update({
+      where: id,
+      data,
+    });
+  }
+
+  // ** DELETE
   async function deleteOneById(
     id: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
@@ -47,6 +59,7 @@ export default function UserPrismaDto() {
     all,
     oneById,
     oneByEmail,
+    updateOneById,
     deleteOneById,
   };
 }

@@ -49,11 +49,7 @@ export default function TaskPrismaDto() {
     return prisma.task.update({
       where: id,
       data: {
-        subject: payload.subject,
-        projectId: payload.projectId,
-        endDate: payload.endDate,
-        advancement: payload.advancement,
-        estimeeSpentTime: payload.estimeeSpentTime,
+        ...payload,
       },
       include: {
         users: true,
@@ -66,11 +62,7 @@ export default function TaskPrismaDto() {
   async function createTask(payload: ITaskPayload): Promise<TaskWithDetails | null> {
     return prisma.task.create({
       data: {
-        subject: payload.subject,
-        projectId: payload.projectId,
-        endDate: payload.endDate,
-        advancement: payload.advancement,
-        estimeeSpentTime: payload.estimeeSpentTime,
+        ...payload,
       },
       include: {
         users: true,

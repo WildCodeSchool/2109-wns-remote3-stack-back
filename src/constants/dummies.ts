@@ -7,6 +7,7 @@ const dummies: IUser[] = [
     password: 'hellothere',
     firstName: 'Obiwan',
     lastName: 'Kenobi',
+    verified: true,
     createdAt: new Date(),
     updatedAt: new Date(),
   },

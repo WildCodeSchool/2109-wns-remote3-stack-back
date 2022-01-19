@@ -1,6 +1,6 @@
 import winston, { format } from 'winston';
 import httpContext from 'express-http-context';
-import { NODE_ENV } from '../../environments';
+import { NODE_ENV } from '@environments/index';
 
 const IS_LOCAL = NODE_ENV !== 'production';
 

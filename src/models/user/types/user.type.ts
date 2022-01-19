@@ -20,9 +20,12 @@ export default abstract class IUser {
   @Field(() => String, { nullable: true })
     avatar?: string | null;
 
-  @Field()
+  @Field(() => Boolean)
+    verified: boolean;
+
+  @Field(() => Date)
     createdAt: Date;
 
-  @Field()
+  @Field(() => Date)
     updatedAt: Date;
 }

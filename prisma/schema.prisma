@@ -31,6 +31,7 @@ model User {
   firstName       String
   lastName        String
   avatar          String?
+  verified        Boolean  @default(false)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now())
   tasks           Task[]

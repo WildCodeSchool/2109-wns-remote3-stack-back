@@ -1,5 +1,5 @@
 import { hash, compare } from 'bcryptjs';
-import { BCRYPT_SALT } from '../../environments';
+import { BCRYPT_SALT } from '@environments/application';
 
 /**
  * Returns hashed password by hash password.

@@ -1,10 +1,10 @@
 import { CookieOptions, Request, Response } from 'express';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { ApolloError, AuthenticationError } from 'apollo-server-errors';
-import { APP_TOKENIZATION_SECRET } from '../../environments';
-import { ONE_DAY } from '../../constants';
-import IUser from '../../models/user/types/user.type';
-import UserService from '../../models/user/user.service';
+import { APP_TOKENIZATION_SECRET } from '@environments/application';
+import { ONE_DAY } from '@constants/time';
+import IUser from '@user/types/user.type';
+import UserService from '@user/user.service';
 import { log } from '../logger/logger';
 
 export interface IToken {
@@ -88,9 +88,14 @@ async function getUserId(req: Request, res: Response) {
   return '';
 }
 
+function createVerificationURL(token: string) {
+  return `${process.env.FRONTEND_URL}/verifyUser&token=${token}`;
+}
+
 export {
   createToken,
   getUserId,
   isTokenExpired,
   getTokenPayload,
+  createVerificationURL,
 };

@@ -32,8 +32,12 @@
     "baseUrl": "." /* Specify the base directory to resolve non-relative module names. */,
     "paths": {
       "@auth/*": ["src/auth/*"],
+      "@constants/*": ["src/constants/*"],
+      "@environments/*": ["src/environments/*"],
+      "@tests/*": ["src/tests/*"],
       "@utils/*": ["src/utils/*"],
       "@comment/*": ["src/models/comment/*"],
+      "@mail/*": ["src/models/mail/*"],
       "@notification/*": ["src/models/notification/*"],
       "@project/*": ["src/models/project/*"],
       "@tag/*": ["src/models/tag/*"],

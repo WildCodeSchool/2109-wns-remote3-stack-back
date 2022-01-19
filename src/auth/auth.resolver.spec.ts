@@ -1,5 +1,5 @@
 import { MockProxy } from 'jest-mock-extended';
-import { IContext } from '../utils/context/interface/context.interface';
+import { IContext } from '@utils/context/interface/context.interface';
 import AuthResolver from './auth.resolver';
 
 describe('AuthResolver', () => {
@@ -27,13 +27,14 @@ describe('AuthResolver', () => {
         .mockImplementation(() => Promise.resolve({
           ...mockUser,
           id: '10',
+          verified: true,
           createdAt: 1 as unknown as Date,
           updatedAt: 1 as unknown as Date,
         }));
       expect(
         await resolver.signup({
           ...mockUser,
-        }, mockCtx),
+        }),
       ).toMatchObject({
         ...mockUser,
         id: '10',
@@ -49,6 +50,7 @@ describe('AuthResolver', () => {
         .mockImplementation(() => Promise.resolve({
           ...mockUser,
           id: '1',
+          verified: true,
           createdAt: 2 as unknown as Date,
           updatedAt: 2 as unknown as Date,
         }));
