@@ -13,7 +13,18 @@ export default function UserProjectService() {
     return userProject;
   }
 
+  async function editOneUserProject(
+    payload: IUserProjectPayload,
+  ): Promise<IUserProject> {
+    const userProject = await UserProjectPrismaDto().editOne(payload);
+    if (!userProject) {
+      throw new Error('UserProject not found');
+    }
+    return userProject;
+  }
+
   return {
     createOneUserProject,
+    editOneUserProject,
   };
 }

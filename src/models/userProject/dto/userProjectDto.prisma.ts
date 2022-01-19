@@ -17,7 +17,24 @@ export default function UserProjectPrismaDto() {
     });
   }
 
+  async function editOne(
+    payload: IUserProjectPayload,
+  ): Promise<UserProject> {
+    return prisma.userProject.update({
+      where: {
+        userId_projectId: {
+          userId: payload.userId,
+          projectId: payload.projectId,
+        },
+      },
+      data: {
+        projectRole: payload.projectRole,
+      },
+    });
+  }
+
   return {
     createOne,
+    editOne,
   };
 }

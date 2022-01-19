@@ -12,4 +12,14 @@ export default class UserProjectResolver {
   ): Promise<IUserProject> {
     return UserProjectService().createOneUserProject(payload);
   }
+
+  // * EDIT
+  @Mutation(() => IUserProject)
+  async editUserProject(
+    @Args() payload: IUserProjectPayload,
+  ): Promise<IUserProject> {
+    return UserProjectService().editOneUserProject(payload);
+  }
+
+  // * DELETE
 }
