@@ -9,6 +9,7 @@ import TaskResolver from '@task/task.resolver';
 import UserResolver from '@user/user.resolver';
 import CommentResolver from '@comment/comment.resolver';
 import NotificationResolver from '@notification/notification.resolver';
+import UserProjectResolver from '@userProject/userProject.resolver';
 
 async function createApolloServer() {
   // Using TypeGraphQL, build GraphQL schema automatically
@@ -21,6 +22,7 @@ async function createApolloServer() {
       ProjectResolver,
       CommentResolver,
       NotificationResolver,
+      UserProjectResolver,
     ],
   });
 
