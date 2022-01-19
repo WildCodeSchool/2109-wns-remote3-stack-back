@@ -33,8 +33,23 @@ export default function UserProjectPrismaDto() {
     });
   }
 
+  async function deleteOne(
+    userId: string,
+    projectId: string,
+  ): Promise<UserProject> {
+    return prisma.userProject.delete({
+      where: {
+        userId_projectId: {
+          userId,
+          projectId,
+        },
+      },
+    });
+  }
+
   return {
     createOne,
     editOne,
+    deleteOne,
   };
 }

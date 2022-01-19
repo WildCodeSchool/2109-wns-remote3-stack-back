@@ -23,8 +23,19 @@ export default function UserProjectService() {
     return userProject;
   }
 
+  async function deleteOneUserProject(
+    userId: string, projectId: string,
+  ): Promise<IUserProject> {
+    const userProject = await UserProjectPrismaDto().deleteOne(userId, projectId);
+    if (!userProject) {
+      throw new Error('UserProject not found');
+    }
+    return userProject;
+  }
+
   return {
     createOneUserProject,
     editOneUserProject,
+    deleteOneUserProject,
   };
 }

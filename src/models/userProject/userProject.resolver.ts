@@ -1,4 +1,4 @@
-import { Args, Mutation, Resolver } from 'type-graphql';
+import { Arg, Args, Mutation, Resolver } from 'type-graphql';
 import IUserProject from './types/userProject.type';
 import IUserProjectPayload from './types/userProjectPayload.type';
 import UserProjectService from './userProject.service';
@@ -22,4 +22,11 @@ export default class UserProjectResolver {
   }
 
   // * DELETE
+  @Mutation(() => IUserProject)
+  async deleteUserProject(
+    @Arg('userId') userId: string,
+    @Arg('projectId') projectId: string,
+  ): Promise<IUserProject> {
+    return UserProjectService().deleteOneUserProject(userId, projectId);
+  }
 }
