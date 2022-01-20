@@ -2,7 +2,7 @@ import {
   Resolver, Query, Arg, Mutation, Args,
 } from 'type-graphql';
 import IProject from '@project/types/project.type';
-import IProjectPayload from '@project/types/payload.type';
+import IProjectPayload from '@project/types/payload.args';
 import ProjectService from '@project/project.service';
 
 @Resolver(() => IProject)
