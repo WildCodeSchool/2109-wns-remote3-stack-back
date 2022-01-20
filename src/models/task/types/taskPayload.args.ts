@@ -1,6 +1,7 @@
 import { IStatus } from '@project/types/status.enum';
 import {
-  ArgsType, Field, Float,
+  ArgsType,
+  Field, Float,
 } from 'type-graphql';
 
 @ArgsType()

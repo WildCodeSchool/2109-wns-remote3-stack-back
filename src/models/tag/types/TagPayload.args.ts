@@ -1,10 +1,10 @@
-import { ArgsType, Field } from 'type-graphql';
+import { Field, InputType } from 'type-graphql';
 
-@ArgsType()
+@InputType()
 export default abstract class ITagPayload {
-@Field(() => String)
-  label: string;
+  @Field(() => String)
+    label: string;
 
-@Field(() => String)
-  color: string;
+  @Field(() => String)
+    color: string;
 }
