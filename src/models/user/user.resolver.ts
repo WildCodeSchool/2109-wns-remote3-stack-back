@@ -4,6 +4,7 @@ import {
 import authGuard from '@auth/guards/auth.guard';
 import IUser from '@user/types/user.type';
 import UserService from '@user/user.service';
+import IUserWithProjects from './types/userWithProjects.type';
 
 @Resolver(() => IUser)
 export default class UserResolver {
@@ -28,6 +29,13 @@ export default class UserResolver {
     @Arg('email') email: string,
   ): Promise<IUser> {
     return UserService().findByEmail(email);
+  }
+
+  @Query(() => IUserWithProjects)
+  async getUserWithProjects(
+    @Arg('id') id: string,
+  ): Promise<IUserWithProjects> {
+    return UserService().findByIdWithProjects(id);
   }
 
   // * UPDATE
