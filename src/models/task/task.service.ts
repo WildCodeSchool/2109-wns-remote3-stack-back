@@ -1,6 +1,7 @@
 import ITask from '@task/types/task.type';
 import TaskPrismaDto from '@task/dto/taskDto.prisma';
 import ITaskPayload from '@task/types/PayloadTask.types';
+import ITagPayload from '@tag/types/TagPayload.args';
 
 export default function TaskService() {
   async function allTasks(): Promise<ITask[]> {
@@ -35,6 +36,14 @@ export default function TaskService() {
     return task;
   }
 
+  async function createTaskWithTags(payload: ITaskPayload, tags: ITagPayload[]): Promise<ITask> {
+    const task = await TaskPrismaDto().createTaskWithTags(payload, tags);
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    return task;
+  }
+
   async function updateById(payload: ITaskPayload, id: string): Promise<ITask> {
     const task = await TaskPrismaDto().updateOneById(payload, { id });
     if (!task) {
@@ -48,6 +57,7 @@ export default function TaskService() {
     findById,
     deleteById,
     createTask,
+    createTaskWithTags,
     updateById,
   };
 }
