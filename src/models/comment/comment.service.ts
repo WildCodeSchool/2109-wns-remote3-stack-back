@@ -2,7 +2,7 @@ import IComment from '@comment/types/comment.type';
 import CommentPrismaDto from '@comment/dto/commentDto.prisma';
 import ICommentPayload from '@comment/types/createCommentPayload.args';
 
-export default function TaskService() {
+export default function CommentService() {
   //* Get all comments
   async function allComments(): Promise<IComment[]> {
     const comment = await CommentPrismaDto().getallComments();
