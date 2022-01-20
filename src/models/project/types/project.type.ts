@@ -1,6 +1,6 @@
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Task } from '@prisma/client';
-import IUserProject from '@userProject/interface/userProject.type';
+import IUserProject from '@userProject/types/userProject.type';
 import ITask from '@task/types/task.type';
 
 @ObjectType()

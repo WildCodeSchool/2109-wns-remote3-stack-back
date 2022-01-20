@@ -1,6 +1,7 @@
 import ProjectPrismaDto from '@project/dto/projectDto.prisma';
 import IProject from '@project/types/project.type';
 import IProjectPayload from '@project/types/payload.type';
+import UserProjectService from '@userProject/userProject.service';
 
 export default function ProjectService() {
   // ** READ
@@ -20,12 +21,24 @@ export default function ProjectService() {
     return project;
   }
   // * CREATE
-  async function createNewProject(payload: IProjectPayload): Promise<IProject> {
+  async function createNewProject(payload: IProjectPayload, userId: string): Promise<IProject> {
     const project = await ProjectPrismaDto().createProject(payload);
     if (!project) {
       throw new Error('Project not found');
     }
-    return project;
+    const userProject = await UserProjectService().createOneUserProject({
+      userId,
+      projectId: project.id,
+      projectRole: 'PROJECT_MANAGER',
+    });
+    if (!userProject) {
+      throw new Error('UserProject error');
+    }
+    const projectWithManager = await ProjectPrismaDto().oneById({ id: project.id });
+    if (!projectWithManager) {
+      throw new Error('Project not found');
+    }
+    return projectWithManager;
   }
 
   // * UPDATE
@@ -40,6 +53,7 @@ export default function ProjectService() {
   // ** DELETE
   async function deleteById(id: string): Promise<IProject> {
     const project = await ProjectPrismaDto().deleteOneById({ id });
+    // TODO: delete all tasks, tags, members linked to the deleted project
     if (!project) {
       throw new Error('Project not found');
     }
