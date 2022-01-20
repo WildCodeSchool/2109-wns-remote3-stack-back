@@ -1,6 +1,6 @@
 import ITask from '@task/types/task.type';
 import TaskPrismaDto from '@task/dto/taskDto.prisma';
-import ITaskPayload from '@task/types/PayloadTask.types';
+import ITaskPayload from '@task/types/taskPayload.args';
 import ITagPayload from '@tag/types/TagPayload.args';
 
 export default function TaskService() {
