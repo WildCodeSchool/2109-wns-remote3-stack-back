@@ -3,7 +3,7 @@ import {
 } from 'type-graphql';
 import IComment from '@comment/types/comment.type';
 import CommentService from '@comment/comment.service';
-import ICommentPayload from '@comment/types/createCommentPayload.type';
+import ICommentPayload from '@comment/types/createCommentPayload.args';
 
 @Resolver(() => IComment)
 export default class CommentResolver {

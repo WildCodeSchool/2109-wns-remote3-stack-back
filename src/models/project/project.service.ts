@@ -1,6 +1,6 @@
 import ProjectPrismaDto from '@project/dto/projectDto.prisma';
 import IProject from '@project/types/project.type';
-import IProjectPayload from '@project/types/payload.type';
+import IProjectPayload from '@project/types/payload.args';
 import UserProjectService from '@userProject/userProject.service';
 
 export default function ProjectService() {

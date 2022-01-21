@@ -1,6 +1,6 @@
 import UserProjectPrismaDto from './dto/userProjectDto.prisma';
 import IUserProject from './types/userProject.type';
-import IUserProjectPayload from './types/userProjectPayload.type';
+import IUserProjectPayload from './types/userProjectPayload.args';
 
 export default function UserProjectService() {
   async function createOneUserProject(

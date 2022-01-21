@@ -6,7 +6,7 @@ import {
   ProjectRole,
 } from '@prisma/client';
 import { prisma } from '@utils/prisma/prisma-client';
-import IProjectPayload from '@project/types/payload.type';
+import IProjectPayload from '@project/types/payload.args';
 
 interface UserProjectWithRole extends UserProject {
     projectRole: ProjectRole;
