@@ -1,7 +1,6 @@
 import {
-  Resolver, Query, Arg, Mutation, UseMiddleware,
+  Resolver, Query, Arg, Mutation,
 } from 'type-graphql';
-import authGuard from '@auth/guards/auth.guard';
 import IUser from '@user/types/user.type';
 import UserService from '@user/user.service';
 import IUserWithProjects from './types/userWithProjects.type';
@@ -12,7 +11,6 @@ export default class UserResolver {
 
   // * READ
   @Query(() => [IUser])
-  @UseMiddleware(authGuard)
   async getAllUsers(): Promise<IUser[]> {
     return UserService().allUsers();
   }
