@@ -3,7 +3,7 @@ import {
   Prisma,
 } from '@prisma/client';
 import { prisma } from '@utils/prisma';
-import IPayloadNotification from '@notification/types/payloadNotification.type';
+import IPayloadNotification from '@notification/types/payloadNotification.args';
 
 export default function NotificationPrismaDto() {
   //* Get all notifications

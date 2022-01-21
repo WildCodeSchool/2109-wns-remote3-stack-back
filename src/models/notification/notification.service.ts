@@ -1,6 +1,6 @@
 import NotificationPrismaDto from '@notification/dto/notificationDto.prisma';
 import INotification from '@notification/types/notification.type';
-import INotificationPayload from '@notification/types/payloadNotification.type';
+import INotificationPayload from '@notification/types/payloadNotification.args';
 
 export default function TaskService() {
   //* Get all notifications

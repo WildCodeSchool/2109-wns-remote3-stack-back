@@ -1,5 +1,5 @@
 import { UserProject } from '@prisma/client';
-import IUserProjectPayload from '@userProject/types/userProjectPayload.type';
+import IUserProjectPayload from '@userProject/types/userProjectPayload.args';
 import { prisma } from '@utils/prisma';
 
 export default function UserProjectPrismaDto() {

@@ -7,9 +7,9 @@ export default abstract class IUserProjectPayload {
   @Field(() => String)
     userId: string;
 
-    @Field(() => String)
-      projectId: string;
+  @Field(() => String)
+    projectId: string;
 
-    @Field(() => String)
-      projectRole: ProjectRole;
+  @Field(() => String)
+    projectRole: ProjectRole;
 }

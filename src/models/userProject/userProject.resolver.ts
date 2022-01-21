@@ -1,6 +1,6 @@
 import { Arg, Args, Mutation, Resolver } from 'type-graphql';
 import IUserProject from './types/userProject.type';
-import IUserProjectPayload from './types/userProjectPayload.type';
+import IUserProjectPayload from './types/userProjectPayload.args';
 import UserProjectService from './userProject.service';
 
 @Resolver(() => IUserProject)
