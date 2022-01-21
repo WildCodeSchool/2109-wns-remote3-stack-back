@@ -84,8 +84,8 @@ export default function TaskPrismaDto() {
         estimeeSpentTime: payload.estimeeSpentTime,
         advancement: payload.advancement,
         tags: {
-          create: tags.map((tag) => ({
-            ...tag,
+          connect: tags.map((tag) => ({
+            id: tag.id,
           })),
         },
         project: {
