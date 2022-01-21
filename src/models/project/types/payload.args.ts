@@ -19,7 +19,7 @@ export default abstract class IProjectPayload {
   @Field(() => Date)
     startDate: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
     endDate: Date;
 
   @Field(() => Float)
