@@ -3,7 +3,7 @@ import {
 } from 'type-graphql';
 import INotification from '@notification/types/notification.type';
 import NotificationService from '@notification/notification.service';
-import IPayloadNotification from '@notification/types/payloadNotification.type';
+import IPayloadNotification from '@notification/types/payloadNotification.args';
 
 @Resolver(() => INotification)
 export default class NotificationResolver {
