@@ -24,6 +24,18 @@ enum Status {
   DONE
 }
 
+enum NotificationType {
+  ADDED
+  EDITED
+  DELETED
+}
+
+enum ObjectType {
+  COMMENT
+  TASK
+  PROJECT
+}
+
 model User {
   id              String @id  @default(uuid())
   email           String @unique()
@@ -60,11 +72,18 @@ model Project {
 }
 
 model Notification {
-  id          String   @id @default(uuid())
-  message     String
-  user        User     @relation(fields: [userId], references: [id])
-  userId      String
-  viewed      Boolean  @default(false)
+  id                      String   @id @default(uuid())
+  editorName              String
+  editorId                String
+  actionType              NotificationType
+  modifiedObjectName      String
+  modifiedObjectId        String
+  onName                  String?
+  onId                    String?
+  type                    ObjectType
+  createdAt               DateTime @default(now())
+  subscribers             User[]
+  viewedBy                String[]
 }
 
 model Task {
