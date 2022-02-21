@@ -7,7 +7,10 @@ import {
 @ArgsType()
 export default abstract class ITaskPayload {
   @Field(() => String)
-    subject: string;
+    name: string;
+
+  @Field(() => String)
+    description: string;
 
   @Field(() => String)
     projectId: string;
