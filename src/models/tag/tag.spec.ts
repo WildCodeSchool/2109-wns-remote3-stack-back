@@ -1,5 +1,5 @@
 import { ApolloServer, gql } from 'apollo-server-express';
-import { prisma } from '../../utils/prisma/prisma-client';
+import { prisma } from '@utils/prisma/prisma-client';
 import createApolloServer from '../../apolloServer';
 
 let server: ApolloServer;

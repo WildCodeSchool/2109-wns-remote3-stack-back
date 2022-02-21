@@ -1,8 +1,9 @@
 /* eslint-disable comma-dangle */
 import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
-import TaskService from './task.service';
-import ITask from './types/task.type';
-import ITaskPayload from './types/PayloadTask.types';
+import TaskService from '@task/task.service';
+import ITask from '@task/types/task.type';
+import ITaskPayload from '@task/types/taskPayload.args';
+import ITagPayload from '@tag/types/TagPayload.args';
 
 @Resolver(() => ITask)
 export default class TaskResolver {
@@ -31,6 +32,14 @@ export default class TaskResolver {
   @Mutation(() => ITask)
   async createTask(@Args() payload: ITaskPayload): Promise<ITask> {
     return TaskService().createTask(payload);
+  }
+
+  @Mutation(() => ITask)
+  async createTaskWithTags(
+    @Args() payload: ITaskPayload,
+    @Arg('tags', () => [ITagPayload]) tags: ITagPayload[],
+  ): Promise<ITask> {
+    return TaskService().createTaskWithTags(payload, tags);
   }
 
   // * DELETE

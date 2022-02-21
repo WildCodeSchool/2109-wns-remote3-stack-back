@@ -50,6 +50,8 @@ model UserProject {
 
 model Project {
   id                String @id @default(uuid())
+  name              String
+  description       String
   members           UserProject[]
   tasks             Task[]
   status            Status

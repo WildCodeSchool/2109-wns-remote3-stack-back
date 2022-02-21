@@ -1,7 +1,8 @@
+import IUserProject from '@userProject/types/userProject.type';
 import { ObjectType, Field, ID } from 'type-graphql';
 
 @ObjectType()
-export default abstract class IUser {
+export default abstract class IUserWithProjects {
   @Field(() => ID)
     id: string;
 
@@ -25,4 +26,7 @@ export default abstract class IUser {
 
   @Field(() => Date)
     updatedAt: Date;
+
+  @Field(() => [IUserProject])
+    projects: IUserProject[];
 }

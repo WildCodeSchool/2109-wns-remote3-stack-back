@@ -1,10 +1,9 @@
-import 'reflect-metadata';
 import {
   Resolver, Query, Arg, Mutation, Args,
 } from 'type-graphql';
-import INotification from './types/notification.types';
-import NotificationService from './notification.service';
-import IPayloadNotification from './types/payloadNotification.types';
+import INotification from '@notification/types/notification.type';
+import NotificationService from '@notification/notification.service';
+import IPayloadNotification from '@notification/types/payloadNotification.args';
 
 @Resolver(() => INotification)
 export default class NotificationResolver {
