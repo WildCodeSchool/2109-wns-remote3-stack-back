@@ -12,7 +12,10 @@ export default abstract class ITask {
     id: string;
 
   @Field(() => String)
-    subject: string;
+    name: string;
+
+  @Field(() => String)
+    description: string;
 
   @Field(() => String)
     projectId?: string;

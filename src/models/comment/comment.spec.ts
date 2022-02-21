@@ -31,7 +31,8 @@ beforeAll(async () => {
   });
   task = await prisma.task.create({
     data: {
-      subject: 'TaskTest',
+      name: 'TaskTest',
+      description: 'DescriptionTest',
       projectId: project.id,
       endDate: '2021-02-07T21:04:39.573Z',
       advancement: 'DONE',

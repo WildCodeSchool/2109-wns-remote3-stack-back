@@ -79,7 +79,8 @@ export default function TaskPrismaDto() {
   ): Promise<TaskWithDetails | null> {
     return prisma.task.create({
       data: {
-        subject: payload.subject,
+        name: payload.name,
+        description: payload.description,
         endDate: payload.endDate,
         estimeeSpentTime: payload.estimeeSpentTime,
         advancement: payload.advancement,
