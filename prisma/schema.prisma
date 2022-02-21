@@ -62,6 +62,8 @@ model UserProject {
 
 model Project {
   id                String @id @default(uuid())
+  name              String
+  description       String
   members           UserProject[]
   tasks             Task[]
   status            Status
@@ -88,7 +90,8 @@ model Notification {
 
 model Task {
   id                String @id  @default(uuid())
-  subject           String
+  name              String
+  description       String
   project           Project @relation(fields: [projectId], references: [id])
   projectId         String
   users             User[]

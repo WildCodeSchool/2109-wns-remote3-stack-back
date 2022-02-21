@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import { ApolloError } from 'apollo-server-errors';
 import express from 'express';
 import cookieParser from 'cookie-parser';
@@ -13,8 +14,7 @@ async function startServer() {
   // Get environments variables from .env file
   dotenv.config();
   // Initialize server port
-  const PORT = process.env.PORT || 4000;
-  const HOST = process.env.HOST || 'localhost';
+  const PORT = +process.env.PORT! || 4000;
 
   // Using TypeGraphQL, build GraphQL schema automatically
   const server = await createApolloServer();
@@ -45,13 +45,14 @@ async function startServer() {
         credentials: true,
         origin: [
           process.env.FRONTEND_URL || 'http://localhost:3000',
+          // TODO: remove development endpoints once the app is ready for production
           'https://studio.apollographql.com',
         ],
       },
     });
 
-    app.listen({ port: PORT, host: HOST }, () => {
-      log.info('Server ready', { host: HOST, port: PORT });
+    app.listen(PORT, () => {
+      log.info('Server ready', { port: PORT });
     });
   } catch (error) {
     throw new ApolloError('An error happened', undefined, { error });

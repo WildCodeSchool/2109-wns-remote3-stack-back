@@ -1,6 +1,6 @@
-import { Prisma, User } from '@prisma/client';
-import SignupArgs from '../../../auth/args/signup.args';
-import { prisma } from '../../../utils/prisma/prisma-client';
+import { Prisma, User, UserProject } from '@prisma/client';
+import SignupArgs from '@auth/args/signup.args';
+import { prisma } from '@utils/prisma';
 
 export default function UserPrismaDto() {
   // ** CREATE
@@ -33,7 +33,20 @@ export default function UserPrismaDto() {
     });
   }
 
-  // ** READ
+  async function oneByIdWithProjects(
+    id: Prisma.UserWhereUniqueInput,
+  ): Promise<(User & {
+      projects: UserProject[];
+  }) | null> {
+    return prisma.user.findUnique({
+      where: id,
+      include: {
+        projects: true,
+      },
+    });
+  }
+
+  // ** DELETE
   async function deleteOneById(
     id: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
@@ -47,6 +60,7 @@ export default function UserPrismaDto() {
     all,
     oneById,
     oneByEmail,
+    oneByIdWithProjects,
     deleteOneById,
   };
 }

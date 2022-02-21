@@ -1,11 +1,11 @@
-import NotificationPrismaDto from './dto/notificationDto.prisma';
-import INotification from './types/notification.types';
-import INotificationPayload from './types/payloadNotification.types';
+import NotificationPrismaDto from '@notification/dto/notificationDto.prisma';
+import INotification from '@notification/types/notification.type';
+import INotificationPayload from '@notification/types/payloadNotification.args';
 
 export default function TaskService() {
   //* Get all notifications
   async function allNotifications(): Promise<INotification[]> {
-    const notification = await NotificationPrismaDto().getallNotifications();
+    const notification = await NotificationPrismaDto().getAllNotifications();
     if (!notification) {
       throw new Error('No notifications found');
     }
