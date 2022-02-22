@@ -21,9 +21,6 @@ export default function TaskService() {
     return notification;
   }
 
-  // TODO: all the CREATE logic must be handled from the backend ONLY
-  // TODO: data must come from other services and be generic so it can be used everywhere
-
   //* Create a notification
   async function createNewNotification(
     notificationData: ICreateNotificationType,
@@ -36,17 +33,21 @@ export default function TaskService() {
       throw new Error('Notification not created');
     }
   }
-  // //* Update a notification
-  // async function updateNotificationById(
-  //   payload: INotificationPayload,
-  //   id: string,
-  // ): Promise<INotification> {
-  //   const notification = await NotificationPrismaDto().updateNotification(payload, { id });
-  //   if (!notification) {
-  //     throw new Error('notification not updated');
-  //   }
-  //   return notification;
-  // }
+
+  async function updateNotificationStatus(
+    notificationId: string,
+    userId: string,
+  ): Promise<INotification> {
+    const notification = await NotificationPrismaDto()
+      .getOneNotificationById({ id: notificationId });
+    if (!notification) {
+      throw new Error('Notification not created');
+    }
+    const viewedBy = [...notification.viewedBy, userId];
+    const updatedNotification = await NotificationPrismaDto()
+      .updateNotification(notification, { id: notificationId }, viewedBy);
+    return updatedNotification;
+  }
 
   //* Delete a notification
   async function deleteById(id: string): Promise<INotification> {
@@ -61,6 +62,7 @@ export default function TaskService() {
     allNotifications,
     findNotificationById,
     createNewNotification,
+    updateNotificationStatus,
     deleteById,
   };
 }

@@ -39,18 +39,20 @@ export default function NotificationPrismaDto() {
     });
   }
 
-  // //*  Update notification by id
-  // async function updateNotification(
-  //   payload: IPayloadNotification,
-  //   id: Prisma.NotificationWhereUniqueInput,
-  // ): Promise<Notification> {
-  //   return prisma.notification.update({
-  //     where: id,
-  //     data: {
-  //       ...payload,
-  //     },
-  //   });
-  // }
+  //*  Update notification by id
+  async function updateNotification(
+    payload: Notification,
+    id: Prisma.NotificationWhereUniqueInput,
+    viewedBy: string[],
+  ): Promise<Notification> {
+    return prisma.notification.update({
+      where: id,
+      data: {
+        ...payload,
+        viewedBy,
+      },
+    });
+  }
   //*  Delete notification by id
   async function deleteOneNotificationById(
     id: Prisma.NotificationWhereUniqueInput,
@@ -64,6 +66,7 @@ export default function NotificationPrismaDto() {
     getAllNotifications,
     getOneNotificationById,
     createNotification,
+    updateNotification,
     deleteOneNotificationById,
   };
 }
