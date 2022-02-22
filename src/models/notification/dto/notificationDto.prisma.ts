@@ -24,7 +24,7 @@ export default function NotificationPrismaDto() {
   //*  Create a notification
   async function createNotification(
     data: ICreateNotificationType,
-    users: User[],
+    users: Omit<User, 'avatar'>[],
   ): Promise<Notification> {
     return prisma.notification.create({
       data: {

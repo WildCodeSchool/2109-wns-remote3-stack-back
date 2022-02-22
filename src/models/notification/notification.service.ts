@@ -2,6 +2,7 @@ import NotificationPrismaDto from '@notification/dto/notificationDto.prisma';
 import INotification from '@notification/types/notification.type';
 import { ICreateNotificationType } from '@notification/types/createNotification.type';
 import UserService from '@user/user.service';
+import IUser from '@user/types/user.type';
 
 export default function NotificationService() {
   //* Get all notifications
@@ -26,7 +27,7 @@ export default function NotificationService() {
     notificationData: ICreateNotificationType,
     projectId: string,
   ): Promise<void> {
-    const subscribers = await UserService().findUsersByProjectId(projectId);
+    const subscribers: Omit<IUser, 'avatar'>[] = await UserService().findUsersByProjectId(projectId);
     const notification = await NotificationPrismaDto()
       .createNotification(notificationData, subscribers);
     if (!notification) {
