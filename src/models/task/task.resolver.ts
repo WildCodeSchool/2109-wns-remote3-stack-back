@@ -1,9 +1,10 @@
 /* eslint-disable comma-dangle */
-import { Arg, Args, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
 import TaskService from '@task/task.service';
 import ITask from '@task/types/task.type';
 import ITaskPayload from '@task/types/taskPayload.args';
 import ITagPayload from '@tag/types/TagPayload.args';
+import { IContext } from '@utils/context/interface/context.interface';
 
 @Resolver(() => ITask)
 export default class TaskResolver {
@@ -38,8 +39,9 @@ export default class TaskResolver {
   async createTaskWithTags(
     @Args() payload: ITaskPayload,
     @Arg('tags', () => [ITagPayload]) tags: ITagPayload[],
+    @Ctx() context: IContext,
   ): Promise<ITask> {
-    return TaskService().createTaskWithTags(payload, tags);
+    return TaskService().createTaskWithTags(payload, tags, context);
   }
 
   // * DELETE

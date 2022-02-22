@@ -3,7 +3,7 @@ import INotification from '@notification/types/notification.type';
 import { ICreateNotificationType } from '@notification/types/createNotification.type';
 import UserService from '@user/user.service';
 
-export default function TaskService() {
+export default function NotificationService() {
   //* Get all notifications
   async function allNotifications(): Promise<INotification[]> {
     const notification = await NotificationPrismaDto().getAllNotifications();
