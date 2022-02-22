@@ -1,8 +1,25 @@
-import { UserProject } from '@prisma/client';
+import { User, UserProject } from '@prisma/client';
 import IUserProjectPayload from '@userProject/types/userProjectPayload.args';
 import { prisma } from '@utils/prisma';
 
+interface UserProjectWithUser extends UserProject {
+  user: User,
+}
+
 export default function UserProjectPrismaDto() {
+  async function allByProjectId(
+    projectId: string,
+  ): Promise<UserProjectWithUser[]> {
+    return prisma.userProject.findMany({
+      where: {
+        projectId,
+      },
+      include: {
+        user: true,
+      },
+    });
+  }
+
   async function createOne(
     payload: IUserProjectPayload,
   ): Promise<UserProject> {
@@ -48,6 +65,7 @@ export default function UserProjectPrismaDto() {
   }
 
   return {
+    allByProjectId,
     createOne,
     editOne,
     deleteOne,

@@ -1,9 +1,10 @@
+import { ICreateNotificationType } from '@notification/types/createNotification.type';
 import {
   Notification,
   Prisma,
+  User,
 } from '@prisma/client';
 import { prisma } from '@utils/prisma';
-import IPayloadNotification from '@notification/types/payloadNotification.args';
 
 export default function NotificationPrismaDto() {
   //* Get all notifications
@@ -21,26 +22,35 @@ export default function NotificationPrismaDto() {
     });
   }
   //*  Create a notification
-  async function createNotification(payload: IPayloadNotification): Promise<Notification> {
+  async function createNotification(
+    data: ICreateNotificationType,
+    users: User[],
+  ): Promise<Notification> {
     return prisma.notification.create({
       data: {
-        ...payload,
+        ...data,
+        subscribers: {
+          connect: users.map((user) => ({
+            id: user.id,
+          })),
+        },
+        viewedBy: [],
       },
     });
   }
 
   // //*  Update notification by id
-  async function updateNotification(
-    payload: IPayloadNotification,
-    id: Prisma.NotificationWhereUniqueInput,
-  ): Promise<Notification> {
-    return prisma.notification.update({
-      where: id,
-      data: {
-        ...payload,
-      },
-    });
-  }
+  // async function updateNotification(
+  //   payload: IPayloadNotification,
+  //   id: Prisma.NotificationWhereUniqueInput,
+  // ): Promise<Notification> {
+  //   return prisma.notification.update({
+  //     where: id,
+  //     data: {
+  //       ...payload,
+  //     },
+  //   });
+  // }
   //*  Delete notification by id
   async function deleteOneNotificationById(
     id: Prisma.NotificationWhereUniqueInput,
@@ -54,7 +64,6 @@ export default function NotificationPrismaDto() {
     getAllNotifications,
     getOneNotificationById,
     createNotification,
-    updateNotification,
     deleteOneNotificationById,
   };
 }

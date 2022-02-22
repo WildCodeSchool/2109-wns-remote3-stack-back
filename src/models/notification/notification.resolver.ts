@@ -1,9 +1,8 @@
 import {
-  Resolver, Query, Arg, Mutation, Args,
+  Resolver, Query, Arg,
 } from 'type-graphql';
 import INotification from '@notification/types/notification.type';
 import NotificationService from '@notification/notification.service';
-import IPayloadNotification from '@notification/types/payloadNotification.args';
 
 @Resolver(() => INotification)
 export default class NotificationResolver {
@@ -21,21 +20,5 @@ export default class NotificationResolver {
     return NotificationService().findNotificationById(id);
   }
 
-  //* Create one notification
-  @Mutation(() => INotification)
-  async createNotification(@Args()payload: IPayloadNotification):Promise<INotification> {
-    return NotificationService().createNewNotification(payload);
-  }
-
-  //* Update one notification
-  @Mutation(() => INotification)
-  async updateNotification(@Args()payload: IPayloadNotification, @Arg('id') id: string):Promise<INotification> {
-    return NotificationService().updateNotificationById(payload, id);
-  }
-
-  //* Delete a notification
-  @Mutation(() => INotification)
-  async deleteNotificationById(@Arg('id') id: string): Promise<INotification> {
-    return NotificationService().deleteById(id);
-  }
+  // TODO: get user notifications
 }

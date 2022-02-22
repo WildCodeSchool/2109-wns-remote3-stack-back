@@ -1,6 +1,7 @@
 import SignupArgs from '@auth/args/signup.args';
 import UserPrismaDto from '@user/dto/userDto.prisma';
 import IUser from '@user/types/user.type';
+import UserProjectPrismaDto from '@userProject/dto/userProjectDto.prisma';
 import IUserWithProjects from './types/userWithProjects.type';
 
 export default function UserService() {
@@ -13,6 +14,15 @@ export default function UserService() {
   // ** READ
   async function allUsers(): Promise<IUser[]> {
     const users = await UserPrismaDto().all();
+    if (!users) {
+      throw new Error('No users found');
+    }
+    return users;
+  }
+
+  async function findUsersByProjectId(projectId: string): Promise<IUser[]> {
+    const projectUsers = await UserProjectPrismaDto().allByProjectId(projectId);
+    const users = projectUsers.map((p) => p.user);
     if (!users) {
       throw new Error('No users found');
     }
@@ -55,6 +65,7 @@ export default function UserService() {
   return {
     createOneUser,
     allUsers,
+    findUsersByProjectId,
     findById,
     findByEmail,
     findByIdWithProjects,
