@@ -1,6 +1,7 @@
 import NotificationPrismaDto from '@notification/dto/notificationDto.prisma';
 import INotification from '@notification/types/notification.type';
 import { ICreateNotificationType } from '@notification/types/createNotification.type';
+import UserService from '@user/user.service';
 
 export default function TaskService() {
   //* Get all notifications
@@ -28,8 +29,9 @@ export default function TaskService() {
     notificationData: ICreateNotificationType,
     projectId: string,
   ): Promise<void> {
+    const subscribers = await UserService().findUsersByProjectId(projectId);
     const notification = await NotificationPrismaDto()
-      .createNotification(notificationData, projectId);
+      .createNotification(notificationData, subscribers);
     if (!notification) {
       throw new Error('Notification not created');
     }

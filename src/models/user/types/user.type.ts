@@ -18,7 +18,7 @@ export default abstract class IUser {
     lastName: string;
 
   @Field(() => String, { nullable: true })
-    avatar?: string | null | undefined;
+    avatar: string | null;
 
   @Field(() => Date)
     createdAt: Date;
