@@ -1,5 +1,5 @@
 import {
-  Resolver, Query, Arg, Ctx,
+  Resolver, Query, Arg, Ctx, Mutation,
 } from 'type-graphql';
 import INotification from '@notification/types/notification.type';
 import NotificationService from '@notification/notification.service';
@@ -26,5 +26,13 @@ export default class NotificationResolver {
     @Ctx() context: IContext,
   ): Promise<INotification[]> {
     return NotificationService().findNotificationsByUserId(context);
+  }
+
+  @Mutation(() => INotification)
+  async updateNotificationStatus(
+    @Arg('id') id: string,
+    @Ctx() context: IContext,
+  ): Promise<INotification> {
+    return NotificationService().updateNotificationStatus(id, context);
   }
 }

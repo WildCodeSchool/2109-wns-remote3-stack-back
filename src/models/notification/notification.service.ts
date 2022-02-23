@@ -46,14 +46,14 @@ export default function NotificationService() {
 
   async function updateNotificationStatus(
     notificationId: string,
-    userId: string,
+    context: IContext,
   ): Promise<INotification> {
     const notification = await NotificationPrismaDto()
       .getOneNotificationById({ id: notificationId });
     if (!notification) {
       throw new Error('Notification not created');
     }
-    const viewedBy = [...notification.viewedBy, userId];
+    const viewedBy = [...notification.viewedBy, context.userId || ''];
     const updatedNotification = await NotificationPrismaDto()
       .updateNotification(notification, { id: notificationId }, viewedBy);
     return updatedNotification;
