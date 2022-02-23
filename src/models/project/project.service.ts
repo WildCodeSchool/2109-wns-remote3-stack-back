@@ -51,9 +51,8 @@ export default function ProjectService() {
   }
 
   // ** DELETE
-  async function deleteById(id: string): Promise<IProject> {
+  async function deleteById(id: string): Promise<boolean> {
     const project = await ProjectPrismaDto().deleteOneById({ id });
-    // TODO: delete all tasks, tags, members linked to the deleted project
     if (!project) {
       throw new Error('Project not found');
     }

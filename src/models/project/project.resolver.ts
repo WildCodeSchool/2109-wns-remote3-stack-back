@@ -36,10 +36,10 @@ export default class ProjectResolver {
   }
 
   // * DELETE
-  @Mutation(() => IProject)
+  @Mutation(() => Boolean)
   async deleteProjectById(
     @Arg('id') id: string,
-  ): Promise<IProject> {
+  ): Promise<boolean> {
     return ProjectService().deleteById(id);
   }
 }
