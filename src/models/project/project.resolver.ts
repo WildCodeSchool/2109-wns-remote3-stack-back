@@ -44,7 +44,8 @@ export default class ProjectResolver {
   @Mutation(() => Boolean)
   async deleteProjectById(
     @Arg('id') id: string,
+    @Ctx() context: IContext,
   ): Promise<boolean> {
-    return ProjectService().deleteById(id);
+    return ProjectService().deleteById(id, context);
   }
 }
