@@ -60,19 +60,6 @@ export default function TaskPrismaDto() {
     });
   }
 
-  async function createTask(payload: ITaskPayload): Promise<TaskWithDetails | null> {
-    return prisma.task.create({
-      data: {
-        ...payload,
-      },
-      include: {
-        users: true,
-        comments: true,
-        tags: true,
-      },
-    });
-  }
-
   async function createTaskWithTags(
     payload: ITaskPayload,
     tags: ITagPayload[],
@@ -108,7 +95,6 @@ export default function TaskPrismaDto() {
     oneById,
     deleteOneById,
     updateOneById,
-    createTask,
     createTaskWithTags,
   };
 }

@@ -24,15 +24,10 @@ export default class TaskResolver {
   @Mutation(() => ITask)
   async updateTaskById(
     @Args() payload: ITaskPayload,
-    @Arg('id') id: string
+    @Arg('id') id: string,
+    @Ctx() context: IContext,
   ): Promise<ITask> {
-    return TaskService().updateById(payload, id);
-  }
-
-  //* CREATE
-  @Mutation(() => ITask)
-  async createTask(@Args() payload: ITaskPayload): Promise<ITask> {
-    return TaskService().createTask(payload);
+    return TaskService().updateById(payload, id, context);
   }
 
   @Mutation(() => ITask)
@@ -46,7 +41,10 @@ export default class TaskResolver {
 
   // * DELETE
   @Mutation(() => ITask)
-  async deleteTaskById(@Arg('id') id: string): Promise<ITask> {
-    return TaskService().deleteById(id);
+  async deleteTaskById(
+    @Arg('id') id: string,
+    @Ctx() context: IContext,
+  ): Promise<ITask> {
+    return TaskService().deleteById(id, context);
   }
 }

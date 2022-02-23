@@ -1,9 +1,10 @@
 import {
-  Resolver, Query, Arg, Mutation, Args,
+  Resolver, Query, Arg, Mutation, Args, Ctx,
 } from 'type-graphql';
 import IProject from '@project/types/project.type';
 import IProjectPayload from '@project/types/payload.args';
 import ProjectService from '@project/project.service';
+import { IContext } from '@utils/context/interface/context.interface';
 
 @Resolver(() => IProject)
 export default class ProjectResolver {
@@ -24,15 +25,19 @@ export default class ProjectResolver {
   @Mutation(() => IProject)
   async createProject(
     @Args()payload: IProjectPayload,
-    @Arg('userId') userId: string,
+    @Ctx() context: IContext,
   ):Promise<IProject> {
-    return ProjectService().createNewProject(payload, userId);
+    return ProjectService().createNewProject(payload, context);
   }
 
   // * UPDATE
   @Mutation(() => IProject)
-  async updateProject(@Args()payload: IProjectPayload, @Arg('id') id: string):Promise<IProject> {
-    return ProjectService().updateProjectById(payload, id);
+  async updateProject(
+    @Args()payload: IProjectPayload,
+    @Arg('id') id: string,
+    @Ctx() context: IContext,
+  ):Promise<IProject> {
+    return ProjectService().updateProjectById(payload, id, context);
   }
 
   // * DELETE

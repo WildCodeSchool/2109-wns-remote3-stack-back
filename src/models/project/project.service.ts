@@ -2,6 +2,9 @@ import ProjectPrismaDto from '@project/dto/projectDto.prisma';
 import IProject from '@project/types/project.type';
 import IProjectPayload from '@project/types/payload.args';
 import UserProjectService from '@userProject/userProject.service';
+import UserService from '@user/user.service';
+import { IContext } from '@utils/context/interface/context.interface';
+import NotificationService from '@notification/notification.service';
 
 export default function ProjectService() {
   // ** READ
@@ -21,13 +24,13 @@ export default function ProjectService() {
     return project;
   }
   // * CREATE
-  async function createNewProject(payload: IProjectPayload, userId: string): Promise<IProject> {
+  async function createNewProject(payload: IProjectPayload, context: IContext): Promise<IProject> {
     const project = await ProjectPrismaDto().createProject(payload);
     if (!project) {
       throw new Error('Project not found');
     }
     const userProject = await UserProjectService().createOneUserProject({
-      userId,
+      userId: context.userId || '',
       projectId: project.id,
       projectRole: 'PROJECT_MANAGER',
     });
@@ -38,24 +41,68 @@ export default function ProjectService() {
     if (!projectWithManager) {
       throw new Error('Project not found');
     }
+    const user = await UserService().findById(context.userId || '');
+
+    await NotificationService().createNewNotification({
+      editorName: user.firstName,
+      editorId: context.userId || '',
+      actionType: 'ADDED',
+      modifiedObjectName: projectWithManager.name,
+      modifiedObjectId: projectWithManager.id,
+      type: 'PROJECT',
+    }, projectWithManager.id);
+
     return projectWithManager;
   }
 
   // * UPDATE
-  async function updateProjectById(payload: IProjectPayload, id: string): Promise<IProject> {
+  async function updateProjectById(
+    payload: IProjectPayload,
+    id: string,
+    context: IContext,
+  ): Promise<IProject> {
     const project = await ProjectPrismaDto().updateProject(payload, { id });
     if (!project) {
       throw new Error('Project not found');
     }
+    const user = await UserService().findById(context.userId || '');
+
+    await NotificationService().createNewNotification({
+      editorName: user.firstName,
+      editorId: context.userId || '',
+      actionType: 'EDITED',
+      modifiedObjectName: project.name,
+      modifiedObjectId: project.id,
+      type: 'PROJECT',
+    }, project.id);
+
     return project;
   }
 
   // ** DELETE
-  async function deleteById(id: string): Promise<boolean> {
+  async function deleteById(
+    id: string,
+    context: IContext,
+  ): Promise<boolean> {
+    // ? We get the project before the deletion so we can send the notification correctly, as
+    // ? we are doing a Prisma transaction for the project deletion
+    const projectBeforeDeletion = await ProjectPrismaDto().oneById({ id });
     const project = await ProjectPrismaDto().deleteOneById({ id });
-    if (!project) {
+    if (!(projectBeforeDeletion && project)) {
       throw new Error('Project not found');
     }
+
+    const user = await UserService().findById(context.userId || '');
+
+    await NotificationService().createNewNotification({
+      editorName: user.firstName,
+      editorId: context.userId || '',
+      actionType: 'DELETED',
+      modifiedObjectName: projectBeforeDeletion.name,
+      modifiedObjectId: projectBeforeDeletion.id,
+      type: 'PROJECT',
+    }, projectBeforeDeletion.id);
+
     return project;
   }
 

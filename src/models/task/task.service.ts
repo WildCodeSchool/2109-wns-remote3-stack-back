@@ -23,19 +23,26 @@ export default function TaskService() {
     return task;
   }
 
-  async function deleteById(id: string): Promise<ITask> {
+  async function deleteById(
+    id: string,
+    context: IContext,
+  ): Promise<ITask> {
     const task = await TaskPrismaDto().deleteOneById({ id });
     if (!task) {
       throw new Error('Task not found');
     }
-    return task;
-  }
+    const user = await UserService().findById(context.userId || '');
 
-  async function createTask(payload: ITaskPayload): Promise<ITask> {
-    const task = await TaskPrismaDto().createTask(payload);
-    if (!task) {
-      throw new Error('Task not found');
-    }
+    await NotificationService().createNewNotification({
+      editorName: user.firstName,
+      editorId: context.userId || '',
+      actionType: 'DELETED',
+      modifiedObjectName: task.name,
+      modifiedObjectId: task.id,
+      onId: task.projectId,
+      type: 'TASK',
+    }, task.projectId);
+
     return task;
   }
 
@@ -49,6 +56,7 @@ export default function TaskService() {
       throw new Error('Task not found');
     }
     const user = await UserService().findById(context.userId || '');
+
     await NotificationService().createNewNotification({
       editorName: user.firstName,
       editorId: context.userId || '',
@@ -58,14 +66,31 @@ export default function TaskService() {
       onId: task.projectId,
       type: 'TASK',
     }, task.projectId);
+
     return task;
   }
 
-  async function updateById(payload: ITaskPayload, id: string): Promise<ITask> {
+  async function updateById(
+    payload: ITaskPayload,
+    id: string,
+    context: IContext,
+  ): Promise<ITask> {
     const task = await TaskPrismaDto().updateOneById(payload, { id });
     if (!task) {
       throw new Error('Task not found');
     }
+    const user = await UserService().findById(context.userId || '');
+
+    await NotificationService().createNewNotification({
+      editorName: user.firstName,
+      editorId: context.userId || '',
+      actionType: 'EDITED',
+      modifiedObjectName: task.name,
+      modifiedObjectId: task.id,
+      onId: task.projectId,
+      type: 'TASK',
+    }, task.projectId);
+
     return task;
   }
 
@@ -73,7 +98,6 @@ export default function TaskService() {
     allTasks,
     findById,
     deleteById,
-    createTask,
     createTaskWithTags,
     updateById,
   };

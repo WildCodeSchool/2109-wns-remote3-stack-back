@@ -1,6 +1,10 @@
 import IComment from '@comment/types/comment.type';
 import CommentPrismaDto from '@comment/dto/commentDto.prisma';
 import ICommentPayload from '@comment/types/createCommentPayload.args';
+import UserService from '@user/user.service';
+import { IContext } from '@utils/context/interface/context.interface';
+import NotificationService from '@notification/notification.service';
+import TaskService from '@task/task.service';
 
 export default function CommentService() {
   //* Get all comments
@@ -21,11 +25,27 @@ export default function CommentService() {
   }
 
   //* Create a comment
-  async function createNewComment(payload: ICommentPayload): Promise<IComment> {
+  async function createNewComment(
+    payload: ICommentPayload,
+    context: IContext,
+  ): Promise<IComment> {
     const comment = await CommentPrismaDto().createComment(payload);
     if (!comment) {
       throw new Error('Comment not created');
     }
+    const user = await UserService().findById(context.userId || '');
+    const task = await TaskService().findById(comment.taskId);
+
+    await NotificationService().createNewNotification({
+      editorName: user.firstName,
+      editorId: context.userId || '',
+      actionType: 'ADDED',
+      modifiedObjectName: comment.id,
+      modifiedObjectId: comment.id,
+      onId: comment.taskId,
+      type: 'COMMENT',
+    }, task.projectId);
+
     return comment;
   }
   //* Update a comment
