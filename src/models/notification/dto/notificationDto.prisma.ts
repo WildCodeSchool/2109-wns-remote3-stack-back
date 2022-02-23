@@ -2,15 +2,27 @@ import { ICreateNotificationType } from '@notification/types/createNotification.
 import {
   Notification,
   Prisma,
-  User,
+  UserProject,
 } from '@prisma/client';
 import { prisma } from '@utils/prisma';
 
 export default function NotificationPrismaDto() {
   //* Get all notifications
   async function getAllNotifications(): Promise<Notification[]> {
-    return prisma.notification.findMany({
+    return prisma.notification.findMany();
+  }
 
+  async function userNotifications(
+    userId: string,
+  ): Promise<Notification[]> {
+    return prisma.notification.findMany({
+      where: {
+        subscribers: {
+          some: {
+            id: userId,
+          },
+        },
+      },
     });
   }
   //* Get one notification by Id
@@ -24,14 +36,14 @@ export default function NotificationPrismaDto() {
   //*  Create a notification
   async function createNotification(
     data: ICreateNotificationType,
-    users: Omit<User, 'avatar'>[],
+    users: UserProject[],
   ): Promise<Notification> {
     return prisma.notification.create({
       data: {
         ...data,
         subscribers: {
           connect: users.map((user) => ({
-            id: user.id,
+            id: user.userId,
           })),
         },
         viewedBy: [],
@@ -64,6 +76,7 @@ export default function NotificationPrismaDto() {
 
   return {
     getAllNotifications,
+    userNotifications,
     getOneNotificationById,
     createNotification,
     updateNotification,

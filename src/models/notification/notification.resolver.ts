@@ -1,8 +1,9 @@
 import {
-  Resolver, Query, Arg,
+  Resolver, Query, Arg, Ctx,
 } from 'type-graphql';
 import INotification from '@notification/types/notification.type';
 import NotificationService from '@notification/notification.service';
+import { IContext } from '@utils/context/interface/context.interface';
 
 @Resolver(() => INotification)
 export default class NotificationResolver {
@@ -20,5 +21,10 @@ export default class NotificationResolver {
     return NotificationService().findNotificationById(id);
   }
 
-  // TODO: get user notifications
+  @Query(() => [INotification])
+  async getUserNotifications(
+    @Ctx() context: IContext,
+  ): Promise<INotification[]> {
+    return NotificationService().findNotificationsByUserId(context);
+  }
 }
