@@ -5,6 +5,7 @@ import UserProjectService from '@userProject/userProject.service';
 import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import NotificationService from '@notification/notification.service';
+import { PubSubEngine } from 'type-graphql';
 
 export default function ProjectService() {
   // ** READ
@@ -24,7 +25,11 @@ export default function ProjectService() {
     return project;
   }
   // * CREATE
-  async function createNewProject(payload: IProjectPayload, context: IContext): Promise<IProject> {
+  async function createNewProject(
+    payload: IProjectPayload,
+    context: IContext,
+    pubSub: PubSubEngine,
+  ): Promise<IProject> {
     const project = await ProjectPrismaDto().createProject(payload);
     if (!project) {
       throw new Error('Project not found');
@@ -43,7 +48,7 @@ export default function ProjectService() {
     }
     const user = await UserService().findById(context.userId || '');
 
-    await NotificationService().createNewNotification({
+    const notification = await NotificationService().createNewNotification({
       editorName: user.firstName,
       editorId: context.userId || '',
       actionType: 'ADDED',
@@ -51,6 +56,9 @@ export default function ProjectService() {
       modifiedObjectId: projectWithManager.id,
       type: 'PROJECT',
     }, projectWithManager.id);
+
+    await pubSub.publish('NOTIFICATIONS', notification);
+    await pubSub.publish('USER_NOTIFICATIONS', notification);
 
     return projectWithManager;
   }
@@ -60,6 +68,7 @@ export default function ProjectService() {
     payload: IProjectPayload,
     id: string,
     context: IContext,
+    pubSub: PubSubEngine,
   ): Promise<IProject> {
     const project = await ProjectPrismaDto().updateProject(payload, { id });
     if (!project) {
@@ -67,7 +76,7 @@ export default function ProjectService() {
     }
     const user = await UserService().findById(context.userId || '');
 
-    await NotificationService().createNewNotification({
+    const notification = await NotificationService().createNewNotification({
       editorName: user.firstName,
       editorId: context.userId || '',
       actionType: 'EDITED',
@@ -76,6 +85,9 @@ export default function ProjectService() {
       type: 'PROJECT',
     }, project.id);
 
+    await pubSub.publish('NOTIFICATIONS', notification);
+    await pubSub.publish('USER_NOTIFICATIONS', notification);
+
     return project;
   }
 
@@ -83,6 +95,7 @@ export default function ProjectService() {
   async function deleteById(
     id: string,
     context: IContext,
+    pubSub: PubSubEngine,
   ): Promise<boolean> {
     // ? We get the project before the deletion so we can send the notification correctly, as
     // ? we are doing a Prisma transaction for the project deletion
@@ -94,7 +107,7 @@ export default function ProjectService() {
 
     const user = await UserService().findById(context.userId || '');
 
-    await NotificationService().createNewNotification({
+    const notification = await NotificationService().createNewNotification({
       editorName: user.firstName,
       editorId: context.userId || '',
       actionType: 'DELETED',
@@ -102,6 +115,9 @@ export default function ProjectService() {
       modifiedObjectId: projectBeforeDeletion.id,
       type: 'PROJECT',
     }, projectBeforeDeletion.id);
+
+    await pubSub.publish('NOTIFICATIONS', notification);
+    await pubSub.publish('USER_NOTIFICATIONS', notification);
 
     return project;
   }

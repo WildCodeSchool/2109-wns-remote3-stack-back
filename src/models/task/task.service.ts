@@ -5,6 +5,7 @@ import ITagPayload from '@tag/types/TagPayload.args';
 import NotificationService from '@notification/notification.service';
 import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
+import { PubSubEngine } from 'type-graphql';
 
 export default function TaskService() {
   async function allTasks(): Promise<ITask[]> {
@@ -26,6 +27,7 @@ export default function TaskService() {
   async function deleteById(
     id: string,
     context: IContext,
+    pubSub: PubSubEngine,
   ): Promise<ITask> {
     const task = await TaskPrismaDto().deleteOneById({ id });
     if (!task) {
@@ -33,7 +35,7 @@ export default function TaskService() {
     }
     const user = await UserService().findById(context.userId || '');
 
-    await NotificationService().createNewNotification({
+    const notification = await NotificationService().createNewNotification({
       editorName: user.firstName,
       editorId: context.userId || '',
       actionType: 'DELETED',
@@ -43,6 +45,9 @@ export default function TaskService() {
       type: 'TASK',
     }, task.projectId);
 
+    await pubSub.publish('NOTIFICATIONS', notification);
+    await pubSub.publish('USER_NOTIFICATIONS', notification);
+
     return task;
   }
 
@@ -50,6 +55,7 @@ export default function TaskService() {
     payload: ITaskPayload,
     tags: ITagPayload[],
     context: IContext,
+    pubSub: PubSubEngine,
   ): Promise<ITask> {
     const task = await TaskPrismaDto().createTaskWithTags(payload, tags);
     if (!task) {
@@ -57,7 +63,7 @@ export default function TaskService() {
     }
     const user = await UserService().findById(context.userId || '');
 
-    await NotificationService().createNewNotification({
+    const notification = await NotificationService().createNewNotification({
       editorName: user.firstName,
       editorId: context.userId || '',
       actionType: 'ADDED',
@@ -67,6 +73,9 @@ export default function TaskService() {
       type: 'TASK',
     }, task.projectId);
 
+    await pubSub.publish('NOTIFICATIONS', notification);
+    await pubSub.publish('USER_NOTIFICATIONS', notification);
+
     return task;
   }
 
@@ -74,6 +83,7 @@ export default function TaskService() {
     payload: ITaskPayload,
     id: string,
     context: IContext,
+    pubSub: PubSubEngine,
   ): Promise<ITask> {
     const task = await TaskPrismaDto().updateOneById(payload, { id });
     if (!task) {
@@ -81,7 +91,7 @@ export default function TaskService() {
     }
     const user = await UserService().findById(context.userId || '');
 
-    await NotificationService().createNewNotification({
+    const notification = await NotificationService().createNewNotification({
       editorName: user.firstName,
       editorId: context.userId || '',
       actionType: 'EDITED',
@@ -90,6 +100,9 @@ export default function TaskService() {
       onId: task.projectId,
       type: 'TASK',
     }, task.projectId);
+
+    await pubSub.publish('NOTIFICATIONS', notification);
+    await pubSub.publish('USER_NOTIFICATIONS', notification);
 
     return task;
   }

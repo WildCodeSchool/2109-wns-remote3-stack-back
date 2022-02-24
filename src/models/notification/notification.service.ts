@@ -4,6 +4,7 @@ import { ICreateNotificationType } from '@notification/types/createNotification.
 import UserProjectService from '@userProject/userProject.service';
 import IUserProject from '@userProject/types/userProject.type';
 import { IContext } from '@utils/context/interface/context.interface';
+import IUser from '@user/types/user.type';
 
 export default function NotificationService() {
   //* Get all notifications
@@ -35,13 +36,14 @@ export default function NotificationService() {
   async function createNewNotification(
     notificationData: ICreateNotificationType,
     projectId: string,
-  ): Promise<void> {
+  ): Promise<INotification & { subscribers: IUser[] }> {
     const subscribers: IUserProject[] = await UserProjectService().findUsersByProjectId(projectId);
     const notification = await NotificationPrismaDto()
       .createNotification(notificationData, subscribers);
     if (!notification) {
       throw new Error('Notification not created');
     }
+    return notification;
   }
 
   async function updateNotificationStatus(

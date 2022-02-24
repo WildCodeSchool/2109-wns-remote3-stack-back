@@ -2,9 +2,14 @@ import { ICreateNotificationType } from '@notification/types/createNotification.
 import {
   Notification,
   Prisma,
+  User,
   UserProject,
 } from '@prisma/client';
 import { prisma } from '@utils/prisma';
+
+interface NotificationWithSubscribers extends Notification {
+  subscribers: User[];
+}
 
 export default function NotificationPrismaDto() {
   //* Get all notifications
@@ -37,7 +42,7 @@ export default function NotificationPrismaDto() {
   async function createNotification(
     data: ICreateNotificationType,
     users: UserProject[],
-  ): Promise<Notification> {
+  ): Promise<NotificationWithSubscribers> {
     return prisma.notification.create({
       data: {
         ...data,
@@ -47,6 +52,9 @@ export default function NotificationPrismaDto() {
           })),
         },
         viewedBy: [],
+      },
+      include: {
+        subscribers: true,
       },
     });
   }

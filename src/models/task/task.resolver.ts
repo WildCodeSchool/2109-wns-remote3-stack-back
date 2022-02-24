@@ -1,5 +1,5 @@
 /* eslint-disable comma-dangle */
-import { Arg, Args, Ctx, Mutation, Query, Resolver } from 'type-graphql';
+import { Arg, Args, Ctx, Mutation, PubSub, PubSubEngine, Query, Resolver } from 'type-graphql';
 import TaskService from '@task/task.service';
 import ITask from '@task/types/task.type';
 import ITaskPayload from '@task/types/taskPayload.args';
@@ -25,18 +25,20 @@ export default class TaskResolver {
   async updateTaskById(
     @Args() payload: ITaskPayload,
     @Arg('id') id: string,
+    @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
   ): Promise<ITask> {
-    return TaskService().updateById(payload, id, context);
+    return TaskService().updateById(payload, id, context, pubSub);
   }
 
   @Mutation(() => ITask)
   async createTaskWithTags(
     @Args() payload: ITaskPayload,
     @Arg('tags', () => [ITagPayload]) tags: ITagPayload[],
+    @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
   ): Promise<ITask> {
-    return TaskService().createTaskWithTags(payload, tags, context);
+    return TaskService().createTaskWithTags(payload, tags, context, pubSub);
   }
 
   // * DELETE
@@ -44,7 +46,8 @@ export default class TaskResolver {
   async deleteTaskById(
     @Arg('id') id: string,
     @Ctx() context: IContext,
+    @PubSub() pubSub: PubSubEngine,
   ): Promise<ITask> {
-    return TaskService().deleteById(id, context);
+    return TaskService().deleteById(id, context, pubSub);
   }
 }

@@ -1,5 +1,6 @@
 import 'reflect-metadata';
 import { ApolloError } from 'apollo-server-errors';
+import { createServer } from 'http';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
@@ -15,9 +16,6 @@ async function startServer() {
   dotenv.config();
   // Initialize server port
   const PORT = +process.env.PORT! || 4000;
-
-  // Using TypeGraphQL, build GraphQL schema automatically
-  const server = await createApolloServer();
   const app = express();
 
   app.use(cookieParser()); // Cookie Parser middleware to read cookies from the navigator
@@ -36,6 +34,10 @@ async function startServer() {
   // Setup the server endpoint to ${serverAdress}/graphql with the rate limiter
   app.use('/graphql', rateLimiter);
   app.use(express.json()); // Body parser
+
+  const httpServer = createServer(app);
+  // Using TypeGraphQL, build GraphQL schema automatically
+  const server = await createApolloServer(httpServer);
   // * Startup server
   try {
     await server.start();
@@ -51,7 +53,7 @@ async function startServer() {
       },
     });
 
-    app.listen(PORT, () => {
+    httpServer.listen(PORT, () => {
       log.info('Server ready', { port: PORT });
     });
   } catch (error) {

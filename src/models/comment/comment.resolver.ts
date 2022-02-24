@@ -1,5 +1,5 @@
 import {
-  Resolver, Query, Arg, Mutation, Args, Ctx,
+  Resolver, Query, Arg, Mutation, Args, Ctx, PubSub, PubSubEngine,
 } from 'type-graphql';
 import IComment from '@comment/types/comment.type';
 import CommentService from '@comment/comment.service';
@@ -27,19 +27,29 @@ export default class CommentResolver {
   async createComment(
     @Args() payload: ICommentPayload,
     @Ctx() context: IContext,
+    @PubSub() pubSub: PubSubEngine,
   ):Promise<IComment> {
-    return CommentService().createNewComment(payload, context);
+    return CommentService().createNewComment(payload, context, pubSub);
   }
 
   //* Update one comment
   @Mutation(() => IComment)
-  async updateComment(@Args()payload: ICommentPayload, @Arg('id') id: string):Promise<IComment> {
-    return CommentService().updateCommentById(payload, id);
+  async updateComment(
+    @Args()payload: ICommentPayload,
+    @Arg('id') id: string,
+    @Ctx() context: IContext,
+    @PubSub() pubSub: PubSubEngine,
+  ):Promise<IComment> {
+    return CommentService().updateCommentById(payload, id, context, pubSub);
   }
 
   //* Delete a comment
   @Mutation(() => IComment)
-  async deleteCommentById(@Arg('id') id: string): Promise<IComment> {
-    return CommentService().deleteById(id);
+  async deleteCommentById(
+    @Arg('id') id: string,
+    @Ctx() context: IContext,
+    @PubSub() pubSub: PubSubEngine,
+  ): Promise<IComment> {
+    return CommentService().deleteById(id, context, pubSub);
   }
 }

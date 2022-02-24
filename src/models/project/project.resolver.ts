@@ -1,5 +1,5 @@
 import {
-  Resolver, Query, Arg, Mutation, Args, Ctx,
+  Resolver, Query, Arg, Mutation, Args, Ctx, PubSub, PubSubEngine,
 } from 'type-graphql';
 import IProject from '@project/types/project.type';
 import IProjectPayload from '@project/types/payload.args';
@@ -25,9 +25,10 @@ export default class ProjectResolver {
   @Mutation(() => IProject)
   async createProject(
     @Args()payload: IProjectPayload,
+    @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
   ):Promise<IProject> {
-    return ProjectService().createNewProject(payload, context);
+    return ProjectService().createNewProject(payload, context, pubSub);
   }
 
   // * UPDATE
@@ -35,17 +36,19 @@ export default class ProjectResolver {
   async updateProject(
     @Args()payload: IProjectPayload,
     @Arg('id') id: string,
+    @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
   ):Promise<IProject> {
-    return ProjectService().updateProjectById(payload, id, context);
+    return ProjectService().updateProjectById(payload, id, context, pubSub);
   }
 
   // * DELETE
   @Mutation(() => Boolean)
   async deleteProjectById(
     @Arg('id') id: string,
+    @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
   ): Promise<boolean> {
-    return ProjectService().deleteById(id, context);
+    return ProjectService().deleteById(id, context, pubSub);
   }
 }
