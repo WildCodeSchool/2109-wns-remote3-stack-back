@@ -1,6 +1,6 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { prisma } from '@utils/prisma';
-import createApolloServer from '../../apolloServer';
+// import createApolloServer from '../../apolloServer';
 
 let server: ApolloServer;
 
@@ -8,7 +8,8 @@ let id: string;
 let isDeleted: boolean;
 
 beforeAll(async () => {
-  server = await createApolloServer();
+  // TODO: fix apollo server with subscription system
+  // server = await createApolloServer();
 });
 
 describe('Project Resolver', () => {

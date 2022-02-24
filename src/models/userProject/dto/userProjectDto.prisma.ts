@@ -3,6 +3,16 @@ import IUserProjectPayload from '@userProject/types/userProjectPayload.args';
 import { prisma } from '@utils/prisma';
 
 export default function UserProjectPrismaDto() {
+  async function allByProjectId(
+    projectId: string,
+  ): Promise<UserProject[]> {
+    return prisma.userProject.findMany({
+      where: {
+        projectId,
+      },
+    });
+  }
+
   async function createOne(
     payload: IUserProjectPayload,
   ): Promise<UserProject> {
@@ -48,6 +58,7 @@ export default function UserProjectPrismaDto() {
   }
 
   return {
+    allByProjectId,
     createOne,
     editOne,
     deleteOne,

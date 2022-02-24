@@ -18,7 +18,7 @@ export default abstract class ITask {
     description: string;
 
   @Field(() => String)
-    projectId?: string;
+    projectId: string;
 
   @Field(() => [IUser])
     users: IUser[];

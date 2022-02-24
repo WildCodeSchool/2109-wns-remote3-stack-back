@@ -1,16 +1,27 @@
 import {
-  Resolver, Query, Arg, Mutation, Args,
+  Resolver, Query, Arg, Ctx, Mutation, Subscription, Root,
 } from 'type-graphql';
 import INotification from '@notification/types/notification.type';
 import NotificationService from '@notification/notification.service';
-import IPayloadNotification from '@notification/types/payloadNotification.args';
+import { IContext } from '@utils/context/interface/context.interface';
+import IUser from '@user/types/user.type';
 
 @Resolver(() => INotification)
 export default class NotificationResolver {
-  //* Get all Notifications
+  // * Get all notifications
   @Query(() => [INotification])
-  async getAllNotifications(): Promise<INotification[]> {
+  async getAllNotifications() {
     return NotificationService().allNotifications();
+  }
+
+  //* Notification subscription
+  @Subscription(() => INotification, {
+    topics: 'NOTIFICATIONS',
+  })
+  async newNotification(
+    @Root() notificationPayload: INotification,
+  ): Promise<INotification> {
+    return notificationPayload;
   }
 
   //* Get one notification by id
@@ -21,21 +32,33 @@ export default class NotificationResolver {
     return NotificationService().findNotificationById(id);
   }
 
-  //* Create one notification
-  @Mutation(() => INotification)
-  async createNotification(@Args()payload: IPayloadNotification):Promise<INotification> {
-    return NotificationService().createNewNotification(payload);
+  @Subscription(() => INotification, {
+    topics: 'USER_NOTIFICATIONS',
+    nullable: true,
+  })
+  // eslint-disable-next-line consistent-return
+  async newUserNotification(
+    @Root() notificationPayload: INotification & { subscribers: IUser[] },
+    @Ctx() context: IContext,
+  ): Promise<INotification | undefined> {
+    const { subscribers, ...notification } = notificationPayload;
+    if (subscribers.map((subscriber) => subscriber.id).includes(context.userId || '')) {
+      return notification;
+    }
   }
 
-  //* Update one notification
-  @Mutation(() => INotification)
-  async updateNotification(@Args()payload: IPayloadNotification, @Arg('id') id: string):Promise<INotification> {
-    return NotificationService().updateNotificationById(payload, id);
+  @Query(() => [INotification])
+  async getUserNotifications(
+    @Ctx() context: IContext,
+  ): Promise<INotification[]> {
+    return NotificationService().findNotificationsByUserId(context);
   }
 
-  //* Delete a notification
   @Mutation(() => INotification)
-  async deleteNotificationById(@Arg('id') id: string): Promise<INotification> {
-    return NotificationService().deleteById(id);
+  async updateNotificationStatus(
+    @Arg('id') id: string,
+    @Ctx() context: IContext,
+  ): Promise<INotification> {
+    return NotificationService().updateNotificationStatus(id, context);
   }
 }

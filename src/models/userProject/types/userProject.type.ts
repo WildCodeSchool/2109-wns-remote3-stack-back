@@ -9,5 +9,5 @@ export default abstract class IUserProject {
     projectId: string;
 
   @Field(() => String)
-    projectRole: string;
+    projectRole: 'PROJECT_MANAGER' |'DEVELOPPER' | 'UX_DESIGNER' | 'DEVOPS';
 }

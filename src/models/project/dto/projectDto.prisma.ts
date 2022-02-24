@@ -7,6 +7,8 @@ import {
 } from '@prisma/client';
 import { prisma } from '@utils/prisma/prisma-client';
 import IProjectPayload from '@project/types/payload.args';
+import { log } from '@utils/logger/logger';
+import { ApolloError } from 'apollo-server-errors';
 
 interface UserProjectWithRole extends UserProject {
   projectRole: ProjectRole;
@@ -57,20 +59,18 @@ export default function ProjectPrismaDto() {
   // ** DELETE
   async function deleteOneById(
     id: Prisma.ProjectWhereUniqueInput,
-  ): Promise<ProjectWithDetails | null> {
-    return prisma.project.delete({
-      where: id,
-      include: {
-        members: true,
-        tasks: {
-          include: {
-            users: true,
-            comments: true,
-            tags: true,
-          },
-        },
-      },
-    });
+  ) {
+    try {
+      await prisma.$transaction([
+        prisma.userProject.deleteMany({ where: { projectId: id.id } }),
+        prisma.task.deleteMany({ where: { projectId: id.id } }),
+        prisma.project.delete({ where: id }),
+      ]);
+      return true;
+    } catch (error) {
+      log.error(error);
+      throw new ApolloError('An unexpected error occured', undefined, { error });
+    }
   }
 
   // ** CREATE
