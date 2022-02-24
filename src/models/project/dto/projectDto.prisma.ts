@@ -11,7 +11,7 @@ import { log } from '@utils/logger/logger';
 import { ApolloError } from 'apollo-server-errors';
 
 interface UserProjectWithRole extends UserProject {
-    projectRole: ProjectRole;
+  projectRole: ProjectRole;
 }
 interface ProjectWithDetails extends Project {
   members: UserProjectWithRole[];
@@ -22,6 +22,9 @@ export default function ProjectPrismaDto() {
   // ** READ
   async function all(): Promise<ProjectWithDetails[]> {
     return prisma.project.findMany({
+      orderBy: {
+        name: 'asc',
+      },
       include: {
         members: true,
         tasks: {
@@ -35,7 +38,9 @@ export default function ProjectPrismaDto() {
     });
   }
 
-  async function oneById(id: Prisma.ProjectWhereUniqueInput): Promise<ProjectWithDetails | null> {
+  async function oneById(
+    id: Prisma.ProjectWhereUniqueInput,
+  ): Promise<ProjectWithDetails | null> {
     return prisma.project.findUnique({
       where: id,
       include: {
@@ -69,7 +74,9 @@ export default function ProjectPrismaDto() {
   }
 
   // ** CREATE
-  async function createProject(payload: IProjectPayload): Promise<ProjectWithDetails | null> {
+  async function createProject(
+    payload: IProjectPayload,
+  ): Promise<ProjectWithDetails | null> {
     return prisma.project.create({
       data: {
         ...payload,
