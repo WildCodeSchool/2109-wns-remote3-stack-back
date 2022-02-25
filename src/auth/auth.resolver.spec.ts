@@ -1,10 +1,7 @@
-import { MockProxy } from 'jest-mock-extended';
-import { IContext } from '../utils/context/interface/context.interface';
 import AuthResolver from './auth.resolver';
 
 describe('AuthResolver', () => {
   let resolver: AuthResolver;
-  let mockCtx: MockProxy<IContext>;
 
   const mockUser = {
     email: 'testmail@jest.com',
@@ -29,11 +26,12 @@ describe('AuthResolver', () => {
           id: '10',
           createdAt: 1 as unknown as Date,
           updatedAt: 1 as unknown as Date,
+          token: 'token',
         }));
       expect(
         await resolver.signup({
           ...mockUser,
-        }, mockCtx),
+        }),
       ).toMatchObject({
         ...mockUser,
         id: '10',
@@ -51,13 +49,14 @@ describe('AuthResolver', () => {
           id: '1',
           createdAt: 2 as unknown as Date,
           updatedAt: 2 as unknown as Date,
+          token: 'token',
         }));
 
       expect(
         await resolver.login({
           email: 'testmail@jest.com',
           password: 'testjest',
-        }, mockCtx),
+        }),
       ).toMatchObject({
         ...mockUser,
         id: '1',
@@ -71,7 +70,7 @@ describe('AuthResolver', () => {
         await resolver.login({
           email: 'testmail@jest.com',
           password: 'testjest2',
-        }, mockCtx);
+        });
       } catch (e: any) {
         expect(e.message).toMatch('Session expired');
       }
