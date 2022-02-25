@@ -28,6 +28,8 @@ export default class ProjectResolver {
     @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
   ):Promise<IProject> {
+    console.log('Trying to create project');
+    console.log(context.userId);
     return ProjectService().createNewProject(payload, context, pubSub);
   }
 

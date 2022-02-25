@@ -34,18 +34,22 @@ export default function ProjectService() {
     if (!project) {
       throw new Error('Project not found');
     }
+    console.log('Trying to create userProject');
     const userProject = await UserProjectService().createOneUserProject({
       userId: context.userId || '',
       projectId: project.id,
       projectRole: 'PROJECT_MANAGER',
     });
     if (!userProject) {
+      console.log('UserProject error');
       throw new Error('UserProject error');
     }
     const projectWithManager = await ProjectPrismaDto().oneById({ id: project.id });
     if (!projectWithManager) {
+      console.log('Project not found');
       throw new Error('Project not found');
     }
+    console.log('Project created');
     const user = await UserService().findById(context.userId || '');
 
     const notification = await NotificationService().createNewNotification({

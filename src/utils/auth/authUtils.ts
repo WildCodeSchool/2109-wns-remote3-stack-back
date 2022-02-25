@@ -1,4 +1,4 @@
-import { CookieOptions, Request, Response } from 'express';
+import { CookieOptions, Request } from 'express';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { ApolloError, AuthenticationError } from 'apollo-server-errors';
 import { APP_TOKENIZATION_SECRET } from '../../environments';
@@ -62,12 +62,11 @@ function isTokenExpired(expiresIn: number, emittedAt: number) {
   return Date.now() > (expiresIn + emittedAt);
 }
 
-async function getUserId(req: Request, res: Response) {
-  const token = req.cookies.stack_session;
+async function getUserId(req: Request) {
+  const token = req.headers.authorization;
   if (token) {
     const { userId, expiresIn, emittedAt } = getTokenPayload(token);
     if (isTokenExpired(expiresIn, emittedAt)) {
-      res.clearCookie('stack_session');
       log.warn('Session expired');
       throw new AuthenticationError('Session expired');
     }
@@ -79,7 +78,6 @@ async function getUserId(req: Request, res: Response) {
       throw new AuthenticationError('User unauthenticated');
     }
     if (!user) {
-      res.clearCookie('stack_session');
       log.warn('Session expired');
       throw new AuthenticationError('Session expired');
     }

@@ -1,9 +1,10 @@
 import {
-  Resolver, Query, Arg, Mutation, UseMiddleware,
+  Resolver, Query, Arg, Mutation, UseMiddleware, Ctx,
 } from 'type-graphql';
 import authGuard from '@auth/guards/auth.guard';
 import IUser from '@user/types/user.type';
 import UserService from '@user/user.service';
+import { IContext } from '@utils/context/interface/context.interface';
 import IUserWithProjects from './types/userWithProjects.type';
 
 @Resolver(() => IUser)
@@ -15,6 +16,14 @@ export default class UserResolver {
   @UseMiddleware(authGuard)
   async getAllUsers(): Promise<IUser[]> {
     return UserService().allUsers();
+  }
+
+  @Query(() => IUser)
+  @UseMiddleware(authGuard)
+  async getSelf(
+    @Ctx() context: IContext,
+  ): Promise<IUser> {
+    return UserService().findById(context.userId || '');
   }
 
   @Query(() => IUser)
