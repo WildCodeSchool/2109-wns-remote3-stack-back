@@ -1,6 +1,4 @@
-import {
-  Field, Float, ID, ObjectType,
-} from 'type-graphql';
+import { Field, Float, ID, ObjectType } from 'type-graphql';
 import ITag from '@tag/types/tag.type';
 import IUser from '@user/types/user.type';
 import IComment from '@comment/types/comment.type';
@@ -23,10 +21,10 @@ export default abstract class ITask {
   @Field(() => [IUser])
     users: IUser[];
 
-  @Field(() => String)
+  @Field(() => Date)
     startDate: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
     endDate: Date;
 
   @Field(() => Float)
