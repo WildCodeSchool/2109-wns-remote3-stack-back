@@ -82,10 +82,11 @@ export default function TaskService() {
   async function updateById(
     payload: ITaskPayload,
     id: string,
+    tags: ITagPayload[],
     context: IContext,
     pubSub: PubSubEngine,
   ): Promise<ITask> {
-    const task = await TaskPrismaDto().updateOneById(payload, { id });
+    const task = await TaskPrismaDto().updateOneById(payload, tags, { id });
     if (!task) {
       throw new Error('Task not found');
     }
