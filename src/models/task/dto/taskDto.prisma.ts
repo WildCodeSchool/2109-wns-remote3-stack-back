@@ -46,27 +46,13 @@ export default function TaskPrismaDto() {
   }
 
   async function updateOneById(
-    payload: ITaskPayload, tags: ITagPayload[], id: Prisma.TaskWhereUniqueInput,
+    payload: ITaskPayload, id: Prisma.TaskWhereUniqueInput,
   ):
    Promise<TaskWithDetails | null> {
     return prisma.task.update({
       where: id,
       data: {
-        name: payload.name,
-        description: payload.description,
-        endDate: payload.endDate,
-        estimeeSpentTime: payload.estimeeSpentTime,
-        advancement: payload.advancement,
-        tags: {
-          connect: tags.map((tag) => ({
-            id: tag.id,
-          })),
-        },
-        project: {
-          connect: {
-            id: payload.projectId,
-          },
-        },
+        ...payload,
       },
       include: {
         users: true,

@@ -26,10 +26,10 @@ export default class TaskResolver {
     @Args() payload: ITaskPayload,
     @Arg('id') id: string,
     @Arg('tags', () => [ITagPayload]) tags: ITagPayload[],
-    @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
+    @PubSub() pubSub: PubSubEngine,
   ): Promise<ITask> {
-    return TaskService().updateById(payload, id, tags, context, pubSub);
+    return TaskService().updateById(payload, id, context, pubSub);
   }
 
   @Mutation(() => ITask)
