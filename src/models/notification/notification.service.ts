@@ -15,6 +15,13 @@ export default function NotificationService() {
     }
     return notification;
   }
+  async function allNotificationsFromObject(objectId: string): Promise<INotification[]> {
+    const notifications = await NotificationPrismaDto().getObjectNotifications(objectId);
+    if (!notifications) {
+      throw new Error('No notifications found');
+    }
+    return notifications;
+  }
   //* Get one notification by ID
   async function findNotificationById(id: string): Promise<INotification> {
     const notification = await NotificationPrismaDto().getOneNotificationById({ id });
@@ -72,6 +79,7 @@ export default function NotificationService() {
 
   return {
     allNotifications,
+    allNotificationsFromObject,
     findNotificationById,
     findNotificationsByUserId,
     createNewNotification,

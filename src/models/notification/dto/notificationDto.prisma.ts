@@ -17,6 +17,23 @@ export default function NotificationPrismaDto() {
     return prisma.notification.findMany();
   }
 
+  async function getObjectNotifications(
+    objectId: string,
+  ) {
+    return prisma.notification.findMany({
+      where: {
+        OR: [
+          {
+            modifiedObjectId: objectId,
+          },
+          {
+            onId: objectId,
+          },
+        ],
+      },
+    });
+  }
+
   async function userNotifications(
     userId: string,
   ): Promise<Notification[]> {
@@ -84,6 +101,7 @@ export default function NotificationPrismaDto() {
 
   return {
     getAllNotifications,
+    getObjectNotifications,
     userNotifications,
     getOneNotificationById,
     createNotification,
