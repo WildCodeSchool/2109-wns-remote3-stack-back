@@ -14,6 +14,13 @@ export default class NotificationResolver {
     return NotificationService().allNotifications();
   }
 
+  @Query(() => [INotification])
+  async getAllNotificationsFromObject(
+    @Arg('objectId') objectId: string,
+  ) {
+    return NotificationService().allNotificationsFromObject(objectId);
+  }
+
   //* Notification subscription
   @Subscription(() => INotification, {
     topics: 'NOTIFICATIONS',
