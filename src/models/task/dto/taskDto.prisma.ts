@@ -76,6 +76,11 @@ export default function TaskPrismaDto() {
             id: tag.id,
           })),
         },
+        project: {
+          connect: {
+            id: payload.projectId,
+          },
+        },
       },
       include: {
         users: true,
