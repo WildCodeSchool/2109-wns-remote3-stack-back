@@ -107,11 +107,41 @@ export default function TaskService() {
     return task;
   }
 
+  async function updateTaskByIdWithTags(
+    payload: ITaskPayload,
+    tags: ITagPayload[],
+    id: string,
+    context: IContext,
+    pubSub: PubSubEngine,
+  ): Promise<ITask> {
+    const task = await TaskPrismaDto().updateOneByIdWithTags(payload, tags, { id });
+    if (!task) {
+      throw new Error('Task not found');
+    }
+    const user = await UserService().findById(context.userId || '');
+
+    const notification = await NotificationService().createNewNotification({
+      editorName: user.firstName,
+      editorId: context.userId || '',
+      actionType: 'EDITED',
+      modifiedObjectName: task.name,
+      modifiedObjectId: task.id,
+      onId: task.projectId,
+      type: 'TASK',
+    }, task.projectId);
+
+    await pubSub.publish('NOTIFICATIONS', notification);
+    await pubSub.publish('USER_NOTIFICATIONS', notification);
+
+    return task;
+  }
+
   return {
     allTasks,
     findById,
     deleteById,
     createTaskWithTags,
     updateById,
+    updateTaskByIdWithTags,
   };
 }
