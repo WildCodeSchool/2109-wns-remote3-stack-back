@@ -60,6 +60,31 @@ export default function TaskPrismaDto() {
     });
   }
 
+  async function updateOneByIdWithTags(
+    payload: ITaskPayload,
+    tags: ITagPayload[],
+    id: Prisma.TaskWhereUniqueInput,
+  ): Promise<TaskWithDetails | undefined> {
+    const { projectId, ...rest } = payload;
+    return prisma.task.update({
+      where: id,
+      data: {
+        ...rest,
+        tags: {
+          set: [],
+          connect: tags.map((tag) => ({
+            id: tag.id,
+          })),
+        },
+      },
+      include: {
+        users: true,
+        comments: true,
+        tags: true,
+      },
+    });
+  }
+
   async function createTaskWithTags(
     payload: ITaskPayload,
     tags: ITagPayload[],
@@ -95,6 +120,7 @@ export default function TaskPrismaDto() {
     oneById,
     deleteOneById,
     updateOneById,
+    updateOneByIdWithTags,
     createTaskWithTags,
   };
 }

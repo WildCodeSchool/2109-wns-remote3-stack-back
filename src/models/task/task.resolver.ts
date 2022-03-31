@@ -32,6 +32,17 @@ export default class TaskResolver {
   }
 
   @Mutation(() => ITask)
+  async updateTaskWithTagsById(
+    @Args() payload: ITaskPayload,
+    @Arg('id') id: string,
+    @Arg('tags', () => [ITagPayload]) tags: ITagPayload[],
+    @PubSub() pubSub: PubSubEngine,
+    @Ctx() context: IContext,
+  ): Promise<ITask> {
+    return TaskService().updateTaskByIdWithTags(payload, tags, id, context, pubSub);
+  }
+
+  @Mutation(() => ITask)
   async createTaskWithTags(
     @Args() payload: ITaskPayload,
     @Arg('tags', () => [ITagPayload]) tags: ITagPayload[],
