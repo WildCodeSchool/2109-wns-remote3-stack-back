@@ -1,6 +1,4 @@
 import { ApolloServer } from 'apollo-server-express';
-import { execute, subscribe } from 'graphql';
-import { SubscriptionServer } from 'subscriptions-transport-ws';
 import depthLimit from 'graphql-depth-limit';
 import { buildSchema } from 'type-graphql';
 import appContext from '@utils/context/context';
@@ -13,6 +11,9 @@ import CommentResolver from '@comment/comment.resolver';
 import NotificationResolver from '@notification/notification.resolver';
 import UserProjectResolver from '@userProject/userProject.resolver';
 import { Server } from 'http';
+import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
 
 async function createApolloServer(httpServer: Server) {
   // Using TypeGraphQL, build GraphQL schema automatically
@@ -29,29 +30,29 @@ async function createApolloServer(httpServer: Server) {
     ],
   });
 
-  const subscriptionServer = SubscriptionServer.create({
-    schema,
-    execute,
-    subscribe,
-  }, {
+  const wsServer = new WebSocketServer({
     server: httpServer,
     path: '/graphql',
   });
+  const serverCleanup = useServer({ schema }, wsServer);
 
   // Initialize the Apollo Server with the generated GraphQL schema
   return new ApolloServer({
     validationRules: [depthLimit(10)],
     schema,
     context: appContext,
-    plugins: [{
-      async serverWillStart() {
-        return {
-          async drainServer() {
-            subscriptionServer.close();
-          },
-        };
+    plugins: [
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
       },
-    }],
+    ],
   });
 }
 
