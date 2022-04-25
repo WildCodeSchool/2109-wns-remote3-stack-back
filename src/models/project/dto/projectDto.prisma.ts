@@ -2,19 +2,15 @@ import {
   Prisma,
   Project,
   Task,
-  UserProject,
-  ProjectRole,
 } from '@prisma/client';
 import { prisma } from '@utils/prisma/prisma-client';
+import IUserProject from '@userProject/types/userProject.type';
 import IProjectPayload from '@project/types/payload.args';
 import { log } from '@utils/logger/logger';
 import { ApolloError } from 'apollo-server-errors';
 
-interface UserProjectWithRole extends UserProject {
-  projectRole: ProjectRole;
-}
 interface ProjectWithDetails extends Project {
-  members: UserProjectWithRole[];
+  members: IUserProject[];
   tasks: Task[];
 }
 
