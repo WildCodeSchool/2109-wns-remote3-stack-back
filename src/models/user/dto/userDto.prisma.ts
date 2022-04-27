@@ -2,7 +2,6 @@ import { Prisma, User, UserProject } from '@prisma/client';
 import SignupArgs from '@auth/args/signup.args';
 import { prisma } from '@utils/prisma';
 import IUserPayload from '@user/types/payload.args';
-import { hashPassword } from '@utils/auth/bcrypt';
 
 export default function UserPrismaDto() {
   // ** CREATE
@@ -52,13 +51,13 @@ export default function UserPrismaDto() {
   async function updateUser(
     payload: IUserPayload,
     id: Prisma.UserWhereUniqueInput,
+    passwordUpdate: string,
   ): Promise<User | null> {
-    const password = await hashPassword(payload.password);
     return prisma.user.update({
       where: id,
       data: {
         email: payload.email,
-        password,
+        password: passwordUpdate,
         firstName: payload.firstName,
         lastName: payload.lastName,
         avatar: payload.avatar,

@@ -1,6 +1,7 @@
 import SignupArgs from '@auth/args/signup.args';
 import UserPrismaDto from '@user/dto/userDto.prisma';
 import IUser from '@user/types/user.type';
+import { hashPassword } from '@utils/auth/bcrypt';
 // import { hashPassword } from '@utils/auth/bcrypt';
 import IUserPayload from './types/payload.args';
 import IUserWithProjects from './types/userWithProjects.type';
@@ -17,7 +18,9 @@ export default function UserService() {
     payload: IUserPayload,
     id: string,
   ): Promise<IUser |null > {
-    const user = await UserPrismaDto().updateUser(payload, { id });
+    const passwordUpdate = await hashPassword(payload.password);
+
+    const user = await UserPrismaDto().updateUser(payload, { id }, passwordUpdate);
     return user;
   }
 
