@@ -47,10 +47,21 @@ export default function TaskPrismaDto() {
 
   async function updateOneById(payload: ITaskPayload, id: Prisma.TaskWhereUniqueInput):
    Promise<TaskWithDetails | null> {
+    const { userIds, projectId, ...rest } = payload;
     return prisma.task.update({
       where: id,
       data: {
-        ...payload,
+        users: {
+          connect: payload.userIds.map((userId) => ({
+            id: userId,
+          })),
+        },
+        project: {
+          connect: {
+            id: projectId,
+          },
+        },
+        ...rest,
       },
       include: {
         users: true,
@@ -78,8 +89,13 @@ export default function TaskPrismaDto() {
         },
         project: {
           connect: {
-            id: payload.projectId,
+            id: projectId,
           },
+        },
+        users: {
+          connect: payload.userIds.map((userId) => ({
+            id: userId,
+          })),
         },
       },
       include: {
@@ -110,6 +126,11 @@ export default function TaskPrismaDto() {
           connect: {
             id: payload.projectId,
           },
+        },
+        users: {
+          connect: payload.userIds.map((userId) => ({
+            id: userId,
+          })),
         },
       },
       include: {
