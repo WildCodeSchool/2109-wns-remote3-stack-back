@@ -5,6 +5,7 @@ WORKDIR /app
 COPY *.json ./
 
 RUN yarn
-COPY . .
+COPY prisma prisma
+COPY src src
 
 CMD ["yarn", "start:dev"]
