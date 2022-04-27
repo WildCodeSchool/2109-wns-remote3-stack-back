@@ -18,6 +18,9 @@ export default abstract class ITaskPayload {
   @Field(() => String)
     endDate: Date;
 
+  @Field(() => [String])
+    userIds: string[];
+
   @Field(() => String)
     advancement: IStatus;
 
