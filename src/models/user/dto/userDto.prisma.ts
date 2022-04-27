@@ -1,4 +1,4 @@
-import { Prisma, User, UserProject } from '@prisma/client';
+import { Prisma, Task, User, UserProject } from '@prisma/client';
 import SignupArgs from '@auth/args/signup.args';
 import { prisma } from '@utils/prisma';
 
@@ -46,6 +46,19 @@ export default function UserPrismaDto() {
     });
   }
 
+  async function oneByIdWithTasks(
+    id: Prisma.UserWhereUniqueInput,
+  ): Promise<(User & {
+    tasks: Task[]
+  }) | null> {
+    return prisma.user.findUnique({
+      where: id,
+      include: {
+        tasks: true,
+      },
+    });
+  }
+
   // ** DELETE
   async function deleteOneById(
     id: Prisma.UserWhereUniqueInput,
@@ -61,6 +74,7 @@ export default function UserPrismaDto() {
     oneById,
     oneByEmail,
     oneByIdWithProjects,
+    oneByIdWithTasks,
     deleteOneById,
   };
 }

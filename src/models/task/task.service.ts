@@ -118,6 +118,7 @@ export default function TaskService() {
     if (!task) {
       throw new Error('Task not found');
     }
+
     const user = await UserService().findById(context.userId || '');
 
     const notification = await NotificationService().createNewNotification({

@@ -6,6 +6,7 @@ import IUser from '@user/types/user.type';
 import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import IUserWithProjects from './types/userWithProjects.type';
+import IUserWithTasks from './types/userWithTasks.types';
 
 @Resolver(() => IUser)
 export default class UserResolver {
@@ -45,6 +46,13 @@ export default class UserResolver {
     @Arg('id') id: string,
   ): Promise<IUserWithProjects> {
     return UserService().findByIdWithProjects(id);
+  }
+
+  @Query(() => IUserWithTasks)
+  async getUserWithTasks(
+    @Arg('id') id: string,
+  ): Promise<IUserWithTasks> {
+    return UserService().findByIdWithTasks(id);
   }
 
   // * UPDATE

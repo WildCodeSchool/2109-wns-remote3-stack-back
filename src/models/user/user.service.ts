@@ -2,6 +2,7 @@ import SignupArgs from '@auth/args/signup.args';
 import UserPrismaDto from '@user/dto/userDto.prisma';
 import IUser from '@user/types/user.type';
 import IUserWithProjects from './types/userWithProjects.type';
+import IUserWithTasks from './types/userWithTasks.types';
 
 export default function UserService() {
   // ** CREATE
@@ -43,6 +44,14 @@ export default function UserService() {
     return userWithProjects;
   }
 
+  async function findByIdWithTasks(id: string): Promise<IUserWithTasks> {
+    const userWithTask = await UserPrismaDto().oneByIdWithTasks({ id });
+    if (!userWithTask) {
+      throw new Error('User not found');
+    }
+    return userWithTask;
+  }
+
   // ** DELETE
   async function deleteById(id: string): Promise<IUser> {
     const user = await UserPrismaDto().deleteOneById({ id });
@@ -58,6 +67,7 @@ export default function UserService() {
     findById,
     findByEmail,
     findByIdWithProjects,
+    findByIdWithTasks,
     deleteById,
   };
 }
