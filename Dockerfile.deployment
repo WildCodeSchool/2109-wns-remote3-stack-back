@@ -5,6 +5,6 @@ WORKDIR /app
 COPY *.json ./
 
 RUN yarn
-COPY src src
+COPY . .
 
 CMD ["yarn", "start:dev"]
