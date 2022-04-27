@@ -51,13 +51,13 @@ export default function UserPrismaDto() {
   async function updateUser(
     payload: IUserPayload,
     id: Prisma.UserWhereUniqueInput,
-    passwordUpdate: string,
+    hashedPassword: string,
   ): Promise<User | null> {
     return prisma.user.update({
       where: id,
       data: {
         email: payload.email,
-        password: passwordUpdate,
+        password: hashedPassword,
         firstName: payload.firstName,
         lastName: payload.lastName,
         avatar: payload.avatar,
