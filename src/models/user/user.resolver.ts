@@ -1,11 +1,12 @@
 import {
-  Resolver, Query, Arg, Mutation, UseMiddleware, Ctx,
+  Resolver, Query, Arg, Mutation, UseMiddleware, Ctx, Args,
 } from 'type-graphql';
 import authGuard from '@auth/guards/auth.guard';
 import IUser from '@user/types/user.type';
 import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import IUserWithProjects from './types/userWithProjects.type';
+import IUserPayload from './types/payload.args';
 
 @Resolver(() => IUser)
 export default class UserResolver {
@@ -48,6 +49,13 @@ export default class UserResolver {
   }
 
   // * UPDATE
+  @Mutation(() => IUser)
+  async updateUser(
+    @Args()payload: IUserPayload,
+    @Arg('id') id: string,
+  ):Promise<IUser |null> {
+    return UserService().updateUserById(payload, id);
+  }
 
   // * DELETE
   @Mutation(() => IUser)

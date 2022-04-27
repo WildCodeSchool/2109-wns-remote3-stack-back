@@ -1,12 +1,23 @@
 import SignupArgs from '@auth/args/signup.args';
 import UserPrismaDto from '@user/dto/userDto.prisma';
 import IUser from '@user/types/user.type';
+// import { hashPassword } from '@utils/auth/bcrypt';
+import IUserPayload from './types/payload.args';
 import IUserWithProjects from './types/userWithProjects.type';
 
 export default function UserService() {
   // ** CREATE
   async function createOneUser(args: SignupArgs): Promise<IUser> {
     const user = await UserPrismaDto().createOne(args);
+    return user;
+  }
+
+  // ** UPDATE
+  async function updateUserById(
+    payload: IUserPayload,
+    id: string,
+  ): Promise<IUser |null > {
+    const user = await UserPrismaDto().updateUser(payload, { id });
     return user;
   }
 
@@ -59,5 +70,6 @@ export default function UserService() {
     findByEmail,
     findByIdWithProjects,
     deleteById,
+    updateUserById,
   };
 }
