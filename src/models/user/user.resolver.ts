@@ -50,6 +50,7 @@ export default class UserResolver {
 
   // * UPDATE
   @Mutation(() => IUser)
+  @UseMiddleware(authGuard)
   async updateUser(
     @Args()payload: IUserPayload,
     @Arg('id') id: string,
