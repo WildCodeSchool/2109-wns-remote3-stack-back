@@ -26,10 +26,11 @@ export default function UserService() {
   }
 
   // ** UPDATE USER PASSWORD
+  // eslint-disable-next-line consistent-return
   async function updateUserPassword(
     payload: IUserPasswordPayload,
     id: string,
-  ): Promise<IUser |null > {
+  ): Promise<IUser | null | undefined> {
     try {
       const user = await UserPrismaDto().oneById({ id });
       if (user) {
@@ -38,16 +39,15 @@ export default function UserService() {
           log.warn('Incorrect password');
           throw new UserInputError('Incorrect password');
         } else {
-          return user;
+          const hashedPassword = await hashPassword(payload.password);
+          const updatedUser = await UserPrismaDto().updateUserPassword({ id }, hashedPassword);
+          return updatedUser;
         }
       }
     } catch (error) {
       log.error(error);
       throw new AuthenticationError('Session expired', { error });
     }
-    const hashedPassword = await hashPassword(payload.password);
-    const user = await UserPrismaDto().updateUserPassword({ id }, hashedPassword);
-    return user;
   }
 
   // ** READ

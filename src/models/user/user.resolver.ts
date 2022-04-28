@@ -65,7 +65,7 @@ export default class UserResolver {
   async updateUserPassword(
     @Args()payload: IUserPasswordPayload,
     @Arg('id') id: string,
-  ):Promise<IUser |null> {
+  ):Promise<IUser |null | undefined> {
     return UserService().updateUserPassword(payload, id);
   }
 
