@@ -46,7 +46,7 @@ export default function UserService() {
       throw new AuthenticationError('Session expired', { error });
     }
     const hashedPassword = await hashPassword(payload.password);
-    const user = await UserPrismaDto().updateUserPassword(payload, { id }, hashedPassword);
+    const user = await UserPrismaDto().updateUserPassword({ id }, hashedPassword);
     return user;
   }
 
