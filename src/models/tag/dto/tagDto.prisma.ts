@@ -1,6 +1,7 @@
 import { Prisma, Tag, Task } from '@prisma/client';
 import { prisma } from '@utils/prisma/prisma-client';
 import ITagPayload from '@tag/types/TagPayload.args';
+import ICreateTagPayload from '@tag/types/createTagPayload.args';
 
 export interface TagDetails extends Tag {
 tasks: Task[],
@@ -8,7 +9,7 @@ tasks: Task[],
 
 export default function TagPrismaDto() {
   //* Create method
-  async function createTag(payload: ITagPayload): Promise<TagDetails | null > {
+  async function createTag(payload: ICreateTagPayload): Promise<TagDetails | null > {
     return prisma.tag.create({
       data: {
         ...payload,

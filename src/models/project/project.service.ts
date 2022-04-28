@@ -6,6 +6,7 @@ import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import NotificationService from '@notification/notification.service';
 import { PubSubEngine } from 'type-graphql';
+import ICreateProjectPayload from './types/createProjectPayload.args';
 
 export default function ProjectService() {
   // ** READ
@@ -26,7 +27,7 @@ export default function ProjectService() {
   }
   // * CREATE
   async function createNewProject(
-    payload: IProjectPayload,
+    payload: ICreateProjectPayload,
     context: IContext,
     pubSub: PubSubEngine,
   ): Promise<IProject> {

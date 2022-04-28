@@ -5,9 +5,9 @@ export default abstract class ITagPayload {
   @Field(() => ID, { nullable: true })
     id?: string;
 
-  @Field(() => String)
-    label: string;
+  @Field(() => String, { nullable: true })
+    label?: string;
 
-  @Field(() => String)
-    color: string;
+  @Field(() => String, { nullable: true })
+    color?: string;
 }

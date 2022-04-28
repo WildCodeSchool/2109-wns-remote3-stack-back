@@ -1,4 +1,5 @@
 import { UserProject } from '@prisma/client';
+import ICreateUserProjectPayload from '@userProject/types/createUserProjectPayload.args';
 import IUserProjectPayload from '@userProject/types/userProjectPayload.args';
 import { prisma } from '@utils/prisma';
 
@@ -14,7 +15,7 @@ export default function UserProjectPrismaDto() {
   }
 
   async function createOne(
-    payload: IUserProjectPayload,
+    payload: ICreateUserProjectPayload,
   ): Promise<UserProject> {
     return prisma.userProject.create({
       data: {
@@ -33,8 +34,8 @@ export default function UserProjectPrismaDto() {
     return prisma.userProject.update({
       where: {
         userId_projectId: {
-          userId: payload.userId,
-          projectId: payload.projectId,
+          userId: payload.userId || '',
+          projectId: payload.projectId || '',
         },
       },
       data: {

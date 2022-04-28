@@ -6,24 +6,24 @@ import {
 
 @ArgsType()
 export default abstract class ITaskPayload {
-  @Field(() => String)
-    name: string;
+  @Field(() => String, { nullable: true })
+    name?: string;
 
-  @Field(() => String)
-    description: string;
+  @Field(() => String, { nullable: true })
+    description?: string;
 
-  @Field(() => String)
-    projectId: string;
+  @Field(() => String, { nullable: true })
+    projectId?: string;
 
-  @Field(() => String)
-    endDate: Date;
+  @Field(() => String, { nullable: true })
+    endDate?: Date;
 
-  @Field(() => [String])
-    userIds: string[];
+  @Field(() => [String], { nullable: true })
+    userIds?: string[];
 
-  @Field(() => String)
-    advancement: IStatus;
+  @Field(() => String, { nullable: true })
+    advancement?: IStatus;
 
-  @Field(() => Float)
-    estimeeSpentTime: number;
+  @Field(() => Float, { nullable: true })
+    estimeeSpentTime?: number;
 }

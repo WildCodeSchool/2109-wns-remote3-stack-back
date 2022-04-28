@@ -1,4 +1,5 @@
 import { Arg, Args, Mutation, Resolver } from 'type-graphql';
+import ICreateUserProjectPayload from './types/createUserProjectPayload.args';
 import IUserProject from './types/userProject.type';
 import IUserProjectPayload from './types/userProjectPayload.args';
 import UserProjectService from './userProject.service';
@@ -8,7 +9,7 @@ export default class UserProjectResolver {
   // * CREATE
   @Mutation(() => IUserProject)
   async createUserProject(
-    @Args() payload: IUserProjectPayload,
+    @Args() payload: ICreateUserProjectPayload,
   ): Promise<IUserProject> {
     return UserProjectService().createOneUserProject(payload);
   }

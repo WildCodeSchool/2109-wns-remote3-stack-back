@@ -6,6 +6,7 @@ import NotificationService from '@notification/notification.service';
 import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import { PubSubEngine } from 'type-graphql';
+import ICreateTaskPayload from './types/createTaskPayload.args';
 
 export default function TaskService() {
   async function allTasks(): Promise<ITask[]> {
@@ -52,7 +53,7 @@ export default function TaskService() {
   }
 
   async function createTaskWithTags(
-    payload: ITaskPayload,
+    payload: ICreateTaskPayload,
     tags: ITagPayload[],
     context: IContext,
     pubSub: PubSubEngine,

@@ -5,6 +5,7 @@ import ITask from '@task/types/task.type';
 import ITaskPayload from '@task/types/taskPayload.args';
 import ITagPayload from '@tag/types/TagPayload.args';
 import { IContext } from '@utils/context/interface/context.interface';
+import ICreateTaskPayload from './types/createTaskPayload.args';
 
 @Resolver(() => ITask)
 export default class TaskResolver {
@@ -44,7 +45,7 @@ export default class TaskResolver {
 
   @Mutation(() => ITask)
   async createTaskWithTags(
-    @Args() payload: ITaskPayload,
+    @Args() payload: ICreateTaskPayload,
     @Arg('tags', () => [ITagPayload]) tags: ITagPayload[],
     @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
