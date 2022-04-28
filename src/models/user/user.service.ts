@@ -4,6 +4,7 @@ import IUser from '@user/types/user.type';
 import { hashPassword } from '@utils/auth/bcrypt';
 import IUserPayload from './types/payload.args';
 import IUserWithProjects from './types/userWithProjects.type';
+import IUserWithTasks from './types/userWithTask.type';
 
 export default function UserService() {
   // ** CREATE
@@ -56,6 +57,14 @@ export default function UserService() {
     return userWithProjects;
   }
 
+  async function findByIdWithTasks(id: string): Promise<IUserWithTasks> {
+    const userWithTask = await UserPrismaDto().oneByIdWithTasks({ id });
+    if (!userWithTask) {
+      throw new Error('User not found');
+    }
+    return userWithTask;
+  }
+
   // ** DELETE
   async function deleteById(id: string): Promise<IUser> {
     const user = await UserPrismaDto().deleteOneById({ id });
@@ -68,6 +77,7 @@ export default function UserService() {
   return {
     createOneUser,
     allUsers,
+    findByIdWithTasks,
     findById,
     findByEmail,
     findByIdWithProjects,
