@@ -7,6 +7,7 @@ import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import IUserWithProjects from './types/userWithProjects.type';
 import IUserPayload from './types/payload.args';
+import IUserPasswordPayload from './types/payloadPassword';
 
 @Resolver(() => IUser)
 export default class UserResolver {
@@ -48,7 +49,7 @@ export default class UserResolver {
     return UserService().findByIdWithProjects(id);
   }
 
-  // * UPDATE
+  // * UPDATE USER INFOS
   @Mutation(() => IUser)
   @UseMiddleware(authGuard)
   async updateUser(
@@ -56,6 +57,16 @@ export default class UserResolver {
     @Arg('id') id: string,
   ):Promise<IUser |null> {
     return UserService().updateUserById(payload, id);
+  }
+
+  // * UPDATE USER PASSWORD
+  @Mutation(() => IUser)
+  @UseMiddleware(authGuard)
+  async updateUserPassword(
+    @Args()payload: IUserPasswordPayload,
+    @Arg('id') id: string,
+  ):Promise<IUser |null> {
+    return UserService().updateUserPassword(payload, id);
   }
 
   // * DELETE

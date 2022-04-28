@@ -1,8 +1,12 @@
 import SignupArgs from '@auth/args/signup.args';
 import UserPrismaDto from '@user/dto/userDto.prisma';
 import IUser from '@user/types/user.type';
-import { hashPassword } from '@utils/auth/bcrypt';
+import { comparePassword, hashPassword } from '@utils/auth/bcrypt';
+
+import { log } from '@utils/logger/logger';
+import { AuthenticationError, UserInputError } from 'apollo-server-core';
 import IUserPayload from './types/payload.args';
+import IUserPasswordPayload from './types/payloadPassword';
 import IUserWithProjects from './types/userWithProjects.type';
 
 export default function UserService() {
@@ -12,14 +16,37 @@ export default function UserService() {
     return user;
   }
 
-  // ** UPDATE
+  // ** UPDATE USER INFOS
   async function updateUserById(
     payload: IUserPayload,
     id: string,
   ): Promise<IUser |null > {
-    const hashedPassword = await hashPassword(payload.password);
+    const user = await UserPrismaDto().updateUser(payload, { id });
+    return user;
+  }
 
-    const user = await UserPrismaDto().updateUser(payload, { id }, hashedPassword);
+  // ** UPDATE USER PASSWORD
+  async function updateUserPassword(
+    payload: IUserPasswordPayload,
+    id: string,
+  ): Promise<IUser |null > {
+    try {
+      const user = await UserPrismaDto().oneById({ id });
+      if (user) {
+        const valid = await comparePassword(payload.lastPassword, user.password);
+        if (!valid) {
+          log.warn('Incorrect password');
+          throw new UserInputError('Incorrect password');
+        } else {
+          return user;
+        }
+      }
+    } catch (error) {
+      log.error(error);
+      throw new AuthenticationError('Session expired', { error });
+    }
+    const hashedPassword = await hashPassword(payload.password);
+    const user = await UserPrismaDto().updateUserPassword(payload, { id }, hashedPassword);
     return user;
   }
 
@@ -73,5 +100,6 @@ export default function UserService() {
     findByIdWithProjects,
     deleteById,
     updateUserById,
+    updateUserPassword,
   };
 }
