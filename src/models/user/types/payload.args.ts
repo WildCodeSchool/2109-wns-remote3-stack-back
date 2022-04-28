@@ -2,8 +2,8 @@ import { Field, ID, ArgsType } from 'type-graphql';
 
 @ArgsType()
 export default abstract class IUserPayload {
-  @Field(() => ID, { nullable: true })
-    id?: string;
+  @Field(() => ID)
+    id: string;
 
   @Field(() => String, { nullable: true })
     email?: string;

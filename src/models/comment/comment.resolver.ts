@@ -3,7 +3,8 @@ import {
 } from 'type-graphql';
 import IComment from '@comment/types/comment.type';
 import CommentService from '@comment/comment.service';
-import ICommentPayload from '@comment/types/createCommentPayload.args';
+import ICreateCommentPayload from '@comment/types/createCommentPayload.args';
+import ICommentPayload from '@comment/types/commentPayload.args';
 import { IContext } from '@utils/context/interface/context.interface';
 
 @Resolver(() => IComment)
@@ -25,7 +26,7 @@ export default class CommentResolver {
   //* Create one comment
   @Mutation(() => IComment)
   async createComment(
-    @Args() payload: ICommentPayload,
+    @Args() payload: ICreateCommentPayload,
     @Ctx() context: IContext,
     @PubSub() pubSub: PubSubEngine,
   ):Promise<IComment> {

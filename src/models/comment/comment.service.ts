@@ -1,6 +1,7 @@
 import IComment from '@comment/types/comment.type';
 import CommentPrismaDto from '@comment/dto/commentDto.prisma';
-import ICommentPayload from '@comment/types/createCommentPayload.args';
+import ICreateCommentPayload from '@comment/types/createCommentPayload.args';
+import ICommentPayload from '@comment/types/commentPayload.args';
 import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import NotificationService from '@notification/notification.service';
@@ -27,7 +28,7 @@ export default function CommentService() {
 
   //* Create a comment
   async function createNewComment(
-    payload: ICommentPayload,
+    payload: ICreateCommentPayload,
     context: IContext,
     pubSub: PubSubEngine,
   ): Promise<IComment> {
