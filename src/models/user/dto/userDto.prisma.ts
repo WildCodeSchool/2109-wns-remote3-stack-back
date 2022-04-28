@@ -60,22 +60,33 @@ export default function UserPrismaDto() {
     });
   }
 
-  // ** UPDATE
+  // ** UPDATE USER INFOS
   async function updateUser(
     payload: IUserPayload,
+    id: Prisma.UserWhereUniqueInput,
+  ): Promise<User | null> {
+    return prisma.user.update({
+      where: id,
+      data: {
+        email: payload.email,
+        firstName: payload.firstName,
+        lastName: payload.lastName,
+        avatar: payload.avatar,
+      } });
+  }
+
+  // ** UPDATE USER PASSWORD
+  async function updateUserPassword(
     id: Prisma.UserWhereUniqueInput,
     hashedPassword: string,
   ): Promise<User | null> {
     return prisma.user.update({
       where: id,
       data: {
-        email: payload.email,
         password: hashedPassword,
-        firstName: payload.firstName,
-        lastName: payload.lastName,
-        avatar: payload.avatar,
       } });
   }
+
   // ** DELETE
   async function deleteOneById(
     id: Prisma.UserWhereUniqueInput,
@@ -94,5 +105,6 @@ export default function UserPrismaDto() {
     oneByIdWithProjects,
     deleteOneById,
     updateUser,
+    updateUserPassword,
   };
 }
