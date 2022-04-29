@@ -1,4 +1,4 @@
-import { Prisma, User, UserProject } from '@prisma/client';
+import { Prisma, Task, User, UserProject } from '@prisma/client';
 import SignupArgs from '@auth/args/signup.args';
 import { prisma } from '@utils/prisma';
 import IUserPayload from '@user/types/payload.args';
@@ -31,6 +31,19 @@ export default function UserPrismaDto() {
   ): Promise<User | null> {
     return prisma.user.findUnique({
       where: email,
+    });
+  }
+
+  async function oneByIdWithTasks(
+    id: Prisma.UserWhereUniqueInput,
+  ): Promise<(User & {
+    tasks: Task[]
+  }) | null> {
+    return prisma.user.findUnique({
+      where: id,
+      include: {
+        tasks: true,
+      },
     });
   }
 
@@ -88,6 +101,7 @@ export default function UserPrismaDto() {
     all,
     oneById,
     oneByEmail,
+    oneByIdWithTasks,
     oneByIdWithProjects,
     deleteOneById,
     updateUser,

@@ -7,6 +7,7 @@ import UserService from '@user/user.service';
 import { IContext } from '@utils/context/interface/context.interface';
 import IUserWithProjects from './types/userWithProjects.type';
 import IUserPayload from './types/payload.args';
+import IUserWithTasks from './types/userWithTask.type';
 import IUserPasswordPayload from './types/payloadPassword';
 
 @Resolver(() => IUser)
@@ -49,7 +50,14 @@ export default class UserResolver {
     return UserService().findByIdWithProjects(id);
   }
 
-  // * UPDATE USER INFOS
+  @Query(() => IUserWithTasks)
+  async getUserWithTasks(
+    @Arg('id') id: string,
+  ): Promise<IUserWithTasks> {
+    return UserService().findByIdWithTasks(id);
+  }
+
+  // * UPDATE
   @Mutation(() => IUser)
   @UseMiddleware(authGuard)
   async updateUser(
