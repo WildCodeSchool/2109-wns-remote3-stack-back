@@ -7,21 +7,21 @@ import { IStatus } from './status.enum';
 
 @ArgsType()
 export default abstract class IProjectPayload {
-  @Field(() => String)
-    name: string;
+  @Field(() => String, { nullable: true })
+    name?: string;
 
-  @Field(() => String)
-    description: string;
+  @Field(() => String, { nullable: true })
+    description?: string;
 
-  @Field(() => String)
-    status: IStatus;
+  @Field(() => String, { nullable: true })
+    status?: IStatus;
 
-  @Field(() => Date)
-    startDate: Date;
+  @Field(() => Date, { nullable: true })
+    startDate?: Date;
 
-  @Field(() => Date)
-    endDate: Date;
+  @Field(() => Date, { nullable: true })
+    endDate?: Date;
 
-  @Field(() => Float)
-    estimeeSpentTime: number;
+  @Field(() => Float, { nullable: true })
+    estimeeSpentTime?: number;
 }

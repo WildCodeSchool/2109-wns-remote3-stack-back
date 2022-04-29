@@ -4,12 +4,13 @@ import {
 import ITag from '@tag/types/tag.type';
 import TagService from '@tag/tag.service';
 import ITagPayload from '@tag/types/TagPayload.args';
+import ICreateTagPayload from './types/createTagPayload.args';
 
 @Resolver(() => ITag)
 export default class TagResolver {
   // * Create a tag
   @Mutation(() => ITag)
-  async createTag(@Arg('payload') payload: ITagPayload): Promise<ITag> {
+  async createTag(@Arg('payload') payload: ICreateTagPayload): Promise<ITag> {
     return TagService().createTag(payload);
   }
 

@@ -4,7 +4,7 @@ import {
 } from 'type-graphql';
 
 @ArgsType()
-export default abstract class ICommentPayload {
+export default abstract class ICreateCommentPayload {
   @Field(() => String)
     text: string;
 

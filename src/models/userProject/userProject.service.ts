@@ -1,4 +1,5 @@
 import UserProjectPrismaDto from './dto/userProjectDto.prisma';
+import ICreateUserProjectPayload from './types/createUserProjectPayload.args';
 import IUserProject from './types/userProject.type';
 import IUserProjectPayload from './types/userProjectPayload.args';
 
@@ -12,7 +13,7 @@ export default function UserProjectService() {
   }
 
   async function createOneUserProject(
-    payload: IUserProjectPayload,
+    payload: ICreateUserProjectPayload,
   ): Promise<IUserProject> {
     const userProject = await UserProjectPrismaDto().createOne(payload);
     if (!userProject) {

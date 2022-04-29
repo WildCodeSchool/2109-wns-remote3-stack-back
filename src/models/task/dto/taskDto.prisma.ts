@@ -4,6 +4,7 @@ import {
 import { prisma } from '@utils/prisma/prisma-client';
 import ITaskPayload from '@task/types/taskPayload.args';
 import ITagPayload from '@tag/types/TagPayload.args';
+import ICreateTaskPayload from '@task/types/createTaskPayload.args';
 
 export interface TaskWithDetails extends Task {
   users: User[];
@@ -52,7 +53,7 @@ export default function TaskPrismaDto() {
       where: id,
       data: {
         users: {
-          connect: payload.userIds.map((userId) => ({
+          connect: payload.userIds?.map((userId) => ({
             id: userId,
           })),
         },
@@ -76,7 +77,7 @@ export default function TaskPrismaDto() {
     tags: ITagPayload[],
     id: Prisma.TaskWhereUniqueInput,
   ): Promise<TaskWithDetails | undefined> {
-    const { projectId, ...rest } = payload;
+    const { projectId, userIds, ...rest } = payload;
     return prisma.task.update({
       where: id,
       data: {
@@ -93,7 +94,7 @@ export default function TaskPrismaDto() {
           },
         },
         users: {
-          connect: payload.userIds.map((userId) => ({
+          connect: payload.userIds?.map((userId) => ({
             id: userId,
           })),
         },
@@ -107,7 +108,7 @@ export default function TaskPrismaDto() {
   }
 
   async function createTaskWithTags(
-    payload: ITaskPayload,
+    payload: ICreateTaskPayload,
     tags: ITagPayload[],
   ): Promise<TaskWithDetails | null> {
     return prisma.task.create({

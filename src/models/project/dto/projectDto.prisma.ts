@@ -9,6 +9,7 @@ import { prisma } from '@utils/prisma/prisma-client';
 import IProjectPayload from '@project/types/payload.args';
 import { log } from '@utils/logger/logger';
 import { ApolloError } from 'apollo-server-errors';
+import ICreateProjectPayload from '@project/types/createProjectPayload.args';
 
 interface UserProjectWithRole extends UserProject {
   projectRole: ProjectRole;
@@ -75,7 +76,7 @@ export default function ProjectPrismaDto() {
 
   // ** CREATE
   async function createProject(
-    payload: IProjectPayload,
+    payload: ICreateProjectPayload,
   ): Promise<ProjectWithDetails | null> {
     return prisma.project.create({
       data: {

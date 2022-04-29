@@ -5,6 +5,7 @@ import IProject from '@project/types/project.type';
 import IProjectPayload from '@project/types/payload.args';
 import ProjectService from '@project/project.service';
 import { IContext } from '@utils/context/interface/context.interface';
+import ICreateProjectPayload from './types/createProjectPayload.args';
 
 @Resolver(() => IProject)
 export default class ProjectResolver {
@@ -24,7 +25,7 @@ export default class ProjectResolver {
   // * CREATE
   @Mutation(() => IProject)
   async createProject(
-    @Args()payload: IProjectPayload,
+    @Args()payload: ICreateProjectPayload,
     @PubSub() pubSub: PubSubEngine,
     @Ctx() context: IContext,
   ):Promise<IProject> {
