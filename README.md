@@ -1,6 +1,6 @@
 # 2109-wns-remote3-stack-back
 
-Backend repository for the Stack projet. This project works with Docker.
+Backend repository for the Stack projet. This project works with Docker...
 
 ## Setup the local env
 Create a `.env` file at the root of the project, with the following structure :
