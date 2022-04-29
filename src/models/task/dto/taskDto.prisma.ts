@@ -53,6 +53,7 @@ export default function TaskPrismaDto() {
       where: id,
       data: {
         users: {
+          set: [],
           connect: payload.userIds?.map((userId) => ({
             id: userId,
           })),
@@ -94,6 +95,7 @@ export default function TaskPrismaDto() {
           },
         },
         users: {
+          set: [],
           connect: payload.userIds?.map((userId) => ({
             id: userId,
           })),
