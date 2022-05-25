@@ -16,13 +16,13 @@ export default function FileService() {
     const { createReadStream, filename, mimetype, encoding } = file;
 
     const stream = createReadStream();
-    const output = fs.createWriteStream(`/img/${filename}.${mimetype}`);
+    const output = fs.createWriteStream(`/img/${context.userId}.${mimetype}`);
     stream.pipe(output);
     await finished(output).then(async () => {
       await UserPrismaDto().updateUser(
         {
           id: context.userId!,
-          avatar: `/img/${filename}.${mimetype}`,
+          avatar: `/img/${context.userId}.${mimetype}`,
         },
         { id: context.userId! },
       );
