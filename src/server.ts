@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 import compression from 'compression';
 import dotenv from 'dotenv';
 import rateLimit from 'express-rate-limit';
+import { graphqlUploadExpress } from 'graphql-upload';
 import { log } from './utils/logger/logger';
 import createApolloServer from './apolloServer';
 
@@ -20,6 +21,7 @@ async function startServer() {
 
   app.use(cookieParser()); // Cookie Parser middleware to read cookies from the navigator
   app.use(compression()); // Compress all responses for better performance
+  app.use(graphqlUploadExpress());
 
   // Basic rate limiter to prevent DDOS attacks
   const rateLimiter = rateLimit({

@@ -993,7 +993,7 @@
 
 "@types/compression@^1.7.2":
   version "1.7.2"
-  resolved "https://registry.npmjs.org/@types/compression/-/compression-1.7.2.tgz"
+  resolved "https://registry.yarnpkg.com/@types/compression/-/compression-1.7.2.tgz#7cc1cdb01b4730eea284615a68fc70a2cdfd5e71"
   integrity sha512-lwEL4M/uAGWngWFLSG87ZDr2kLrbuR8p7X+QZB1OQlT+qkHsCPDVFnHPyXf4Vyl4yDDorNY+mAhosxkCvppatg==
   dependencies:
     "@types/express" "*"
