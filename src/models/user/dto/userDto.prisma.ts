@@ -42,7 +42,12 @@ export default function UserPrismaDto() {
     return prisma.user.findUnique({
       where: id,
       include: {
-        tasks: true,
+        tasks: {
+          include: {
+            comments: true,
+          },
+        },
+
       },
     });
   }
