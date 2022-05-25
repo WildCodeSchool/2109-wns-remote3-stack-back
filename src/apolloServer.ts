@@ -14,6 +14,7 @@ import { Server } from 'http';
 import { ApolloServerPluginDrainHttpServer } from 'apollo-server-core';
 import { WebSocketServer } from 'ws';
 import { useServer } from 'graphql-ws/lib/use/ws';
+import FileResolver from '@file/file.resolver';
 
 async function createApolloServer(httpServer: Server) {
   // Using TypeGraphQL, build GraphQL schema automatically
@@ -27,6 +28,7 @@ async function createApolloServer(httpServer: Server) {
       CommentResolver,
       NotificationResolver,
       UserProjectResolver,
+      FileResolver,
     ],
   });
 

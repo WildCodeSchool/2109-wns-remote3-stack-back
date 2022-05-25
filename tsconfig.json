@@ -34,6 +34,7 @@
       "@auth/*": ["src/auth/*"],
       "@utils/*": ["src/utils/*"],
       "@comment/*": ["src/models/comment/*"],
+      "@file/*": ["src/models/file/*"],
       "@notification/*": ["src/models/notification/*"],
       "@project/*": ["src/models/project/*"],
       "@tag/*": ["src/models/tag/*"],
