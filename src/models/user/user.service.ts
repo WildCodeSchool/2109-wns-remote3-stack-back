@@ -50,8 +50,7 @@ export default function UserService() {
         }
       }
     } catch (error) {
-      log.error(error);
-      throw new AuthenticationError('Session expired', { error });
+      throw new AuthenticationError('Session expired');
     }
   }
 

@@ -1,4 +1,4 @@
-import { UserInputError, AuthenticationError } from 'apollo-server-errors';
+import { UserInputError } from 'apollo-server-errors';
 import IUserWithToken from '@user/types/userWithToken.type';
 import UserService from '../models/user/user.service';
 import LoginArgs from './args/login.args';
@@ -10,29 +10,24 @@ import IToken from './types/token.type';
 
 export default function AuthService() {
   async function validateUser(loginArgs: LoginArgs): Promise<IUserWithToken> {
-    try {
-      const checkMail = Boolean(loginArgs.email.match(/[a-z0-9_\-.]+@[a-z0-9_\-.]+\.[a-z]+/i));
-      const checkPassword = Boolean(loginArgs.password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g));
-      if (!checkMail || !checkPassword) {
-        log.warn('Internal error');
-        throw new UserInputError('Internal error');
-      }
-
-      const user = await UserService().findByEmail(loginArgs.email);
-      const valid = await comparePassword(loginArgs.password, user.password);
-      if (!user || !valid) {
-        log.warn('Incorrect email or password');
-        throw new UserInputError('Incorrect email or password');
-      }
-      const token = createToken(user);
-      return {
-        ...user,
-        token,
-      };
-    } catch (error) {
-      log.error(error);
-      throw new AuthenticationError('Session expired', { error });
+    const checkMail = Boolean(loginArgs.email.match(/[a-z0-9_\-.]+@[a-z0-9_\-.]+\.[a-z]+/i));
+    const checkPassword = Boolean(loginArgs.password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g));
+    if (!checkMail || !checkPassword) {
+      log.warn('Internal error');
+      throw new UserInputError('Internal error');
     }
+
+    const user = await UserService().findByEmail(loginArgs.email);
+    const valid = await comparePassword(loginArgs.password, user.password);
+    if (!user || !valid) {
+      log.warn('Incorrect email or password');
+      throw new UserInputError('Incorrect email or password');
+    }
+    const token = createToken(user);
+    return {
+      ...user,
+      token,
+    };
   }
 
   async function signupUser(signupArgs: SignupArgs): Promise<IUserWithToken> {
