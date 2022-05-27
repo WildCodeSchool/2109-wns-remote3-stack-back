@@ -10,9 +10,6 @@ export default abstract class IUserWithProjects {
     email: string;
 
   @Field(() => String)
-    password: string;
-
-  @Field(() => String)
     firstName: string;
 
   @Field(() => String)
