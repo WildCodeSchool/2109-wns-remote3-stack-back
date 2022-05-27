@@ -50,10 +50,6 @@ function getTokenPayload(token: string): IToken {
   try {
     return jwt.verify(token, APP_TOKENIZATION_SECRET) as IToken;
   } catch (error) {
-    if (error instanceof Error) {
-      log.error(error);
-      throw new ApolloError(`User unauthenticated, ${error}`);
-    }
     throw new ApolloError('User unauthenticated');
   }
 }
@@ -74,7 +70,6 @@ async function getUserId(req: Request) {
     try {
       user = await UserService().findById(userId);
     } catch (error) {
-      log.error(error);
       throw new AuthenticationError('User unauthenticated');
     }
     if (!user) {

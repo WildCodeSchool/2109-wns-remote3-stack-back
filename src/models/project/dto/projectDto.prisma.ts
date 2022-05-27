@@ -7,7 +7,6 @@ import {
 } from '@prisma/client';
 import { prisma } from '@utils/prisma/prisma-client';
 import IProjectPayload from '@project/types/payload.args';
-import { log } from '@utils/logger/logger';
 import { ApolloError } from 'apollo-server-errors';
 import ICreateProjectPayload from '@project/types/createProjectPayload.args';
 
@@ -69,8 +68,7 @@ export default function ProjectPrismaDto() {
       ]);
       return true;
     } catch (error) {
-      log.error(error);
-      throw new ApolloError('An unexpected error occured', undefined, { error });
+      throw new ApolloError('An unexpected error occured');
     }
   }
 

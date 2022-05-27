@@ -9,9 +9,6 @@ export default abstract class IUserWithToken {
     email: string;
 
   @Field(() => String)
-    password: string;
-
-  @Field(() => String)
     firstName: string;
 
   @Field(() => String)

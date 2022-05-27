@@ -10,6 +10,10 @@ import IUserPasswordPayload from './types/payloadPassword';
 import IUserWithProjects from './types/userWithProjects.type';
 import IUserWithTasks from './types/userWithTask.type';
 
+interface IUserWithPassword extends IUser {
+  password: string;
+}
+
 export default function UserService() {
   // ** CREATE
   async function createOneUser(args: SignupArgs): Promise<IUser> {
@@ -46,8 +50,7 @@ export default function UserService() {
         }
       }
     } catch (error) {
-      log.error(error);
-      throw new AuthenticationError('Session expired', { error });
+      throw new AuthenticationError('Session expired');
     }
   }
 
@@ -68,7 +71,7 @@ export default function UserService() {
     return user;
   }
 
-  async function findByEmail(email: string): Promise<IUser> {
+  async function findByEmail(email: string): Promise<IUserWithPassword> {
     const user = await UserPrismaDto().oneByEmail({ email });
     if (!user) {
       throw new Error('User not found');
