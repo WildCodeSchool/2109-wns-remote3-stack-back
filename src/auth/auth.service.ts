@@ -14,7 +14,7 @@ export default function AuthService() {
     const checkPassword = Boolean(loginArgs.password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g));
     if (!checkMail || !checkPassword) {
       log.warn('Internal error');
-      throw new UserInputError('Internal error');
+      // No throw here, as the error will be handled by the client
     }
 
     const user = await UserService().findByEmail(loginArgs.email);
@@ -35,7 +35,7 @@ export default function AuthService() {
     const checkPassword = Boolean(signupArgs.password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g));
     if (!checkMail || !checkPassword) {
       log.warn('Internal error');
-      throw new UserInputError('Internal error');
+      // No throw here, as the error will be handled by the client
     }
 
     const password = await hashPassword(signupArgs.password);
