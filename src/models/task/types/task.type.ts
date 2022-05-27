@@ -1,10 +1,8 @@
-import { Status, Tag } from '@prisma/client';
-import {
-  Field, Float, ID, ObjectType,
-} from 'type-graphql';
-import ITag from '../../tag/types/tag.type';
-import IUser from '../../user/types/user.type';
-import IComment from '../../comments/types/comment.type';
+import { Field, Float, ID, ObjectType } from 'type-graphql';
+import ITag from '@tag/types/tag.type';
+import IUser from '@user/types/user.type';
+import IComment from '@comment/types/comment.type';
+import { IStatus } from '@project/types/status.enum';
 
 @ObjectType()
 export default abstract class ITask {
@@ -12,29 +10,32 @@ export default abstract class ITask {
     id: string;
 
   @Field(() => String)
-    subject: string;
+    name: string;
 
   @Field(() => String)
-    projectId?: string;
+    description: string;
+
+  @Field(() => String)
+    projectId: string;
 
   @Field(() => [IUser])
     users: IUser[];
 
-  @Field(() => String)
+  @Field(() => Date)
     startDate: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
     endDate: Date;
 
   @Field(() => Float)
     estimeeSpentTime: number;
 
   @Field(() => String)
-    advancement: Status;
+    advancement: IStatus;
 
   @Field(() => [IComment])
     comments: IComment[];
 
   @Field(() => [ITag])
-    tags: Tag[];
+    tags: ITag[];
 }

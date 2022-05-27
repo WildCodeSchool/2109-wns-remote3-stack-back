@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 
 @ObjectType()
@@ -10,9 +9,6 @@ export default abstract class IUser {
     email: string;
 
   @Field(() => String)
-    password: string;
-
-  @Field(() => String)
     firstName: string;
 
   @Field(() => String)
@@ -21,9 +17,9 @@ export default abstract class IUser {
   @Field(() => String, { nullable: true })
     avatar?: string | null;
 
-  @Field()
+  @Field(() => Date)
     createdAt: Date;
 
-  @Field()
+  @Field(() => Date)
     updatedAt: Date;
 }

@@ -1,4 +1,6 @@
+import 'reflect-metadata';
 import { ApolloError } from 'apollo-server-errors';
+import { createServer } from 'http';
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import compression from 'compression';
@@ -13,11 +15,7 @@ async function startServer() {
   // Get environments variables from .env file
   dotenv.config();
   // Initialize server port
-  const PORT = process.env.PORT || 4000;
-  const HOST = process.env.HOST || 'localhost';
-
-  // Using TypeGraphQL, build GraphQL schema automatically
-  const server = await createApolloServer();
+  const PORT = +process.env.PORT! || 4000;
   const app = express();
 
   app.use(cookieParser()); // Cookie Parser middleware to read cookies from the navigator
@@ -36,6 +34,10 @@ async function startServer() {
   // Setup the server endpoint to ${serverAdress}/graphql with the rate limiter
   app.use('/graphql', rateLimiter);
   app.use(express.json()); // Body parser
+
+  const httpServer = createServer(app);
+  // Using TypeGraphQL, build GraphQL schema automatically
+  const server = await createApolloServer(httpServer);
   // * Startup server
   try {
     await server.start();
@@ -45,13 +47,14 @@ async function startServer() {
         credentials: true,
         origin: [
           process.env.FRONTEND_URL || 'http://localhost:3000',
+          // TODO: remove development endpoints once the app is ready for production
           'https://studio.apollographql.com',
         ],
       },
     });
 
-    app.listen({ port: PORT, host: HOST }, () => {
-      log.info('Server ready', { host: HOST, port: PORT });
+    httpServer.listen(PORT, () => {
+      log.info('Server ready', { port: PORT });
     });
   } catch (error) {
     throw new ApolloError('An error happened', undefined, { error });

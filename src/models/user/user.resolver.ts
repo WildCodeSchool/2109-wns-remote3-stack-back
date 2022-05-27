@@ -1,10 +1,14 @@
-import 'reflect-metadata';
 import {
-  Resolver, Query, Arg, Mutation, UseMiddleware,
+  Resolver, Query, Arg, Mutation, UseMiddleware, Ctx, Args,
 } from 'type-graphql';
-import authGuard from '../../auth/guards/auth.guard';
-import IUser from './types/user.type';
-import UserService from './user.service';
+import authGuard from '@auth/guards/auth.guard';
+import IUser from '@user/types/user.type';
+import UserService from '@user/user.service';
+import { IContext } from '@utils/context/interface/context.interface';
+import IUserWithProjects from './types/userWithProjects.type';
+import IUserPayload from './types/payload.args';
+import IUserWithTasks from './types/userWithTask.type';
+import IUserPasswordPayload from './types/payloadPassword';
 
 @Resolver(() => IUser)
 export default class UserResolver {
@@ -15,6 +19,14 @@ export default class UserResolver {
   @UseMiddleware(authGuard)
   async getAllUsers(): Promise<IUser[]> {
     return UserService().allUsers();
+  }
+
+  @Query(() => IUser)
+  @UseMiddleware(authGuard)
+  async getSelf(
+    @Ctx() context: IContext,
+  ): Promise<IUser> {
+    return UserService().findById(context.userId || '');
   }
 
   @Query(() => IUser)
@@ -31,7 +43,39 @@ export default class UserResolver {
     return UserService().findByEmail(email);
   }
 
+  @Query(() => IUserWithProjects)
+  async getUserWithProjects(
+    @Arg('id') id: string,
+  ): Promise<IUserWithProjects> {
+    return UserService().findByIdWithProjects(id);
+  }
+
+  @Query(() => IUserWithTasks)
+  async getUserWithTasks(
+    @Arg('id') id: string,
+  ): Promise<IUserWithTasks> {
+    return UserService().findByIdWithTasks(id);
+  }
+
   // * UPDATE
+  @Mutation(() => IUser)
+  @UseMiddleware(authGuard)
+  async updateUser(
+    @Args()payload: IUserPayload,
+    @Arg('id') id: string,
+  ):Promise<IUser |null> {
+    return UserService().updateUserById(payload, id);
+  }
+
+  // * UPDATE USER PASSWORD
+  @Mutation(() => IUser)
+  @UseMiddleware(authGuard)
+  async updateUserPassword(
+    @Args()payload: IUserPasswordPayload,
+    @Arg('id') id: string,
+  ):Promise<IUser |null | undefined> {
+    return UserService().updateUserPassword(payload, id);
+  }
 
   // * DELETE
   @Mutation(() => IUser)

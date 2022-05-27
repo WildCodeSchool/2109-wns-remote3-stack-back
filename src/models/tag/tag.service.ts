@@ -1,10 +1,11 @@
-import TagPrismaDto from './dto/tagDto.prisma';
-import ITag from './types/tag.type';
-import ITagPayload from './types/TagPayload.args';
+import TagPrismaDto from '@tag/dto/tagDto.prisma';
+import ITag from '@tag/types/tag.type';
+import ITagPayload from '@tag/types/TagPayload.args';
+import ICreateTagPayload from './types/createTagPayload.args';
 
 export default function TagService() {
   //* Create Tag
-  async function createTag(payload: ITagPayload): Promise<ITag> {
+  async function createTag(payload: ICreateTagPayload): Promise<ITag> {
     const tag = await TagPrismaDto().createTag(payload);
     if (!tag) {
       throw new Error('Tag not found');

@@ -2,8 +2,9 @@ import {
   Comment,
   Prisma,
 } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
-import ICommentPayload from '../types/createComment.type';
+import { prisma } from '@utils/prisma';
+import ICreateCommentPayload from '@comment/types/createCommentPayload.args';
+import ICommentPayload from '@comment/types/commentPayload.args';
 
 export default function CommentPrismaDto() {
   //* Get all comments
@@ -19,7 +20,7 @@ export default function CommentPrismaDto() {
     });
   }
   //*  Create a comment
-  async function createComment(payload: ICommentPayload): Promise<Comment> {
+  async function createComment(payload: ICreateCommentPayload): Promise<Comment> {
     return prisma.comment.create({
       data: {
         ...payload,

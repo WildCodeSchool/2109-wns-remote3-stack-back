@@ -1,7 +1,7 @@
 import { ApolloServer, gql } from 'apollo-server-express';
 import { Project } from '@prisma/client';
 import { prisma } from '../../utils/prisma/prisma-client';
-import createApolloServer from '../../apolloServer';
+// import createApolloServer from '../../apolloServer';
 
 let server: ApolloServer;
 
@@ -10,9 +10,12 @@ let isDeleted: boolean;
 let project: Project;
 
 beforeAll(async () => {
-  server = await createApolloServer();
+  // TODO: fix apollo server with subscription system
+  // server = await createApolloServer();
   project = await prisma.project.create({
     data: {
+      name: 'Test',
+      description: 'This is my project description',
       status: 'DONE',
       endDate: '2021-02-07T21:04:39.573Z',
       estimeeSpentTime: 5.2,

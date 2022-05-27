@@ -1,10 +1,11 @@
-import 'reflect-metadata';
 import {
-  Resolver, Query, Arg, Mutation, Args,
+  Resolver, Query, Arg, Mutation, Args, Ctx, PubSub, PubSubEngine,
 } from 'type-graphql';
-import IProject from './types/project.type';
-import ProjectService from './project.service';
-import IProjectPayload from './types/payload.type';
+import IProject from '@project/types/project.type';
+import IProjectPayload from '@project/types/payload.args';
+import ProjectService from '@project/project.service';
+import { IContext } from '@utils/context/interface/context.interface';
+import ICreateProjectPayload from './types/createProjectPayload.args';
 
 @Resolver(() => IProject)
 export default class ProjectResolver {
@@ -23,21 +24,32 @@ export default class ProjectResolver {
 
   // * CREATE
   @Mutation(() => IProject)
-  async createProject(@Args()payload: IProjectPayload):Promise<IProject> {
-    return ProjectService().createNewProject(payload);
+  async createProject(
+    @Args()payload: ICreateProjectPayload,
+    @PubSub() pubSub: PubSubEngine,
+    @Ctx() context: IContext,
+  ):Promise<IProject> {
+    return ProjectService().createNewProject(payload, context, pubSub);
   }
 
   // * UPDATE
   @Mutation(() => IProject)
-  async updateProject(@Args()payload: IProjectPayload, @Arg('id') id: string):Promise<IProject> {
-    return ProjectService().updateProjectById(payload, id);
+  async updateProject(
+    @Args()payload: IProjectPayload,
+    @Arg('id') id: string,
+    @PubSub() pubSub: PubSubEngine,
+    @Ctx() context: IContext,
+  ):Promise<IProject> {
+    return ProjectService().updateProjectById(payload, id, context, pubSub);
   }
 
   // * DELETE
-  @Mutation(() => IProject)
+  @Mutation(() => Boolean)
   async deleteProjectById(
     @Arg('id') id: string,
-  ): Promise<IProject> {
-    return ProjectService().deleteById(id);
+    @PubSub() pubSub: PubSubEngine,
+    @Ctx() context: IContext,
+  ): Promise<boolean> {
+    return ProjectService().deleteById(id, context, pubSub);
   }
 }

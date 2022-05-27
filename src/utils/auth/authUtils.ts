@@ -1,4 +1,4 @@
-import { CookieOptions, Request, Response } from 'express';
+import { CookieOptions, Request } from 'express';
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { ApolloError, AuthenticationError } from 'apollo-server-errors';
 import { APP_TOKENIZATION_SECRET } from '../../environments';
@@ -50,10 +50,6 @@ function getTokenPayload(token: string): IToken {
   try {
     return jwt.verify(token, APP_TOKENIZATION_SECRET) as IToken;
   } catch (error) {
-    if (error instanceof Error) {
-      log.error(error);
-      throw new ApolloError(`User unauthenticated, ${error}`);
-    }
     throw new ApolloError('User unauthenticated');
   }
 }
@@ -62,12 +58,11 @@ function isTokenExpired(expiresIn: number, emittedAt: number) {
   return Date.now() > (expiresIn + emittedAt);
 }
 
-async function getUserId(req: Request, res: Response) {
-  const token = req.cookies.stack_session;
+async function getUserId(req: Request) {
+  const token = req.headers.authorization;
   if (token) {
     const { userId, expiresIn, emittedAt } = getTokenPayload(token);
     if (isTokenExpired(expiresIn, emittedAt)) {
-      res.clearCookie('stack_session');
       log.warn('Session expired');
       throw new AuthenticationError('Session expired');
     }
@@ -75,11 +70,9 @@ async function getUserId(req: Request, res: Response) {
     try {
       user = await UserService().findById(userId);
     } catch (error) {
-      log.error(error);
       throw new AuthenticationError('User unauthenticated');
     }
     if (!user) {
-      res.clearCookie('stack_session');
       log.warn('Session expired');
       throw new AuthenticationError('Session expired');
     }

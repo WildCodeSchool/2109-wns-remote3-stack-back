@@ -1,15 +1,50 @@
+import { ICreateNotificationType } from '@notification/types/createNotification.type';
 import {
   Notification,
   Prisma,
+  User,
+  UserProject,
 } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
-import IPayloadNotification from '../types/payloadNotification.types';
+import { prisma } from '@utils/prisma';
+
+interface NotificationWithSubscribers extends Notification {
+  subscribers: User[];
+}
 
 export default function NotificationPrismaDto() {
   //* Get all notifications
-  async function getallNotifications(): Promise<Notification[]> {
-    return prisma.notification.findMany({
+  async function getAllNotifications(): Promise<Notification[]> {
+    return prisma.notification.findMany();
+  }
 
+  async function getObjectNotifications(
+    objectId: string,
+  ) {
+    return prisma.notification.findMany({
+      where: {
+        OR: [
+          {
+            modifiedObjectId: objectId,
+          },
+          {
+            onId: objectId,
+          },
+        ],
+      },
+    });
+  }
+
+  async function userNotifications(
+    userId: string,
+  ): Promise<Notification[]> {
+    return prisma.notification.findMany({
+      where: {
+        subscribers: {
+          some: {
+            id: userId,
+          },
+        },
+      },
     });
   }
   //* Get one notification by Id
@@ -21,23 +56,37 @@ export default function NotificationPrismaDto() {
     });
   }
   //*  Create a notification
-  async function createNotification(payload: IPayloadNotification): Promise<Notification> {
+  async function createNotification(
+    data: ICreateNotificationType,
+    users: UserProject[],
+  ): Promise<NotificationWithSubscribers> {
     return prisma.notification.create({
       data: {
-        ...payload,
+        ...data,
+        subscribers: {
+          connect: users.map((user) => ({
+            id: user.userId,
+          })),
+        },
+        viewedBy: [],
+      },
+      include: {
+        subscribers: true,
       },
     });
   }
 
-  // //*  Update notification by id
+  //*  Update notification by id
   async function updateNotification(
-    payload: IPayloadNotification,
+    payload: Notification,
     id: Prisma.NotificationWhereUniqueInput,
+    viewedBy: string[],
   ): Promise<Notification> {
     return prisma.notification.update({
       where: id,
       data: {
         ...payload,
+        viewedBy,
       },
     });
   }
@@ -51,7 +100,9 @@ export default function NotificationPrismaDto() {
   }
 
   return {
-    getallNotifications,
+    getAllNotifications,
+    getObjectNotifications,
+    userNotifications,
     getOneNotificationById,
     createNotification,
     updateNotification,

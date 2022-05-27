@@ -1,20 +1,20 @@
 import {
-  Args, Mutation, Resolver, Ctx,
+  Args, Mutation, Resolver,
 } from 'type-graphql';
-import { IContext } from '../utils/context/interface/context.interface';
+import IUserWithToken from '@user/types/userWithToken.type';
 import IUser from '../models/user/types/user.type';
 import LoginArgs from './args/login.args';
 import AuthService from './auth.service';
 import SignupArgs from './args/signup.args';
 import { log } from '../utils/logger/logger';
+import IToken from './types/token.type';
 
 @Resolver(() => IUser)
 export default class AuthResolver {
-  @Mutation(() => IUser)
+  @Mutation(() => IUserWithToken)
   async login(
     @Args() loginArgs: LoginArgs,
-    @Ctx() context: IContext,
-  ): Promise<IUser | null> {
+  ): Promise<IUserWithToken | null> {
     const email = loginArgs.email.toLowerCase().trim();
     log.verbose(`Trying to authenticate user, ${email}`);
     const user = await AuthService().validateUser(
@@ -22,33 +22,29 @@ export default class AuthResolver {
         email,
         password: loginArgs.password,
       },
-      context,
     );
     log.info(`Authentication success, ${email}`);
     return user;
   }
 
-  @Mutation(() => IUser)
+  @Mutation(() => IUserWithToken)
   async signup(
     @Args() signupArgs: SignupArgs,
-    @Ctx() context: IContext,
-  ): Promise<IUser> {
+  ): Promise<IUserWithToken> {
     log.verbose('Trying to signup user', signupArgs.email);
     const email = signupArgs.email.toLowerCase().trim();
     const user = await AuthService().signupUser({
       ...signupArgs,
       email,
-    }, context);
+    });
     log.info('User successfully created, ', signupArgs.email);
     return user;
   }
 
-  @Mutation(() => Boolean)
-  async logout(
-    @Ctx() context: IContext,
-  ): Promise<boolean> {
+  @Mutation(() => IToken)
+  async logout(): Promise<IToken> {
     log.verbose('Trying to logout user');
-    const logout = await AuthService().logoutUser(context);
+    const logout = await AuthService().logoutUser();
     return logout;
   }
 }

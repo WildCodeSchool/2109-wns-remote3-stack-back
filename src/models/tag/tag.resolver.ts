@@ -1,22 +1,22 @@
-import 'reflect-metadata';
 import {
-  Resolver, Query, Arg, Mutation, Args,
+  Resolver, Query, Arg, Mutation,
 } from 'type-graphql';
-import ITag from './types/tag.type';
-import TagService from './tag.service';
-import ITagPayload from './types/TagPayload.args';
+import ITag from '@tag/types/tag.type';
+import TagService from '@tag/tag.service';
+import ITagPayload from '@tag/types/TagPayload.args';
+import ICreateTagPayload from './types/createTagPayload.args';
 
 @Resolver(() => ITag)
 export default class TagResolver {
   // * Create a tag
   @Mutation(() => ITag)
-  async createTag(@Args() payload: ITagPayload): Promise<ITag> {
+  async createTag(@Arg('payload') payload: ICreateTagPayload): Promise<ITag> {
     return TagService().createTag(payload);
   }
 
   //* Update
   @Mutation(() => ITag)
-  async updateTag(@Args() payload: ITagPayload, @Arg('id') id: string): Promise<ITag> {
+  async updateTag(@Arg('payload') payload: ITagPayload, @Arg('id') id: string): Promise<ITag> {
     return TagService().updateTag(payload, id);
   }
 

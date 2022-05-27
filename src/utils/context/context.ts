@@ -4,7 +4,7 @@ import { IContext } from './interface/context.interface';
 async function appContext(context: IContext) {
   let userId;
   try {
-    userId = context.req.cookies && await getUserId(context.req, context.res);
+    userId = await getUserId(context.req);
   } catch (error) {
     // fail silently, as error handling will be done in other guards
     userId = '';

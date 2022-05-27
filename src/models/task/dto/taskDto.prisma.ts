@@ -1,8 +1,10 @@
 import {
   Comment, Prisma, Tag, Task, User,
 } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
-import ITaskPayload from '../types/PayloadTask.types';
+import { prisma } from '@utils/prisma/prisma-client';
+import ITaskPayload from '@task/types/taskPayload.args';
+import ITagPayload from '@tag/types/TagPayload.args';
+import ICreateTaskPayload from '@task/types/createTaskPayload.args';
 
 export interface TaskWithDetails extends Task {
   users: User[];
@@ -46,14 +48,22 @@ export default function TaskPrismaDto() {
 
   async function updateOneById(payload: ITaskPayload, id: Prisma.TaskWhereUniqueInput):
    Promise<TaskWithDetails | null> {
+    const { userIds, projectId, ...rest } = payload;
     return prisma.task.update({
       where: id,
       data: {
-        subject: payload.subject,
-        projectId: payload.projectId,
-        endDate: payload.endDate,
-        advancement: payload.advancement,
-        estimeeSpentTime: payload.estimeeSpentTime,
+        users: {
+          set: [],
+          connect: payload.userIds?.map((userId) => ({
+            id: userId,
+          })),
+        },
+        project: {
+          connect: {
+            id: projectId,
+          },
+        },
+        ...rest,
       },
       include: {
         users: true,
@@ -63,14 +73,68 @@ export default function TaskPrismaDto() {
     });
   }
 
-  async function createTask(payload: ITaskPayload): Promise<TaskWithDetails | null> {
+  async function updateOneByIdWithTags(
+    payload: ITaskPayload,
+    tags: ITagPayload[],
+    id: Prisma.TaskWhereUniqueInput,
+  ): Promise<TaskWithDetails | undefined> {
+    const { projectId, userIds, ...rest } = payload;
+    return prisma.task.update({
+      where: id,
+      data: {
+        ...rest,
+        tags: {
+          set: [],
+          connect: tags.map((tag) => ({
+            id: tag.id,
+          })),
+        },
+        project: {
+          connect: {
+            id: projectId,
+          },
+        },
+        users: {
+          set: [],
+          connect: payload.userIds?.map((userId) => ({
+            id: userId,
+          })),
+        },
+      },
+      include: {
+        users: true,
+        comments: true,
+        tags: true,
+      },
+    });
+  }
+
+  async function createTaskWithTags(
+    payload: ICreateTaskPayload,
+    tags: ITagPayload[],
+  ): Promise<TaskWithDetails | null> {
     return prisma.task.create({
       data: {
-        subject: payload.subject,
-        projectId: payload.projectId,
+        name: payload.name,
+        description: payload.description,
         endDate: payload.endDate,
-        advancement: payload.advancement,
         estimeeSpentTime: payload.estimeeSpentTime,
+        advancement: payload.advancement,
+        tags: {
+          connect: tags.map((tag) => ({
+            id: tag.id,
+          })),
+        },
+        project: {
+          connect: {
+            id: payload.projectId,
+          },
+        },
+        users: {
+          connect: payload.userIds.map((userId) => ({
+            id: userId,
+          })),
+        },
       },
       include: {
         users: true,
@@ -85,6 +149,7 @@ export default function TaskPrismaDto() {
     oneById,
     deleteOneById,
     updateOneById,
-    createTask,
+    updateOneByIdWithTags,
+    createTaskWithTags,
   };
 }

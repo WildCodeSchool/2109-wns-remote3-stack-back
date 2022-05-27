@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 
 @ObjectType()
@@ -9,10 +8,10 @@ export default abstract class IComment {
   @Field(() => String)
     text: string;
 
-  @Field(() => String)
+  @Field(() => Date)
     createdAt: Date;
 
-  @Field(() => String)
+  @Field(() => Date)
     updatedAt: Date;
 
   @Field(() => String)

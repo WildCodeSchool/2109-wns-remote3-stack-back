@@ -5,11 +5,13 @@ import {
   UserProject,
   ProjectRole,
 } from '@prisma/client';
-import { prisma } from '../../../utils/prisma/prisma-client';
-import IProjectPayload from '../types/payload.type';
+import { prisma } from '@utils/prisma/prisma-client';
+import IProjectPayload from '@project/types/payload.args';
+import { ApolloError } from 'apollo-server-errors';
+import ICreateProjectPayload from '@project/types/createProjectPayload.args';
 
 interface UserProjectWithRole extends UserProject {
-    projectRole: ProjectRole;
+  projectRole: ProjectRole;
 }
 interface ProjectWithDetails extends Project {
   members: UserProjectWithRole[];
@@ -20,6 +22,9 @@ export default function ProjectPrismaDto() {
   // ** READ
   async function all(): Promise<ProjectWithDetails[]> {
     return prisma.project.findMany({
+      orderBy: {
+        name: 'asc',
+      },
       include: {
         members: true,
         tasks: {
@@ -33,7 +38,9 @@ export default function ProjectPrismaDto() {
     });
   }
 
-  async function oneById(id: Prisma.ProjectWhereUniqueInput): Promise<ProjectWithDetails | null> {
+  async function oneById(
+    id: Prisma.ProjectWhereUniqueInput,
+  ): Promise<ProjectWithDetails | null> {
     return prisma.project.findUnique({
       where: id,
       include: {
@@ -52,24 +59,23 @@ export default function ProjectPrismaDto() {
   // ** DELETE
   async function deleteOneById(
     id: Prisma.ProjectWhereUniqueInput,
-  ): Promise<ProjectWithDetails | null> {
-    return prisma.project.delete({
-      where: id,
-      include: {
-        members: true,
-        tasks: {
-          include: {
-            users: true,
-            comments: true,
-            tags: true,
-          },
-        },
-      },
-    });
+  ) {
+    try {
+      await prisma.$transaction([
+        prisma.userProject.deleteMany({ where: { projectId: id.id } }),
+        prisma.task.deleteMany({ where: { projectId: id.id } }),
+        prisma.project.delete({ where: id }),
+      ]);
+      return true;
+    } catch (error) {
+      throw new ApolloError('An unexpected error occured');
+    }
   }
 
   // ** CREATE
-  async function createProject(payload: IProjectPayload): Promise<ProjectWithDetails | null> {
+  async function createProject(
+    payload: ICreateProjectPayload,
+  ): Promise<ProjectWithDetails | null> {
     return prisma.project.create({
       data: {
         ...payload,

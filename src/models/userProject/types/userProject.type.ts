@@ -1,4 +1,3 @@
-import 'reflect-metadata';
 import { ObjectType, Field, ID } from 'type-graphql';
 
 @ObjectType()
@@ -10,5 +9,5 @@ export default abstract class IUserProject {
     projectId: string;
 
   @Field(() => String)
-    projectRole: string;
+    projectRole: 'PROJECT_MANAGER' |'DEVELOPPER' | 'UX_DESIGNER' | 'DEVOPS';
 }

@@ -1,15 +1,26 @@
-import NotificationPrismaDto from './dto/notificationDto.prisma';
-import INotification from './types/notification.types';
-import INotificationPayload from './types/payloadNotification.types';
+import NotificationPrismaDto from '@notification/dto/notificationDto.prisma';
+import INotification from '@notification/types/notification.type';
+import { ICreateNotificationType } from '@notification/types/createNotification.type';
+import UserProjectService from '@userProject/userProject.service';
+import IUserProject from '@userProject/types/userProject.type';
+import { IContext } from '@utils/context/interface/context.interface';
+import IUser from '@user/types/user.type';
 
-export default function TaskService() {
+export default function NotificationService() {
   //* Get all notifications
   async function allNotifications(): Promise<INotification[]> {
-    const notification = await NotificationPrismaDto().getallNotifications();
+    const notification = await NotificationPrismaDto().getAllNotifications();
     if (!notification) {
       throw new Error('No notifications found');
     }
     return notification;
+  }
+  async function allNotificationsFromObject(objectId: string): Promise<INotification[]> {
+    const notifications = await NotificationPrismaDto().getObjectNotifications(objectId);
+    if (!notifications) {
+      throw new Error('No notifications found');
+    }
+    return notifications;
   }
   //* Get one notification by ID
   async function findNotificationById(id: string): Promise<INotification> {
@@ -20,24 +31,41 @@ export default function TaskService() {
     return notification;
   }
 
+  async function findNotificationsByUserId(context: IContext): Promise<INotification[]> {
+    const notifications = await NotificationPrismaDto().userNotifications(context.userId || '');
+    if (!notifications) {
+      throw new Error('No notification found');
+    }
+    return notifications;
+  }
+
   //* Create a notification
-  async function createNewNotification(payload: INotificationPayload): Promise<INotification> {
-    const notification = await NotificationPrismaDto().createNotification(payload);
+  async function createNewNotification(
+    notificationData: ICreateNotificationType,
+    projectId: string,
+  ): Promise<INotification & { subscribers: IUser[] }> {
+    const subscribers: IUserProject[] = await UserProjectService().findUsersByProjectId(projectId);
+    const notification = await NotificationPrismaDto()
+      .createNotification(notificationData, subscribers);
     if (!notification) {
       throw new Error('Notification not created');
     }
     return notification;
   }
-  //* Update a notification
-  async function updateNotificationById(
-    payload: INotificationPayload,
-    id: string,
+
+  async function updateNotificationStatus(
+    notificationId: string,
+    context: IContext,
   ): Promise<INotification> {
-    const notification = await NotificationPrismaDto().updateNotification(payload, { id });
+    const notification = await NotificationPrismaDto()
+      .getOneNotificationById({ id: notificationId });
     if (!notification) {
-      throw new Error('notification not updated');
+      throw new Error('Notification not created');
     }
-    return notification;
+    const viewedBy = [...notification.viewedBy, context.userId || ''];
+    const updatedNotification = await NotificationPrismaDto()
+      .updateNotification(notification, { id: notificationId }, viewedBy);
+    return updatedNotification;
   }
 
   //* Delete a notification
@@ -51,9 +79,11 @@ export default function TaskService() {
 
   return {
     allNotifications,
+    allNotificationsFromObject,
     findNotificationById,
-    deleteById,
+    findNotificationsByUserId,
     createNewNotification,
-    updateNotificationById,
+    updateNotificationStatus,
+    deleteById,
   };
 }
