@@ -16,6 +16,7 @@ export default class UserResolver {
 
   // * READ
   @Query(() => [IUser])
+  @UseMiddleware(authGuard)
   async getAllUsers(): Promise<IUser[]> {
     return UserService().allUsers();
   }

@@ -11,6 +11,13 @@ import IToken from './types/token.type';
 export default function AuthService() {
   async function validateUser(loginArgs: LoginArgs): Promise<IUserWithToken> {
     try {
+      const checkMail = Boolean(loginArgs.email.match(/[a-z0-9_\-.]+@[a-z0-9_\-.]+\.[a-z]+/i));
+      const checkPassword = Boolean(loginArgs.password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g));
+      if (!checkMail || !checkPassword) {
+        log.warn('Internal error');
+        throw new UserInputError('Internal error');
+      }
+
       const user = await UserService().findByEmail(loginArgs.email);
       const valid = await comparePassword(loginArgs.password, user.password);
       if (!user || !valid) {
@@ -29,6 +36,13 @@ export default function AuthService() {
   }
 
   async function signupUser(signupArgs: SignupArgs): Promise<IUserWithToken> {
+    const checkMail = Boolean(signupArgs.email.match(/[a-z0-9_\-.]+@[a-z0-9_\-.]+\.[a-z]+/i));
+    const checkPassword = Boolean(signupArgs.password.match(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/g));
+    if (!checkMail || !checkPassword) {
+      log.warn('Internal error');
+      throw new UserInputError('Internal error');
+    }
+
     const password = await hashPassword(signupArgs.password);
     const user = await UserService().createOneUser({
       email: signupArgs.email,
